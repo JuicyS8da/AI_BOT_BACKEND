@@ -26,7 +26,7 @@ class QuizQuestion(Base):
     quiz_id: Mapped[int] = mapped_column(ForeignKey("quizzes.id"), nullable=False)
     quiz: Mapped["Quiz"] = relationship(back_populates="questions")
 
-    start_time: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    start_time: Mapped[datetime] = mapped_column(DateTime(timezone=False), nullable=False)
     duration_seconds: Mapped[int] = mapped_column(Integer, default=60)
 
     answers: Mapped[list["UserAnswer"]] = relationship(back_populates="question", cascade="all, delete-orphan")

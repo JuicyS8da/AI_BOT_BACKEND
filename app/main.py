@@ -6,12 +6,14 @@ from app.common.common import init_admin
 from app.users.routers import router as user_router
 from app.events.routers import router as event_router
 from app.quiz.routers import router as quiz_router
+from app.minigames.routers import router as minigame_router
 
 app = FastAPI(title="Music Schedule Bot 6")
 
 app.include_router(user_router)
 app.include_router(event_router)
 app.include_router(quiz_router)
+app.include_router(minigame_router)
 
 app.add_middleware(
     CORSMiddleware,

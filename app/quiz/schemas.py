@@ -1,6 +1,8 @@
-from pydantic import BaseModel
+from datetime import datetime
+from pydantic import BaseModel, validator, Field
 from typing import List, Optional
 
+DATETIME_FORMAT = "%d.%m.%Y %H:%M"
 
 class QuizBase(BaseModel):
     title: str
@@ -8,7 +10,14 @@ class QuizBase(BaseModel):
 
 
 class QuizCreate(QuizBase):
-    pass
+    duration_seconds: int = 60
+    start_time: datetime = Field(examples=["20.09.2025 16:00"])
+
+    @validator("start_time", pre=True)
+    def parse_datetime(cls, v):
+        if isinstance(v, str):
+            return datetime.strptime(v, DATETIME_FORMAT)
+        return v
 
 
 class QuizUpdate(BaseModel):

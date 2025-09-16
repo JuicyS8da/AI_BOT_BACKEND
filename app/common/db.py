@@ -34,5 +34,6 @@ async def get_async_session() -> AsyncSession:
 # Function to create tables (for initial setup, not for production use)
 async def init_models():
     async with engine.begin() as conn:
+        # await conn.run_sync(Base.metadata.drop_all)  # use with caution
         await conn.run_sync(Base.metadata.create_all)
         

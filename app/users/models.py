@@ -12,6 +12,7 @@ class User(Base):
     nickname: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     is_active: Mapped[bool] = mapped_column(default=True)
     is_admin: Mapped[bool] = mapped_column(default=False)
+    points: Mapped[int] = mapped_column(default=0)
 
     # ивенты, которые он создал
     created_events: Mapped[list["Event"]] = relationship(
