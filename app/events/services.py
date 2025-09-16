@@ -3,19 +3,24 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from app.common.db import get_async_session
+from app.common.common import CurrentUser
+from app.users.models import User
 from app.events.models import Event, EventStatus
 
 
 class EventService:
-    def __init__(self, session: AsyncSession = Depends(get_async_session)):
+    def __init__(self, session: AsyncSession = Depends(get_async_session), current_user: User = Depends(CurrentUser())):
         self.session = session
+        self.current_user = CurrentUser()
 
     async def list_events(self) -> list[Event]:
         result = await self.session.execute(select(Event))
         return result.scalars().all()
 
     async def create_event(self, name: str, creator_id: int) -> Event:
-        # Проверяем, есть ли активный ивент
+        if not self.current_user.is_admin:
+            raise HTTPException(status_code=403, detail="Admin rights required")
+
         result = await self.session.execute(
             select(Event).where(Event.status == EventStatus.STARTED)
         )
@@ -36,6 +41,8 @@ class EventService:
         return new_event
 
     async def next_phase(self, event_id: int) -> Event:
+        if not self.current_user.is_admin:
+            raise HTTPException(status_code=403, detail="Admin rights required")
         result = await self.session.execute(select(Event).where(Event.id == event_id))
         event = result.scalar_one_or_none()
         if not event:

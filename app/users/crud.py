@@ -45,3 +45,7 @@ async def delete_user(session: AsyncSession, telegram_id: int) -> None:
     user = await session.execute(select(User).where(User.telegram_id == telegram_id))
     await session.delete(user)
     await session.commit()
+
+async def is_admin(session: AsyncSession, telegram_id: int) -> bool:
+    user = await get_user(session, telegram_id)
+    return user.is_admin

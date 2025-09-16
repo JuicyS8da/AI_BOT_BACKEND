@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.common.db import init_models, AsyncSessionLocal
 from app.common.common import init_admin
-from app.users.views import router as user_router
+from app.users.routers import router as user_router
 from app.events.routers import router as event_router
 from app.quiz.routers import router as quiz_router
 

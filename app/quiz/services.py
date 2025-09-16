@@ -3,6 +3,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from app.common.db import get_async_session
+from app.common.common import CurrentUser
+from app.users.models import User
 from app.quiz import crud, schemas
 from app.quiz.models import Quiz, QuizQuestion, UserAnswer
 from app.events.models import Event
@@ -10,8 +12,9 @@ from datetime import datetime, timezone
 
 
 class QuizService:
-    def __init__(self, session: AsyncSession = Depends(get_async_session)):
+    def __init__(self, session: AsyncSession = Depends(get_async_session), current_user: User = Depends(CurrentUser())):
         self.session = session
+        self.current_user = CurrentUser()
 
     # ---- Quiz ----
     async def get_quiz(self, quiz_id: int) -> Quiz:
@@ -22,12 +25,16 @@ class QuizService:
         return quiz
 
     async def create_quiz(self, data: schemas.QuizCreate) -> Quiz:
+        if not self.current_user.is_admin:
+            raise HTTPException(status_code=403, detail="Admin rights required")
         return await crud.create_quiz(self.session, data)
 
     async def list_quizzes(self) -> list[Quiz]:
         return await crud.list_quizzes(self.session)
 
     async def update_quiz(self, quiz_id: int, data: schemas.QuizUpdate) -> Quiz:
+        if not self.current_user.is_admin:
+            raise HTTPException(status_code=403, detail="Admin rights required")
         return await crud.update_quiz(self.session, quiz_id, data)
 
     async def delete_quiz(self, quiz_id: int) -> None:
@@ -38,15 +45,21 @@ class QuizService:
         return await crud.list_questions(self.session, quiz_id)
 
     async def create_question(self, data: schemas.QuizQuestionCreate) -> QuizQuestion:
+        if not self.current_user.is_admin:
+            raise HTTPException(status_code=403, detail="Admin rights required")
         return await crud.create_question(self.session, data)
 
     async def get_question(self, question_id: int) -> QuizQuestion:
         return await crud.get_question(self.session, question_id)
 
     async def update_question(self, question_id: int, data: schemas.QuizQuestionUpdate) -> QuizQuestion:
+        if not self.current_user.is_admin:
+            raise HTTPException(status_code=403, detail="Admin rights required")
         return await crud.update_question(self.session, question_id, data)
 
     async def delete_question(self, question_id: int) -> None:
+        if not self.current_user.is_admin:
+            raise HTTPException(status_code=403, detail="Admin rights required")
         await crud.delete_question(self.session, question_id)
 
     # ---- UserAnswer ----
@@ -58,12 +71,6 @@ class QuizService:
 
     async def get_user_answer(self, answer_id: int) -> UserAnswer:
         return await crud.get_user_answer(self.session, answer_id)
-
-    async def update_user_answer(self, answer_id: int, data: schemas.UserAnswerUpdate) -> UserAnswer:
-        return await crud.update_user_answer(self.session, answer_id, data)
-
-    async def delete_user_answer(self, answer_id: int) -> None:
-        await crud.delete_user_answer(self.session, answer_id)
 
     # ---- Current Question Logic ----
     async def get_current_question(self, event_id: int):
