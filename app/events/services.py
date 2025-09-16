@@ -11,7 +11,7 @@ from app.events.models import Event, EventStatus
 class EventService:
     def __init__(self, session: AsyncSession = Depends(get_async_session), current_user: User = Depends(CurrentUser())):
         self.session = session
-        self.current_user = CurrentUser()
+        self.current_user = current_user
 
     async def list_events(self) -> list[Event]:
         result = await self.session.execute(select(Event))

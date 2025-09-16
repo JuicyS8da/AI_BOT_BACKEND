@@ -12,7 +12,7 @@ from app.events.models import Event, EventStatus
 class UserService:
     def __init__(self, session: AsyncSession = Depends(get_async_session), current_user: User = Depends(CurrentUser())):
         self.session = session
-        self.current_user = CurrentUser()
+        self.current_user = current_user
 
     async def register_user(self, user_data: schemas.UserCreate) -> dict:
         result = await self.session.execute(

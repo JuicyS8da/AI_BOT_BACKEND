@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 class QuizService:
     def __init__(self, session: AsyncSession = Depends(get_async_session), current_user: User = Depends(CurrentUser())):
         self.session = session
-        self.current_user = CurrentUser()
+        self.current_user = current_user
 
     # ---- Quiz ----
     async def get_quiz(self, quiz_id: int) -> Quiz:
