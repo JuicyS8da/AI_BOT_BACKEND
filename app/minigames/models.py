@@ -28,6 +28,7 @@ class MinigameQuestion(Base):
 
     # список правильных ответов (["A"], ["A", "B"], или [])
     correct_answers: Mapped[list[str]] = mapped_column(JSON, default=list)
+    options: Mapped[list[str]] = mapped_column(JSON, default=list)
 
     minigame_id: Mapped[int] = mapped_column(ForeignKey("minigames.id"), nullable=False)
     points: Mapped[int] = mapped_column(Integer, default=1)  # базовое кол-во очков

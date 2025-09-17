@@ -39,6 +39,7 @@ class MinigameOut(BaseModel):
 class MinigameQuestionCreate(BaseModel):
     text: str
     correct_answers: List[str] = []
+    options: List[str] = []
     points: int = 1
     minigame_id: int
 

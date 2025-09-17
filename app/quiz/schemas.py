@@ -10,7 +10,7 @@ class QuizBase(BaseModel):
 
 
 class QuizCreate(QuizBase):
-    duration_seconds: int = 60
+    duration_seconds: int = 600
     start_time: datetime = Field(examples=["20.09.2025 16:00"])
 
     @validator("start_time", pre=True)

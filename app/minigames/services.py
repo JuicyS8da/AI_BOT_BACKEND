@@ -85,6 +85,7 @@ class MinigameService:
     async def create_minigame_question(self, session: AsyncSession, data: MinigameQuestionCreate) -> MinigameQuestion:
         question = MinigameQuestion(
             text=data.text,
+            options=data.options,
             correct_answers=data.correct_answers,
             points=data.points,
             minigame_id=data.minigame_id,
@@ -101,6 +102,7 @@ class MinigameService:
             "id": question.id,
             "text": question.text,
             "type": q_type,
+            "options": question.options,
             "correct_answers": question.correct_answers,
             "points": question.points,
             "minigame_id": question.minigame_id
