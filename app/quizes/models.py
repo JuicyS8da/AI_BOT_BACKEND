@@ -1,7 +1,6 @@
 import enum
-from datetime import datetime, timezone
 
-from sqlalchemy import String, DateTime, Integer, ForeignKey, Enum, JSON
+from sqlalchemy import String, Integer, ForeignKey, Enum, JSON
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.common.db import Base
@@ -11,17 +10,16 @@ class QuestionType(str, enum.Enum):
     MULTIPLE = "multiple"
     OPEN = "open"
 
-class Minigame(Base):
-    __tablename__ = "minigames"
+class Quiz(Base):
+    __tablename__ = "quizes"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(nullable=False)
     description: Mapped[str] = mapped_column(nullable=True)
-    start_time: Mapped[datetime] = mapped_column(DateTime(timezone=False), nullable=False)
-    duration_seconds: Mapped[int] = mapped_column(Integer, default=60)
+    is_active: Mapped[bool] = mapped_column(default=False)
 
-class MinigameQuestion(Base):
-    __tablename__ = "minigame_questions"
+class QuizQuestion(Base):
+    __tablename__ = "quiz_questions"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     text: Mapped[str] = mapped_column(String(255), nullable=False)
@@ -30,17 +28,19 @@ class MinigameQuestion(Base):
     correct_answers: Mapped[list[str]] = mapped_column(JSON, default=list)
     options: Mapped[list[str]] = mapped_column(JSON, default=list)
 
-    minigame_id: Mapped[int] = mapped_column(ForeignKey("minigames.id"), nullable=False)
+    duration_seconds: Mapped[int] = mapped_column(Integer, default=60, nullable=True)
+
+    quiz_id: Mapped[int] = mapped_column(ForeignKey("quizes.id", ondelete="CASCADE"), nullable=False)
     points: Mapped[int] = mapped_column(Integer, default=1)  # базовое кол-во очков
 
 
-class MinigameUserAnswer(Base):
-    __tablename__ = "minigame_user_answers"
+class QuizUserAnswer(Base):
+    __tablename__ = "quiz_user_answers"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
-    question_id: Mapped[int] = mapped_column(ForeignKey("minigame_questions.id", ondelete="CASCADE"))
-    answer: Mapped[str] = mapped_column(String(255), nullable=False)
+    question_id: Mapped[int] = mapped_column(ForeignKey("quiz_questions.id", ondelete="CASCADE"))
+    answers: Mapped[list[str]] = mapped_column(JSON, default=list)
 
-    minigame_id: Mapped[int] = mapped_column(ForeignKey("minigames.id", ondelete="CASCADE"))
+    quiz_id: Mapped[int] = mapped_column(ForeignKey("quizes.id", ondelete="CASCADE"))
 

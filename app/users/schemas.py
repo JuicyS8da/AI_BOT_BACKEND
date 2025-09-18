@@ -27,6 +27,7 @@ class UserRead(BaseModel):
     nickname: str
     is_active: bool
     is_admin: bool
+    points: int
 
     class Config:
         orm_mode = True
