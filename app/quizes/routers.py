@@ -66,3 +66,15 @@ async def submit_answer(data: schemas.UserAnswerCreate, session: AsyncSession = 
 async def get_quiz_questions_list(quiz_id: int, session: AsyncSession = Depends(get_async_session)):
     service = QuizService(session)
     return await service.get_quiz_questions_list(quiz_id=quiz_id)
+
+@router.get("/{quiz_id}/start")
+async def start_quiz(quiz_id: int, session: AsyncSession = Depends(get_async_session)):
+    service = QuizService(session)
+    await service.toggle_quiz_active(quiz_id=quiz_id, is_active=True)
+    return {"message": "Quiz has been activated"}
+
+@router.get("/{quiz_id}/stop")
+async def stop_quiz(quiz_id: int, session: AsyncSession = Depends(get_async_session)):
+    service = QuizService(session)
+    await service.toggle_quiz_active(quiz_id=quiz_id, is_active=False)
+    return {"message": "Quiz has been deactivated"}

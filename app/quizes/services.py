@@ -148,5 +148,19 @@ class QuizService:
             select(QuizQuestion).where(QuizQuestion.quiz_id == quiz_id)
         )
         return result.scalars().all()
+    
+    async def toggle_quiz_active(self, quiz_id: int, is_active: bool):
+        result = await self.session.execute(
+            select(Quiz).where(Quiz.quiz_id == quiz_id)
+        )
+        quiz = result.scalars().all()
+        if not quiz:
+            raise HTTPException(status_code=404, detail="Quiz not found")
+        quiz.is_active = is_active
+        self.session.add(quiz)
+        await self.session.commit()
+        await self.session.refresh(quiz)
+
+        return {"id": quiz.id, "is_active": quiz.is_active}
 
     
