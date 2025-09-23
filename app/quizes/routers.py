@@ -25,7 +25,7 @@ async def create_quiz(data: schemas.QuizCreate, session: AsyncSession = Depends(
     return quiz
 
 
-@router.get("/list", response_model=list[schemas.QuizOut])
+@router.get("quizes/list", response_model=list[schemas.QuizOut])
 async def list_quizes(session: AsyncSession = Depends(get_async_session)):
     result = await session.execute(select(Quiz))
     return result.scalars().all()

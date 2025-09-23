@@ -1,3 +1,4 @@
+import asyncio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -25,6 +26,9 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup_event():
     await init_models()
+    asyncio.create_task(seed_admins())
+
+async def seed_admins():
     async with AsyncSessionLocal() as session:
         await init_admin(session=session, telegram_id=1046929828, nickname="Birzhanova Adel")
         await init_admin(session=session, telegram_id=707309709, nickname="Zakharov Aleksei")

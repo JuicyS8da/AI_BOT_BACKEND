@@ -40,11 +40,17 @@ async def update_user(session: AsyncSession, telegram_id: int, data: UserUpdate)
     await session.refresh(user)
     return user
 
-
-async def delete_user(session: AsyncSession, telegram_id: int) -> None:
-    user = await session.execute(select(User).where(User.telegram_id == telegram_id))
+async def delete_user(session: AsyncSession, telegram_id: int):
+    result = await session.execute(select(User).where(User.telegram_id == telegram_id))
+    user = result.scalar_one_or_none()
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
     await session.delete(user)
     await session.commit()
+    return {"detail": "User deleted"}
+
 
 async def is_admin(session: AsyncSession, telegram_id: int) -> bool:
     user = await get_user(session, telegram_id)

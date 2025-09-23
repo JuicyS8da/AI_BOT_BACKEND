@@ -1,4 +1,5 @@
 import enum
+from typing import Dict, List, Optional
 
 from sqlalchemy import String, Integer, ForeignKey, Enum, JSON
 from sqlalchemy.orm import Mapped, mapped_column
@@ -15,24 +16,35 @@ class Quiz(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(nullable=False)
-    description: Mapped[str] = mapped_column(nullable=True)
+    description: Mapped[Optional[str]] = mapped_column(nullable=True)
     is_active: Mapped[bool] = mapped_column(default=False)
 
 class QuizQuestion(Base):
     __tablename__ = "quiz_questions"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    text: Mapped[str] = mapped_column(String(255), nullable=False)
 
-    # список правильных ответов (["A"], ["A", "B"], или [])
-    correct_answers: Mapped[list[str]] = mapped_column(JSON, default=list)
-    options: Mapped[list[str]] = mapped_column(JSON, default=list)
+    # ⬇️ вместо одного text — словарь локалей
+    # { "ru": "Столица Казахстана?", "kk": "Қазақстан астанасы?" }
+    text_i18n: Mapped[Dict[str, str]] = mapped_column(JSON, default=dict)
 
-    duration_seconds: Mapped[int] = mapped_column(Integer, default=60, nullable=True)
+    # ⬇️ тип вопроса — ЯВНО
+    type: Mapped[QuestionType] = mapped_column(Enum(QuestionType), nullable=False)
+
+    # ⬇️ варианты ответов тоже по локали (для OPEN можно пустыми списками)
+    # { "ru": ["А", "Б", "В"], "kk": ["А", "Б", "В"] }
+    options_i18n: Mapped[Dict[str, List[str]]] = mapped_column(JSON, default=dict)
+
+    # ⬇️ правильные ответы по локали
+    # single/multiple: тексты из options соответствующей локали
+    # open: список допустимых строк (синонимы/варианты) для этой локали
+    # { "ru": ["Астана", "Нур-Султан"], "kk": ["Астана"] }  # для OPEN
+    correct_answers_i18n: Mapped[Dict[str, List[str]]] = mapped_column(JSON, default=dict)
+
+    duration_seconds: Mapped[Optional[int]] = mapped_column(Integer, default=60, nullable=True)
 
     quiz_id: Mapped[int] = mapped_column(ForeignKey("quizes.id", ondelete="CASCADE"), nullable=False)
-    points: Mapped[int] = mapped_column(Integer, default=1)  # базовое кол-во очков
-
+    points: Mapped[int] = mapped_column(Integer, default=1)
 
 class QuizUserAnswer(Base):
     __tablename__ = "quiz_user_answers"
@@ -40,7 +52,10 @@ class QuizUserAnswer(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
     question_id: Mapped[int] = mapped_column(ForeignKey("quiz_questions.id", ondelete="CASCADE"))
-    answers: Mapped[list[str]] = mapped_column(JSON, default=list)
+    # сохраняем то, что пришло (для single — список из одного, для open — список/одна строка)
+    answers: Mapped[List[str]] = mapped_column(JSON, default=list)
+
+    # ⬇️ фиксируем локаль, на которой отвечал пользователь
+    locale: Mapped[str] = mapped_column(String(10), default="ru")
 
     quiz_id: Mapped[int] = mapped_column(ForeignKey("quizes.id", ondelete="CASCADE"))
-
