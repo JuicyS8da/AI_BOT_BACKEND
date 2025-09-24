@@ -182,3 +182,37 @@ class QuizService:
         await self.session.commit()
         await self.session.refresh(quiz)
         return {"id": quiz.id, "is_active": quiz.is_active}
+    
+    async def bulk_add_questions(self, quiz_id: int, payload: schemas.QuizQuestionsBulkIn) -> dict:
+        # 1) проверим, что квиз существует
+        res = await self.session.execute(select(Quiz).where(Quiz.id == quiz_id))
+        quiz = res.scalar_one_or_none()
+        if not quiz:
+            raise HTTPException(status_code=404, detail="Quiz not found")
+
+        created_ids: list[int] = []
+        try:
+            for item in payload.items:
+                data = item.model_dump()
+                qtype = data["type"]
+                if isinstance(qtype, str):
+                    qtype = QuestionType(qtype)
+                question = QuizQuestion(
+                    type=qtype,
+                    text_i18n=data["text_i18n"],
+                    options_i18n=data.get("options_i18n", {}),
+                    correct_answers_i18n=data.get("correct_answers_i18n", {}),
+                    duration_seconds=data.get("duration_seconds"),
+                    points=data.get("points", 1),
+                    quiz_id=quiz_id,
+                )
+                self.session.add(question)
+                await self.session.flush()  # получить id без коммита
+                created_ids.append(question.id)
+
+            await self.session.commit()
+        except Exception:
+            await self.session.rollback()
+            raise
+
+        return {"created": len(created_ids), "ids": created_ids}
