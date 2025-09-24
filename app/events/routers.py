@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 
+from app.events import schemas
 from app.events.services import EventService
 from app.common.common import CurrentUser
 from app.users.models import User
@@ -37,6 +38,8 @@ async def get_event_status(event_id: int, service: EventService = Depends()):
         "current_question_index": event.current_question_index,
     }
 
-@router.get("/")
+@router.get("/", response_model=list[schemas.EventOut], summary="Список событий с квизами")
 async def list_events(service: EventService = Depends()):
-    return await service.list_events()
+    events = await service.list_events()
+    # важный момент — валидируем в схемы (без циклов)
+    return [schemas.EventOut.model_validate(e) for e in events]

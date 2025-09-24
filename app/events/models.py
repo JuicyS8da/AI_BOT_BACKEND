@@ -32,7 +32,7 @@ class Event(Base):
     current_question_index: Mapped[int] = mapped_column(default=0, nullable=False)
 
     # создатель (как у вас было)
-    creator_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="RESTRICT"), nullable=False)
+    creator_id: Mapped[int] = mapped_column(ForeignKey("users.telegram_id", ondelete="CASCADE"), nullable=False)
     creator = relationship("User", back_populates="created_events", lazy="selectin")
 
     # ВАЖНО: больше НЕТ 'questions'. Теперь связь с квизами:

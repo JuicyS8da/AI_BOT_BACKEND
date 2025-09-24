@@ -1,6 +1,7 @@
 from fastapi import Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 
 from app.common.db import get_async_session
 from app.common.common import CurrentUser
@@ -14,8 +15,11 @@ class EventService:
         self.current_user = current_user
 
     async def list_events(self) -> list[Event]:
-        result = await self.session.execute(select(Event))
-        return result.scalars().all()
+        stmt = select(Event).options(
+            selectinload(Event.quizes)
+        ).order_by(Event.id)
+        res = await self.session.execute(stmt)
+        return res.scalars().all()
 
     async def create_event(self, name: str) -> Event:
         if not self.current_user.is_admin:

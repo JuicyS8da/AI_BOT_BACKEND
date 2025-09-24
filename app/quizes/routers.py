@@ -77,34 +77,18 @@ async def get_question(
     # return _to_out(question)
 
 
-@router.get("/list", response_model=list[schemas.QuizQuestionOut])
-async def list_questions(
-    session: AsyncSession = Depends(get_async_session),
-    quiz_id: int | None = Query(default=None, description="Фильтр по квизу"),
-    limit: int = Query(100, ge=1, le=1000),
-    offset: int = Query(0, ge=0),
-):
-    stmt = select(QuizQuestion).order_by(QuizQuestion.id).limit(limit).offset(offset)
-    if quiz_id is not None:
-        stmt = stmt.where(QuizQuestion.quiz_id == quiz_id)
-
+@router.get("/list", response_model=list[schemas.QuizQuestionOut], summary="Question list by quiz_id")
+async def list_questions(quiz_id: int = Query(..., description="ID квиза"), session: AsyncSession = Depends(get_async_session)):
+    stmt = select(QuizQuestion).where(QuizQuestion.quiz_id == quiz_id).order_by(QuizQuestion.id)
     res = await session.execute(stmt)
     items = res.scalars().all()
 
-    # Pydantic v2: from_attributes
     return [schemas.QuizQuestionOut.model_validate(q) for q in items]
-    # либо без схем — так:
-    # return [_to_out(q) for q in items]
 
 @router.post("/answer")
 async def submit_answer(data: schemas.UserAnswerCreate, session: AsyncSession = Depends(get_async_session), current_user: User = Depends(CurrentUser())):
     service = QuizService(session, current_user)
     return await service.submit_answer(data)
-
-@router.get("/{quiz_id}")
-async def get_quiz_questions_list(quiz_id: int, session: AsyncSession = Depends(get_async_session)):
-    service = QuizService(session)
-    return await service.get_quiz_questions_list(quiz_id=quiz_id)
 
 @router.get("/{quiz_id}/start")
 async def start_quiz(quiz_id: int, session: AsyncSession = Depends(get_async_session)):
