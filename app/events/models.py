@@ -44,7 +44,7 @@ class Event(Base):
         lazy="selectin",
     )
 
-    # игроки (many-to-many) как у вас было
+    # игроки (many-to-many) как у вас было  
     players = relationship(
         "User",
         secondary="event_players",
