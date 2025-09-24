@@ -10,11 +10,10 @@ router = APIRouter(prefix="/events", tags=["events"])
 @router.post("/create")
 async def create_event(
     name: str,
-    creator_id: int,
     service: EventService = Depends(),
     user: User = Depends(CurrentUser()),
 ):
-    return await service.create_event(name=name, creator_id=creator_id)
+    return await service.create_event(name=name)
 
 
 @router.get("/{event_id}/next_phase")

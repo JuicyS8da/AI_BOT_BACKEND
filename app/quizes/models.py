@@ -2,7 +2,7 @@ import enum
 from typing import Dict, List, Optional
 
 from sqlalchemy import String, Integer, ForeignKey, Enum, JSON
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.common.db import Base
 
@@ -18,6 +18,16 @@ class Quiz(Base):
     name: Mapped[str] = mapped_column(nullable=False)
     description: Mapped[Optional[str]] = mapped_column(nullable=True)
     is_active: Mapped[bool] = mapped_column(default=False)
+
+    # FK только здесь:
+    event_id: Mapped[int] = mapped_column(ForeignKey("events.id", ondelete="CASCADE"), nullable=False)
+    event: Mapped["Event"] = relationship(
+        "Event",
+        back_populates="quizes",
+        lazy="selectin",
+    )
+
+
 
 class QuizQuestion(Base):
     __tablename__ = "quiz_questions"

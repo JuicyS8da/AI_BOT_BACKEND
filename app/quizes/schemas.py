@@ -5,6 +5,8 @@ from app.quizes.models import QuestionType
 class QuizCreate(BaseModel):
     name: str
     description: str | None = None
+    is_active: bool = False
+    event_id: int
 
 
 class QuizOut(BaseModel):
@@ -12,9 +14,9 @@ class QuizOut(BaseModel):
     name: str
     description: str | None
     is_active: bool
+    event_id: int
+    model_config = {"from_attributes": True}
 
-    class Config:
-        orm_mode = True
 
 
 class QuizQuestionCreate(BaseModel):

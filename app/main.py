@@ -33,6 +33,7 @@ async def seed_admins():
         await init_admin(session=session, telegram_id=1046929828, nickname="Birzhanova Adel")
         await init_admin(session=session, telegram_id=707309709, nickname="Zakharov Aleksei")
         await init_admin(session=session, telegram_id=1131290603, nickname="Abdumanap Zhanibek")
+        await init_admin(session=session, telegram_id=1234, nickname="Test Admin")
 
 @app.get("/")
 async def root():

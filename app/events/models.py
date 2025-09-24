@@ -1,4 +1,6 @@
 import enum
+from typing import List
+
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Enum, ForeignKey, Column, Table, Integer
 
@@ -13,8 +15,8 @@ class EventStatus(str, enum.Enum):
 event_players = Table(
     "event_players",
     Base.metadata,
-    Column("event_id", ForeignKey("events.id"), primary_key=True),
-    Column("user_id", ForeignKey("users.id"), primary_key=True),
+    Column("event_id", ForeignKey("events.id", ondelete="CASCADE"), primary_key=True),
+    Column("user_telegram_id", ForeignKey("users.telegram_id", ondelete="CASCADE"), primary_key=True),
 )
 
 class Event(Base):
@@ -22,31 +24,31 @@ class Event(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
-    status: Mapped[EventStatus] = mapped_column(Enum(EventStatus, name="game_status"), default=EventStatus.NOT_STARTED, nullable=False)
+    status: Mapped[EventStatus] = mapped_column(
+        Enum(EventStatus, name="game_status"),
+        default=EventStatus.NOT_STARTED,
+        nullable=False
+    )
     current_question_index: Mapped[int] = mapped_column(default=0, nullable=False)
 
-    # создатель ивента (один User -> много Event)
+    # создатель (как у вас было)
     creator_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="RESTRICT"), nullable=False)
-    creator: Mapped["User"] = relationship(back_populates="created_events", lazy="selectin")
+    creator = relationship("User", back_populates="created_events", lazy="selectin")
 
-    # вопросы (один Event -> много Questions)
-    questions: Mapped[list["Question"]] = relationship(back_populates="event")
+    # ВАЖНО: больше НЕТ 'questions'. Теперь связь с квизами:
+    quizes: Mapped[List["Quiz"]] = relationship(
+        "Quiz",
+        back_populates="event",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        lazy="selectin",
+    )
 
-    # игроки (many-to-many)
-    players: Mapped[list["User"]] = relationship(
-    secondary="event_players",
-    back_populates="events",
-    lazy="selectin"
-)
-
-
-class Question(Base):
-    __tablename__ = "questions" 
-
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    text: Mapped[str] = mapped_column(String(255), nullable=False)
-
-    # привязка к ивенту
-    event_id: Mapped[int] = mapped_column(ForeignKey("events.id"), nullable=False)
-    event: Mapped["Event"] = relationship(back_populates="questions", lazy="selectin")
+    # игроки (many-to-many) как у вас было
+    players = relationship(
+        "User",
+        secondary="event_players",
+        back_populates="events",
+        lazy="selectin",
+    )
     

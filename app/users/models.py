@@ -8,7 +8,7 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    telegram_id: Mapped[int] = mapped_column(unique=True, nullable=False)
+    telegram_id: Mapped[int] = mapped_column(unique=True, nullable=False, index=True)
     nickname: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     is_active: Mapped[bool] = mapped_column(default=True)
     is_admin: Mapped[bool] = mapped_column(default=False)
@@ -16,14 +16,17 @@ class User(Base):
 
     # ивенты, которые он создал
     created_events: Mapped[list["Event"]] = relationship(
-    back_populates="creator",
-    cascade="all, delete-orphan",
-    lazy="selectin"
-)
+        back_populates="creator",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+        foreign_keys="[Event.creator_id]",
+    )
 
     # ивенты, где он участник
     events: Mapped[list["Event"]] = relationship(
-    secondary="event_players",   # таблица связки
-    back_populates="players",
-    lazy="selectin"
-)
+        secondary="event_players",
+        back_populates="players",
+        lazy="selectin",
+        primaryjoin="User.telegram_id==event_players.c.user_telegram_id",
+        secondaryjoin="Event.id==event_players.c.event_id",
+    )

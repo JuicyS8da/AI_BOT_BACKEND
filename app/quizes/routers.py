@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.common.db import get_async_session
 from app.common.common import CurrentUser
 from app.users.models import User
+from app.events.models import Event
 from app.quizes import schemas
 from app.quizes.models import Quiz, QuizQuestion
 from app.quizes.services import QuizService
@@ -15,22 +16,29 @@ from app.quizes.services import QuizService
 
 router = APIRouter(prefix="/quizes", tags=["quizes"])
 
-@router.post("/create", response_model=schemas.QuizOut)
+@router.post("/quizes", response_model=schemas.QuizOut)
 async def create_quiz(data: schemas.QuizCreate, session: AsyncSession = Depends(get_async_session)):
-    quiz = Quiz(
+    # убедимся, что событие есть
+    if not (await session.scalar(select(Event.id).where(Event.id == data.event_id))):
+        raise HTTPException(404, "Event not found")
+
+    q = Quiz(
         name=data.name,
         description=data.description,
+        is_active=data.is_active,
+        event_id=data.event_id,
     )
-    session.add(quiz)
+    session.add(q)
     await session.commit()
-    await session.refresh(quiz)
-    return quiz
+    await session.refresh(q)
+    return q
+
+@router.get("/quizes/by-event/{event_id}", response_model=list[schemas.QuizOut])
+async def list_quizes_by_event(event_id: int, session: AsyncSession = Depends(get_async_session)):
+    res = await session.execute(select(Quiz).where(Quiz.event_id == event_id).order_by(Quiz.id))
+    return [schemas.QuizOut.model_validate(x) for x in res.scalars().all()]
 
 
-@router.get("quizes/list", response_model=list[schemas.QuizOut])
-async def list_quizes(session: AsyncSession = Depends(get_async_session)):
-    result = await session.execute(select(Quiz))
-    return result.scalars().all()
 
 @router.post("/add", response_model=schemas.QuizQuestionOut)
 async def add_question(data: schemas.QuizQuestionCreate, session: AsyncSession = Depends(get_async_session)):

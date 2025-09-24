@@ -17,7 +17,7 @@ class EventService:
         result = await self.session.execute(select(Event))
         return result.scalars().all()
 
-    async def create_event(self, name: str, creator_id: int) -> Event:
+    async def create_event(self, name: str) -> Event:
         if not self.current_user.is_admin:
             raise HTTPException(status_code=403, detail="Admin rights required")
 
@@ -30,7 +30,7 @@ class EventService:
 
         new_event = Event(
             name=name,
-            creator_id=creator_id,
+            creator_id=self.current_user.telegram_id,
             status=EventStatus.NOT_STARTED,
         )
 
