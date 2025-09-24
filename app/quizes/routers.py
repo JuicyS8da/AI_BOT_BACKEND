@@ -16,7 +16,7 @@ from app.quizes.services import QuizService
 
 router = APIRouter(prefix="/quizes", tags=["quizes"])
 
-@router.post("/quizes", response_model=schemas.QuizOut)
+@router.post("/create", response_model=schemas.QuizOut)
 async def create_quiz(data: schemas.QuizCreate, session: AsyncSession = Depends(get_async_session)):
     # убедимся, что событие есть
     if not (await session.scalar(select(Event.id).where(Event.id == data.event_id))):
@@ -77,13 +77,10 @@ async def get_question(
     # return _to_out(question)
 
 
-@router.get("/list", response_model=list[schemas.QuizQuestionOut], summary="Question list by quiz_id")
-async def list_questions(quiz_id: int = Query(..., description="ID квиза"), session: AsyncSession = Depends(get_async_session)):
-    stmt = select(QuizQuestion).where(QuizQuestion.quiz_id == quiz_id).order_by(QuizQuestion.id)
-    res = await session.execute(stmt)
-    items = res.scalars().all()
-
-    return [schemas.QuizQuestionOut.model_validate(q) for q in items]
+@router.get("/questions/list", response_model=list[schemas.QuizQuestionOut], summary="Question list by quiz_id")
+async def list_questions(session: AsyncSession = Depends(get_async_session), current_user: User = Depends(CurrentUser()), quiz_id: int = Query(..., description="ID квиза")):
+    service = QuizService(session, current_user)
+    return await service.list_questions_by_quiz(quiz_id)
 
 @router.post("/answer")
 async def submit_answer(data: schemas.UserAnswerCreate, session: AsyncSession = Depends(get_async_session), current_user: User = Depends(CurrentUser())):
@@ -151,3 +148,16 @@ async def bulk_import_questions_file(
 
     payload = schemas.QuizQuestionsBulkIn(items=items)  # Pydantic сам валидирует по QuizQuestionUpsert
     return await svc.bulk_add_questions(quiz_id, payload)
+
+@router.get("/{quiz_id}/questions", response_model=list[schemas.QuizQuestionLocalizedOut], summary="Список вопросов квиза, локализованный",)
+async def list_questions_localized(
+    quiz_id: int,
+    locale: str = Query("ru", description="Код языка, например: ru, kk, en"),
+    include_correct: bool = Query(False, description="Включать ли правильные ответы (для админки)"),
+    svc: QuizService = Depends(),
+):
+    return await svc.list_questions_by_quiz_locale(
+        quiz_id=quiz_id,
+        locale=locale,
+        include_correct=include_correct,
+    )

@@ -112,3 +112,11 @@ class QuizQuestionsBulkIn(BaseModel):
 class QuizQuestionsBulkOut(BaseModel):
     created: int
     ids: List[int]
+
+class QuizQuestionLocalizedOut(BaseModel):
+    id: int
+    type: QuestionType
+    text: str
+    options: List[str] = []
+    duration_seconds: Optional[int] = None
+    points: int

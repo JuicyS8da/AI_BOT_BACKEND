@@ -216,3 +216,38 @@ class QuizService:
             raise
 
         return {"created": len(created_ids), "ids": created_ids}
+    
+    async def list_questions_by_quiz_locale(self, quiz_id: int, locale: str = "ru", include_correct: bool = False) -> list[schemas.QuizQuestionLocalizedOut]:
+        stmt = (
+            select(QuizQuestion)
+            .where(QuizQuestion.quiz_id == quiz_id)
+            .order_by(QuizQuestion.id)
+        )
+        res = await self.session.execute(stmt)
+        items = res.scalars().all()
+
+        out: list[schemas.QuizQuestionLocalizedOut] = []
+        for q in items:
+            # текст с фолбэком на первую доступную локаль
+            text = q.text_i18n.get(locale) or next(iter(q.text_i18n.values()), "")
+
+            # варианты под локаль (для OPEN будет пусто, и это ок)
+            options = self._get_locale_options(q, locale)
+
+            payload = {
+                "id": q.id,
+                "type": q.type,  # Enum -> сериализуется как "single"/...
+                "text": text,
+                "options": options,
+                "duration_seconds": q.duration_seconds,
+                "points": q.points,
+            }
+
+            # если надо получить и правильные ответы (например, для админки):
+            if include_correct:
+                correct = self._get_locale_correct(q, locale)
+                payload["correct_answers"] = correct  # добавь поле в схему, если нужно
+
+            out.append(schemas.QuizQuestionLocalizedOut(**payload))
+
+        return out
