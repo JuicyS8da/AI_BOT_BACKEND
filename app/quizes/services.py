@@ -81,14 +81,14 @@ class QuizService:
 
         return 0  # на всякий случай
 
-    async def submit_answer(self, data: schemas.UserAnswerCreate) -> QuizUserAnswer:
+    async def submit_answer(self, data: schemas.UserAnswerCreate) -> dict:
         """
-        schemas.UserAnswerCreate ожидается примерно таким:
-        class UserAnswerCreate(BaseModel):
-            question_id: int
-            quiz_id: int
-            answers: str | List[str]      # для single можно строку; для multiple/open — список/строку
-            locale: str = "ru"
+        Возвращает:
+        {
+            "answer_id": int,
+            "awarded_points": int,
+            "user_points_total": int
+        }
         """
         question = await self._get_question(data.question_id)
 
@@ -105,7 +105,8 @@ class QuizService:
         await self.session.flush()  # получим id без коммита
 
         # Считаем очки
-        points = await self.calculate_points(question, data.answers, getattr(data, "locale", "ru"))
+        locale = getattr(data, "locale", "ru")
+        points = await self.calculate_points(question, data.answers, locale)
 
         # Обновляем пользователя
         self.current_user.points = (self.current_user.points or 0) + points
@@ -115,7 +116,13 @@ class QuizService:
         await self.session.refresh(user_answer)
         await self.session.refresh(self.current_user)
 
-        return user_answer
+        # Возвращаем JSON с очками
+        return {
+            "answer_id": user_answer.id,
+            "awarded_points": points,
+            "user_points_total": self.current_user.points,
+        }
+
 
     async def create_quiz_question(self, data: schemas.QuizQuestionCreate) -> QuizQuestion:
         """
