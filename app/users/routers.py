@@ -25,7 +25,9 @@ async def get_user(telegram_id: int, service: UserService = Depends()):
     return await service.get_user(telegram_id)
 
 
-@router.delete("/{telegram_id}")
-async def delete_user(telegram_id: int, service: UserService = Depends()):
-    await service.delete_user(telegram_id)
-    return {"detail": "User deleted"}
+@router.delete("/delete/{target_telegram_id}", summary="Удалить пользователя (только для админов)")
+async def delete_user(
+    target_telegram_id: int,
+    service: UserService = Depends(),
+):
+    return await service.delete_user_as_admin(target_telegram_id)
