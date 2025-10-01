@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     # TELEGRAM_BOT_TOKEN: str | None = None
 
     class Config:
-        env_file = ".env"   # Render прокинет переменные окружения без файла,
+        env_file = ".env.dev"   # Render прокинет переменные окружения без файла,
                             # локально .env.dev/.env.prod можно указывать вручную
 
 @lru_cache
