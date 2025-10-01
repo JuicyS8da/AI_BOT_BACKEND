@@ -6,6 +6,8 @@ from sqlalchemy import pool, create_engine
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
+from app.common.db import Base  # Импортируем Base из вашего проекта
+
 
 # Подтягиваем .env
 from dotenv import load_dotenv
@@ -29,39 +31,19 @@ config.set_main_option("sqlalchemy.url", DATABASE_URL)
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# Импортируй Base и все модели, чтобы Alembic видел metadata
-from app.common.db import Base
-# важно: импортируй модули с моделями, иначе автогенерация не увидит таблицы
-from app.quizes import models as quizes_models  # noqa: F401
-from app.users import models as users_models    # если есть, добавь свои модули  # noqa: F401
-
 target_metadata = Base.metadata
 
 def run_migrations_offline():
-    url = config.get_main_option("sqlalchemy.url")
-    context.configure(
-        url=url.replace("+asyncpg", ""),  # sync URL для offline
-        target_metadata=target_metadata,
-        literal_binds=True,
-        dialect_opts={"paramstyle": "named"},
-        compare_type=True,
-    )
+    url = os.environ["DATABASE_URL"]
+    context.configure(url=url, target_metadata=target_metadata, literal_binds=True)
     with context.begin_transaction():
         context.run_migrations()
 
-
 def run_migrations_online():
-    url = config.get_main_option("sqlalchemy.url")
-
-    # ⬇️ sync engine для autogenerate
-    connectable = create_engine(url.replace("+asyncpg", ""), poolclass=pool.NullPool)
-
+    url = os.environ["DATABASE_URL"]
+    connectable = create_engine(url, poolclass=pool.NullPool)
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection,
-            target_metadata=target_metadata,
-            compare_type=True,
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
         with context.begin_transaction():
             context.run_migrations()
 
