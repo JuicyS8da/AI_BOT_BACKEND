@@ -1,17 +1,16 @@
 from typing import Annotated, Optional
 
 from fastapi import Depends, HTTPException
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy import delete
-from starlette import status
+from sqlalchemy.dialects.postgresql import insert
 
 from app.common.db import get_async_session
 from app.common.common import CurrentUser
 from app.users import crud, schemas
 from app.users.models import User
-from app.events.models import Event, EventStatus
+from app.users.models import AdminChat
+from telegram.moderation import notify_admins_new_user
 
 
 class UserService:
@@ -40,43 +39,53 @@ class UserService:
         return res.scalar_one_or_none()
 
     # ===== Public API =====
-    async def register_user(self, user_data: schemas.UserCreate) -> dict:
-        """
-        Регистрация пользователя и автодобавление в активный Event со статусом STARTED.
-        Авторизация не требуется.
-        """
-        # 1) проверки уникальности
-        by_tg = await self._get_user_by_telegram(user_data.telegram_id)
-        if by_tg:
-            raise HTTPException(
-                status_code=400,
-                detail={"status": "error", "code": "TELEGRAM_ALREADY_REGISTERED", "message": "Этот Telegram уже зарегистрирован"},
-            )
+    @staticmethod
+    async def register(session: AsyncSession, data: schemas.UserRegisterIn) -> User:
+        nickname = data.nickname.strip()
 
-        res = await self.session.execute(select(User).where(User.nickname == user_data.nickname))
-        by_nick = res.scalar_one_or_none()
-        if by_nick:
-            raise HTTPException(
-                status_code=400,
-                detail={"status": "error", "code": "NICKNAME_TAKEN", "message": "Этот никнейм уже занят"},
-            )
+        # 1) Если этот telegram_id уже зарегистрирован — обновим данные
+        q = await session.execute(
+        select(User).where(User.telegram_id == data.telegram_id)
+        )
+        existing = q.scalar_one_or_none()
+        if existing:
+      # ник меняем только если он либо тот же, либо свободен
+            if existing.nickname != nickname:
+                nick_used = await session.execute(
+                select(User.id).where(User.nickname == nickname)
+                )
+                if nick_used.scalar_one_or_none():
+                    raise HTTPException(status_code=409, detail="nickname_taken")
+            existing.first_name = data.first_name.strip()
+            existing.last_name  = data.last_name.strip()
+            existing.nickname   = nickname
+            await session.commit()
+            return existing
 
-        # 2) активный ивент для регистрации
-        res = await self.session.execute(select(Event).where(Event.status == EventStatus.STARTED))
-        active_event = res.scalar_one_or_none()
-        if not active_event:
-            raise HTTPException(
-                status_code=400,
-                detail={"status": "error", "code": "EVENT_IS_NOT_ACTIVE", "message": "Ивент либо ещё не начался, либо уже завершён"},
-            )
+        # 2) Новый telegram_id: проверим ник
+        nick_used = await session.execute(
+            select(User.id).where(User.nickname == nickname)
+        )
+        if nick_used.scalar_one_or_none():
+            raise HTTPException(status_code=409, detail="nickname_taken")
 
-        # 3) создаём пользователя + добавляем в игроков события
-        new_user = User(telegram_id=user_data.telegram_id, nickname=user_data.nickname)
-        active_event.players.append(new_user)
+        # 3) Создаём
+        user = await crud.create_user(
+            session,
+            first_name=data.first_name.strip(),
+            last_name=data.last_name.strip(),
+            nickname=nickname,
+            telegram_id=data.telegram_id,
+        )
+        await session.commit()
 
-        self.session.add_all([new_user, active_event])
-        await self.session.commit()
-        return {"status": "success"}
+        await notify_admins_new_user(
+            telegram_id=user.telegram_id,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            nickname=user.nickname,
+        )
+        return user
 
     async def check_admin(self, telegram_id: int) -> dict:
         """Проверка прав админа по telegram_id (без текущей авторизации)."""
@@ -143,3 +152,38 @@ class UserService:
         await self.session.commit()
         await self.session.refresh(target)
         return target
+
+class AdminChatService:
+    @staticmethod
+    async def list_all(session: AsyncSession) -> list[AdminChat]:
+        res = await session.execute(select(AdminChat).order_by(AdminChat.created_at.desc()))
+        return list(res.scalars().all())
+
+    @staticmethod
+    async def add_one(session: AsyncSession, *, telegram_id: int) -> None:
+        stmt = (
+            insert(AdminChat)
+            .values(telegram_id=telegram_id)
+            .on_conflict_do_nothing(index_elements=[AdminChat.telegram_id])
+        )
+        await session.execute(stmt)
+        await session.commit()
+
+    @staticmethod
+    async def add_many(session: AsyncSession, items: list[tuple[int]]) -> int:
+        if not items:
+            return 0
+        stmt = (
+            insert(AdminChat)
+            .values([{"telegram_id": tid} for tid in items])
+            .on_conflict_do_nothing(index_elements=[AdminChat.telegram_id])
+        )
+        res = await session.execute(stmt)
+        await session.commit()
+        return res.rowcount or 0
+
+    @staticmethod
+    async def remove(session: AsyncSession, telegram_id: int) -> bool:
+        res = await session.execute(delete(AdminChat).where(AdminChat.telegram_id == telegram_id))
+        await session.commit()
+        return (res.rowcount or 0) > 0

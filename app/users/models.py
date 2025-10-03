@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String
+from sqlalchemy import String, BigInteger
 
 from app.common.db import Base
 from app.events.models import event_players
@@ -9,6 +9,8 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     telegram_id: Mapped[int] = mapped_column(unique=True, nullable=False, index=True)
+    first_name = mapped_column(String(100), nullable=False)
+    last_name  = mapped_column(String(100), nullable=False)
     nickname: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     is_active: Mapped[bool] = mapped_column(default=False)
     is_admin: Mapped[bool] = mapped_column(default=False)
@@ -30,3 +32,8 @@ class User(Base):
         primaryjoin="User.telegram_id==event_players.c.user_telegram_id",
         secondaryjoin="Event.id==event_players.c.event_id",
     )
+
+class AdminChat(Base):
+    __tablename__ = "admin_chats"
+
+    telegram_id: Mapped[int] = mapped_column(BigInteger, primary_key=True) 
