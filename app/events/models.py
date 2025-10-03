@@ -8,7 +8,6 @@ from app.common.db import Base
 
 class EventStatus(str, enum.Enum):
     NOT_STARTED = "not_started"
-    REGISTRATION = "registration"
     STARTED = "started"
     FINISHED = "finished"
 

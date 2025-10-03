@@ -42,7 +42,7 @@ class UserService:
     # ===== Public API =====
     async def register_user(self, user_data: schemas.UserCreate) -> dict:
         """
-        Регистрация пользователя и автодобавление в активный Event со статусом REGISTRATION.
+        Регистрация пользователя и автодобавление в активный Event со статусом STARTED.
         Авторизация не требуется.
         """
         # 1) проверки уникальности
@@ -62,12 +62,12 @@ class UserService:
             )
 
         # 2) активный ивент для регистрации
-        res = await self.session.execute(select(Event).where(Event.status == EventStatus.REGISTRATION))
+        res = await self.session.execute(select(Event).where(Event.status == EventStatus.STARTED))
         active_event = res.scalar_one_or_none()
         if not active_event:
             raise HTTPException(
                 status_code=400,
-                detail={"status": "error", "code": "GAME_ALREADY_STARTED", "message": "Регистрация уже завершена либо игра ещё не начата"},
+                detail={"status": "error", "code": "EVENT_IS_NOT_ACTIVE", "message": "Ивент либо ещё не начался, либо уже завершён"},
             )
 
         # 3) создаём пользователя + добавляем в игроков события

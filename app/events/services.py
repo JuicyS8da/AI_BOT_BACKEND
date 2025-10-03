@@ -53,8 +53,6 @@ class EventService:
             raise HTTPException(status_code=404, detail="Event not found")
 
         if event.status == EventStatus.NOT_STARTED:
-            event.status = EventStatus.REGISTRATION
-        elif event.status == EventStatus.REGISTRATION:
             event.status = EventStatus.STARTED
         elif event.status == EventStatus.STARTED:
             event.status = EventStatus.FINISHED

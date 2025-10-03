@@ -10,7 +10,7 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     telegram_id: Mapped[int] = mapped_column(unique=True, nullable=False, index=True)
     nickname: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
-    is_active: Mapped[bool] = mapped_column(default=True)
+    is_active: Mapped[bool] = mapped_column(default=False)
     is_admin: Mapped[bool] = mapped_column(default=False)
     points: Mapped[int] = mapped_column(default=0)
 
