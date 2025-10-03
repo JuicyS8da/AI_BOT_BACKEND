@@ -30,6 +30,7 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+      - ./media:/app/media
 
   bot:
     build: .

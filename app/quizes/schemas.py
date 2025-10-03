@@ -1,5 +1,5 @@
 from typing import Dict, List, Union, Optional, Literal
-from pydantic import BaseModel, model_validator, Field
+from pydantic import BaseModel, model_validator, Field, AnyUrl
 from app.quizes.models import QuestionType
 
 class QuizCreate(BaseModel):
@@ -27,6 +27,7 @@ class QuizQuestionCreate(BaseModel):
     duration_seconds: Optional[int] = 60
     points: int = 1
     quiz_id: int
+    image_url: AnyUrl | None = Field(default=None, max_length=1024)
 
     class Config:
         json_schema_extra = {
@@ -66,6 +67,8 @@ class QuizQuestionOut(BaseModel):
 
     duration_seconds: Optional[int] = 60
     points: int = 1
+
+    image_url: AnyUrl | None = None
 
     model_config = {
         "from_attributes": True,     # можно пихать ORM объект

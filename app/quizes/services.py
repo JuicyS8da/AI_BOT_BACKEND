@@ -1,4 +1,6 @@
-from typing import List
+from typing import List, Optional, Annotated
+from fastapi import UploadFile, Request
+
 import unicodedata
 
 from fastapi import Depends, HTTPException
@@ -10,6 +12,8 @@ from app.common.common import CurrentUser
 from app.users.models import User
 from app.quizes import schemas
 from app.quizes.models import Quiz, QuizQuestion, QuizUserAnswer, QuestionType
+from app.quizes.media import _save_upload
+
 
 def _normalize(s: str) -> str:
     # мягкая нормализация для open-ended
@@ -124,7 +128,7 @@ class QuizService:
         }
 
 
-    async def create_quiz_question(self, data: schemas.QuizQuestionCreate) -> QuizQuestion:
+    async def create_quiz_question(self, data: schemas.QuizQuestionCreate, image_file: Optional[UploadFile] = None, request: Optional[Request] = None,) -> QuizQuestion:
         """
         Ожидаем, что QuizQuestionCreate содержит:
         - type: Literal["single","multiple","open"]  # или QuestionType
@@ -134,7 +138,13 @@ class QuizService:
         - duration_seconds: int | None
         - points: int
         - quiz_id: int
+        - image_url: AnyUrl | None = None  # если файл не загружен, но URL известен
         """
+        if image_file is not None:
+            if request is None:
+                raise RuntimeError("Request is required when image_file is provided")
+            data.image_url = await _save_upload(request, image_file)
+
         question = QuizQuestion(
             type=QuestionType(data.type) if isinstance(data.type, str) else data.type,
             text_i18n=data.text_i18n or {},
@@ -143,14 +153,20 @@ class QuizService:
             duration_seconds=data.duration_seconds,
             points=data.points,
             quiz_id=data.quiz_id,
+            image_url=str(data.image_url) if getattr(data, "image_url", None) else None,
         )
         self.session.add(question)
         await self.session.commit()
         await self.session.refresh(question)
         return question
 
-    async def add_question(self, data: schemas.QuizQuestionCreate) -> dict:
-        q = await self.create_quiz_question(data)
+    async def add_question(
+        self,
+        data: schemas.QuizQuestionCreate,
+        image_file: Optional[UploadFile] = None,
+        request: Optional[Request] = None,
+    ) -> dict:
+        q = await self.create_quiz_question(data, image_file=image_file, request=request)
         return {
             "id": q.id,
             "type": q.type.value,
@@ -160,6 +176,7 @@ class QuizService:
             "points": q.points,
             "quiz_id": q.quiz_id,
             "duration_seconds": q.duration_seconds,
+            "image_url": q.image_url
         }
 
     async def get_quiz_questions_list(self, quiz_id: int, locale: str = "ru"):
@@ -258,3 +275,4 @@ class QuizService:
             out.append(schemas.QuizQuestionLocalizedOut(**payload))
 
         return out
+    

@@ -37,13 +37,13 @@ class CurrentUser:
 
         return user
 
-async def init_admin(session, telegram_id: int, nickname: str):
+async def init_admin(session, telegram_id: int, nickname: str, first_name: str, last_name: str):
     result = await session.execute(select(User).where(User.telegram_id == telegram_id))
     user = result.scalar_one_or_none()
     if user:
         print(f"ℹ️ Админ {nickname} уже существует")
         return user
-    new_admin = User(telegram_id=telegram_id, nickname=nickname, is_admin=True, is_active=True)
+    new_admin = User(telegram_id=telegram_id, nickname=nickname, first_name=first_name, last_name=last_name, is_admin=True, is_active=True)
     session.add(new_admin)
     await session.commit()
     await session.refresh(new_admin)

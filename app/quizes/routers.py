@@ -1,9 +1,10 @@
 import json
 
-from datetime import datetime, timezone
 from sqlalchemy import select
 
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Query
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Query, Form, Request
+from typing import Annotated
+from starlette import status
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.common.db import get_async_session
 from app.common.common import CurrentUser
@@ -12,6 +13,7 @@ from app.events.models import Event
 from app.quizes import schemas
 from app.quizes.models import Quiz, QuizQuestion
 from app.quizes.services import QuizService
+
 
 
 router = APIRouter(prefix="/quizes", tags=["quizes"])
@@ -39,42 +41,16 @@ async def list_quizes_by_event(event_id: int, session: AsyncSession = Depends(ge
     return [schemas.QuizOut.model_validate(x) for x in res.scalars().all()]
 
 
-
-@router.post("/add", response_model=schemas.QuizQuestionOut)
-async def add_question(data: schemas.QuizQuestionCreate, session: AsyncSession = Depends(get_async_session)):
-    service = QuizService(session)
-    return await service.add_question(data)
-
-def _to_out(q: QuizQuestion) -> dict:
-    """Преобразование ORM → dict для ответа (если не используете Pydantic.from_attributes)."""
-    return {
-        "id": q.id,
-        "quiz_id": q.quiz_id,
-        "type": q.type.value if q.type else None,
-        "text": q.text_i18n,
-        "options": q.options_i18n,
-        "correct_answers": q.correct_answers_i18n,
-        "duration_seconds": q.duration_seconds,
-        "points": q.points,
-    }
-
-
-@router.get("/{question_id}", response_model=schemas.QuizQuestionOut)
-async def get_question(
-    question_id: int,
+@router.post("/add", response_model=schemas.QuizQuestionOut, status_code=status.HTTP_201_CREATED)
+async def add_question(
+    request: Request,
+    payload: str,  
+    file: UploadFile | None = File(None),
     session: AsyncSession = Depends(get_async_session),
 ):
-    res = await session.execute(
-        select(QuizQuestion).where(QuizQuestion.id == question_id)
-    )
-    question = res.scalar_one_or_none()
-    if not question:
-        raise HTTPException(status_code=404, detail="Question not found")
-
-    # если схемы настроены на from_attributes=True — вернём напрямую
-    return schemas.QuizQuestionOut.model_validate(question)
-    # если не используете Pydantic.from_attributes, верните:
-    # return _to_out(question)
+    data = schemas.QuizQuestionCreate.model_validate_json(payload)
+    service = QuizService(session)
+    return await service.add_question(data, image_file=file, request=request)
 
 
 @router.get("/questions/list", response_model=list[schemas.QuizQuestionOut], summary="Question list by quiz_id")
