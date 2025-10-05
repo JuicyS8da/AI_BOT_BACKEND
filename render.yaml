@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: ai-backend
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    autoDeploy: true
+    dockerCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --proxy-headers
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        sync: false      # вставишь Internal DB URL вручную в настройках
+      - key: BOT_TOKEN
+        sync: false      # если не нужен боту — можно не задавать
+    disk:
+      name: media
+      mountPath: /app/media
+      sizeGB: 1
+
+  - type: worker
+    name: ai-bot
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    autoDeploy: true
+    dockerCommand: python -m telegram.main
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: BOT_TOKEN
+        sync: false
+    disk:
+      name: media
+      mountPath: /app/media
+      sizeGB: 1
