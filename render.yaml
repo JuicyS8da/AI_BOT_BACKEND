@@ -12,10 +12,6 @@ services:
         sync: false      # вставишь Internal DB URL вручную в настройках
       - key: BOT_TOKEN
         sync: false      # если не нужен боту — можно не задавать
-    disk:
-      name: media
-      mountPath: /app/media
-      sizeGB: 1
 
   - type: worker
     name: ai-bot
@@ -29,7 +25,3 @@ services:
         sync: false
       - key: BOT_TOKEN
         sync: false
-    disk:
-      name: media
-      mountPath: /app/media
-      sizeGB: 1
