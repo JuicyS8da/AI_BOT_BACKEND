@@ -7,7 +7,11 @@ async def main():
     dp.include_router(moderation.router)
 
     print("🤖 Telegram bot started...")
-    await dp.start_polling(bot)
+    await dp.start_polling(
+    bot,
+    allowed_updates=dp.resolve_used_update_types(),
+    drop_pending_updates=True,
+)
 
 if __name__ == "__main__":
     asyncio.run(main())

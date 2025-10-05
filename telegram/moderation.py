@@ -46,35 +46,56 @@ async def notify_admins_new_user(telegram_id: int, first_name: str, last_name: s
 @router.callback_query(F.data.startswith("approve_tg:"))
 async def on_approve(call: CallbackQuery):
     telegram_id = int(call.data.split(":")[1])
+
+    # 1) ACK СРАЗУ
+    try:
+        await call.answer("✅ Активируем…")
+    except TelegramBadRequest:
+        pass  # если просрочен — просто игнор
+
+    # 2) Делаем работу
     async for session in get_async_session():
-        # UPDATE users SET is_active=true WHERE telegram_id=:tid
         await session.execute(
             text("UPDATE users SET is_active = TRUE WHERE telegram_id = :tid"),
             {"tid": telegram_id},
         )
         await session.commit()
 
-    await call.message.edit_text(f"✅ Пользователь с telegram_id={telegram_id} активирован.")
+    # 3) Обновляем сообщение / уведомляем
     try:
-        await bot.send_message(telegram_id, "🎉 Ваша учётная запись активирована администратором.")
-    except Exception as e:
-        print(f"[TG] notify user {telegram_id} failed: {e}")
-    await call.answer("Активирован")
+        await call.message.edit_text(f"✅ Пользователь {telegram_id} активирован.")
+    except TelegramBadRequest:
+        pass
+    try:
+        await bot.send_message(telegram_id, "🎉 Ваша учётная запись активирована.")
+    except TelegramBadRequest:
+        pass
+
 
 @router.callback_query(F.data.startswith("reject_tg:"))
 async def on_reject(call: CallbackQuery):
     telegram_id = int(call.data.split(":")[1])
+
+    # 1) ACK СРАЗУ
+    try:
+        await call.answer("⏳ Удаляю…")
+    except TelegramBadRequest:
+        pass
+
+    # 2) Делаем работу
     async for session in get_async_session():
-        # DELETE FROM users WHERE telegram_id=:tid
         await session.execute(
             text("DELETE FROM users WHERE telegram_id = :tid"),
             {"tid": telegram_id},
         )
         await session.commit()
 
-    await call.message.edit_text(f"❌ Пользователь с telegram_id={telegram_id} удалён.")
+    # 3) Обновляем сообщение / уведомляем
+    try:
+        await call.message.edit_text(f"❌ Пользователь {telegram_id} удалён.")
+    except TelegramBadRequest:
+        pass
     try:
         await bot.send_message(telegram_id, "❌ Ваша заявка отклонена.")
-    except Exception as e:
-        print(f"[TG] notify user {telegram_id} failed: {e}")
-    await call.answer("Удалён")
+    except TelegramBadRequest:
+        pass
