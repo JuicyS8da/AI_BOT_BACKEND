@@ -10,6 +10,8 @@ services:
     envVars:
       - key: DATABASE_URL
         sync: false      # вставишь Internal DB URL вручную в настройках
+      - key: DATABASE_URL_SYNC
+        sync: false
       - key: BOT_TOKEN
         sync: false      # если не нужен боту — можно не задавать
 
@@ -22,6 +24,8 @@ services:
     dockerCommand: python -m telegram.main
     envVars:
       - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_URL_SYNC
         sync: false
       - key: BOT_TOKEN
         sync: false
