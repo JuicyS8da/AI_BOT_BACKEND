@@ -9,11 +9,11 @@ from app.users.models import AdminChat
 
 router = Router()
 
-def moderation_kb(telegram_id: int) -> InlineKeyboardMarkup:
-    return InlineKeyboardMarkup(inline_keyboard=[[
-        InlineKeyboardButton(text="✅ Активировать", callback_data=f"approve_tg:{telegram_id}"),
-        InlineKeyboardButton(text="❌ Отклонить",   callback_data=f"reject_tg:{telegram_id}"),
-    ]])
+def moderation_kb(tid: int) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="✅ Активировать", callback_data=f"approve_tg:{tid}")],
+        [InlineKeyboardButton(text="🗑 Отклонить",    callback_data=f"reject_tg:{tid}")],
+    ])
 
 async def fetch_admin_ids() -> list[int]:
     async for session in get_async_session():
@@ -32,7 +32,7 @@ async def notify_admins_new_user(telegram_id: int, first_name: str, last_name: s
         f"Telegram ID: <code>{telegram_id}</code>\n"
         f"Имя: {first_name}\n"
         f"Фамилия: {last_name}\n"
-        f"Никнейм: @{nickname}\n\n"
+        f"Никнейм: {nickname}\n\n"
         "Одобрить пользователя?"
     )
     kb = moderation_kb(telegram_id)
@@ -45,57 +45,34 @@ async def notify_admins_new_user(telegram_id: int, first_name: str, last_name: s
 
 @router.callback_query(F.data.startswith("approve_tg:"))
 async def on_approve(call: CallbackQuery):
-    telegram_id = int(call.data.split(":")[1])
-
-    # 1) ACK СРАЗУ
     try:
-        await call.answer("✅ Активируем…")
+        await call.answer("✅ Активируем…")   # быстрый ACK
     except TelegramBadRequest:
-        pass  # если просрочен — просто игнор
+        pass
 
-    # 2) Делаем работу
-    async for session in get_async_session():
-        await session.execute(
-            text("UPDATE users SET is_active = TRUE WHERE telegram_id = :tid"),
-            {"tid": telegram_id},
-        )
-        await session.commit()
+    telegram_id = int(call.data.split(":")[1])
+    async for s in get_async_session():
+        await s.execute(text("UPDATE users SET is_active = TRUE WHERE telegram_id=:tid"), {"tid": telegram_id})
+        await s.commit()
 
-    # 3) Обновляем сообщение / уведомляем
     try:
         await call.message.edit_text(f"✅ Пользователь {telegram_id} активирован.")
     except TelegramBadRequest:
         pass
-    try:
-        await bot.send_message(telegram_id, "🎉 Ваша учётная запись активирована.")
-    except TelegramBadRequest:
-        pass
-
 
 @router.callback_query(F.data.startswith("reject_tg:"))
 async def on_reject(call: CallbackQuery):
-    telegram_id = int(call.data.split(":")[1])
-
-    # 1) ACK СРАЗУ
     try:
-        await call.answer("⏳ Удаляю…")
+        await call.answer("🗑 Удаляю…")       # быстрый ACK
     except TelegramBadRequest:
         pass
 
-    # 2) Делаем работу
-    async for session in get_async_session():
-        await session.execute(
-            text("DELETE FROM users WHERE telegram_id = :tid"),
-            {"tid": telegram_id},
-        )
-        await session.commit()
+    telegram_id = int(call.data.split(":")[1])
+    async for s in get_async_session():
+        await s.execute(text("DELETE FROM users WHERE telegram_id=:tid"), {"tid": telegram_id})
+        await s.commit()
 
-    # 3) Обновляем сообщение / уведомляем
     try:
         await call.message.edit_text(f"❌ Пользователь {telegram_id} удалён.")
-    except TelegramBadRequest:
-        pass
-    try:
-        await bot.send_message(telegram_id, "❌ Ваша заявка отклонена.")
     except TelegramBadRequest:
         pass
