@@ -1,10 +1,11 @@
 import asyncio
 from telegram.core import dp, bot
-from telegram import moderation
+from telegram import moderation, debug
 
 async def main():
     # подключаем все роутеры
     dp.include_router(moderation.router)
+    dp.include_router(debug.router)
 
     print("🤖 Telegram bot started...")
     await bot.delete_webhook(drop_pending_updates=True)
