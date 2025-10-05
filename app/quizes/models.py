@@ -5,6 +5,8 @@ from sqlalchemy import String, Integer, ForeignKey, Enum, JSON
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.common.db import Base
+import app.events.models
+
 
 class QuestionType(str, enum.Enum):
     SINGLE = "single"

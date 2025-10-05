@@ -1,3 +1,4 @@
+import enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, BigInteger
 
@@ -8,7 +9,7 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    telegram_id: Mapped[int] = mapped_column(unique=True, nullable=False, index=True)
+    telegram_id: Mapped[int] = mapped_column(BigInteger, unique=True, nullable=False, index=True)
     first_name = mapped_column(String(100), nullable=False)
     last_name  = mapped_column(String(100), nullable=False)
     nickname: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
@@ -37,3 +38,17 @@ class AdminChat(Base):
     __tablename__ = "admin_chats"
 
     telegram_id: Mapped[int] = mapped_column(BigInteger, primary_key=True) 
+
+class ModStatus(str, enum.Enum):
+    pending = "pending"
+    approved = "approved"
+    rejected = "rejected"
+
+class AdminNotification(Base):
+    __tablename__ = "admin_notifications"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_tid: Mapped[int] = mapped_column(BigInteger, index=True, nullable=False)
+    admin_chat_id: Mapped[int] = mapped_column(BigInteger, index=True, nullable=False)
+    message_id: Mapped[int] = mapped_column(BigInteger, nullable=False)
+    status: Mapped[str] = mapped_column(String(16), default=ModStatus.pending.value, nullable=False)

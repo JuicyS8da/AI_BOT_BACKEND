@@ -5,6 +5,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Enum, ForeignKey, Column, Table, Integer
 
 from app.common.db import Base
+import app.quizes.models
 
 class EventStatus(str, enum.Enum):
     NOT_STARTED = "not_started"

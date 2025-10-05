@@ -11,7 +11,6 @@ async def main():
     await dp.start_polling(
     bot,
     allowed_updates=dp.resolve_used_update_types(),
-    drop_pending_updates=True,
 )
 
 if __name__ == "__main__":
