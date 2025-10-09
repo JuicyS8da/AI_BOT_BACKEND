@@ -20,7 +20,7 @@ async def check_admin(telegram_id: int, service: UserService = Depends()):
     return await service.check_admin(telegram_id)
 
 
-@router.get("/", response_model=list[schemas.UserRead])
+@router.get("/list", response_model=list[schemas.UserRead])
 async def list_users(service: UserService = Depends()):
     return await service.list_users()
 
