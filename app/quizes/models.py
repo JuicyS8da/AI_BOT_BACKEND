@@ -35,28 +35,18 @@ class QuizQuestion(Base):
     __tablename__ = "quiz_questions"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-
-    # ⬇️ вместо одного text — словарь локалей
-    # { "ru": "Столица Казахстана?", "kk": "Қазақстан астанасы?" }
     text_i18n: Mapped[Dict[str, str]] = mapped_column(JSON, default=dict)
-
-    # ⬇️ тип вопроса — ЯВНО
     type: Mapped[QuestionType] = mapped_column(Enum(QuestionType), nullable=False)
-
-    # ⬇️ варианты ответов тоже по локали (для OPEN можно пустыми списками)
-    # { "ru": ["А", "Б", "В"], "kk": ["А", "Б", "В"] }
     options_i18n: Mapped[Dict[str, List[str]]] = mapped_column(JSON, default=dict)
-
-    # ⬇️ правильные ответы по локали
-    # single/multiple: тексты из options соответствующей локали
-    # open: список допустимых строк (синонимы/варианты) для этой локали
-    # { "ru": ["Астана", "Нур-Султан"], "kk": ["Астана"] }  # для OPEN
     correct_answers_i18n: Mapped[Dict[str, List[str]]] = mapped_column(JSON, default=dict)
 
-    duration_seconds: Mapped[Optional[int]] = mapped_column(Integer, default=60, nullable=True)
+    # 🔹 одно изображение (URL)
+    image_url: Mapped[Optional[str]] = mapped_column(String, nullable=True)
 
-    quiz_id: Mapped[int] = mapped_column(ForeignKey("quizes.id", ondelete="CASCADE"), nullable=False)
+    duration_seconds: Mapped[Optional[int]] = mapped_column(Integer, default=60, nullable=True)
     points: Mapped[int] = mapped_column(Integer, default=1)
+    quiz_id: Mapped[int] = mapped_column(ForeignKey("quizes.id", ondelete="CASCADE"), nullable=False)
+
 
 class QuizUserAnswer(Base):
     __tablename__ = "quiz_user_answers"

@@ -2,12 +2,13 @@ import json
 
 from sqlalchemy import select
 
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Query, Form, Request
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Query, Form, Request, Body
 from typing import Annotated
 from starlette import status
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.common.db import get_async_session
 from app.common.common import CurrentUser
+from app.common.files import save_file_for_quiz
 from app.users.models import User
 from app.events.models import Event
 from app.quizes import schemas
@@ -41,17 +42,31 @@ async def list_quizes_by_event(event_id: int, session: AsyncSession = Depends(ge
     return [schemas.QuizOut.model_validate(x) for x in res.scalars().all()]
 
 
-@router.post("/add", response_model=schemas.QuizQuestionOut, status_code=status.HTTP_201_CREATED)
-async def add_question(
+@router.post(
+    "/{quiz_id}/questions:add_json",
+    response_model=schemas.QuizQuestionOut,
+    status_code=status.HTTP_201_CREATED,
+    summary="Добавить вопрос (application/json)",
+)
+async def add_quiz_question_json(
     request: Request,
-    payload: str,  
-    file: UploadFile | None = File(None),
+    quiz_id: int,
     session: AsyncSession = Depends(get_async_session),
+    body: schemas.QuizQuestionCreate = Body(
+        ...,
+        example={
+            "type": "single",
+            "text_i18n": {"ru": "Что изображено на картинке?"},
+            "options_i18n": {"ru": ["Кот", "Собака", "Лошадь"]},
+            "correct_answers_i18n": {"ru": ["Кот"]},
+            "duration_seconds": 30,
+            "points": 3
+        },
+    ),
 ):
-    data = schemas.QuizQuestionCreate.model_validate_json(payload)
-    service = QuizService(session)
-    return await service.add_question(data, image_file=file, request=request)
-
+    svc = QuizService(session)
+    body.quiz_id = quiz_id
+    return await svc.create_quiz_question(body)
 
 @router.get("/questions/list", response_model=list[schemas.QuizQuestionOut], summary="Question list by quiz_id")
 async def list_questions(session: AsyncSession = Depends(get_async_session), current_user: User = Depends(CurrentUser()), quiz_id: int = Query(..., description="ID квиза")):
@@ -137,3 +152,50 @@ async def list_questions_localized(
         locale=locale,
         include_correct=include_correct,
     )
+
+@router.post(
+    "/{quiz_id}/questions:bulk_import_with_images_file",
+    response_model=schemas.QuizQuestionsBulkOut,
+    summary="Bulk import questions (JSON file) + images (multipart/form-data)"
+)
+async def bulk_import_with_images_file(
+    quiz_id: int,
+    payload_file: UploadFile = File(..., description="JSON-файл с вопросами (формат как в bulk_import_questions_file)"),
+    images: list[UploadFile] = File(default=[], description="Набор изображений; сопоставляются по индексу с вопросами"),
+    session: AsyncSession = Depends(get_async_session),
+):
+    """
+    Пример `multipart/form-data`:
+    - payload_file: questions.json (содержит { "items": [ ... ] })
+    - images: file1.png
+    - images: file2.jpg
+    ...
+
+    Маппинг: images[i] -> items[i].image_url
+    """
+    # 1) читаем и разбираем JSON
+    try:
+        raw = await payload_file.read()
+        data = json.loads(raw.decode("utf-8"))
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Invalid JSON file: {e}")
+
+    try:
+        bulk_in = schemas.QuizQuestionsBulkIn.model_validate(data)
+    except Exception as e:
+        raise HTTPException(status_code=422, detail=f"Invalid payload schema: {e}")
+
+    # 2) сохраняем картинки и собираем URL-ы
+    image_urls: list[str] = []
+    for f in images:
+        url = await save_file_for_quiz(quiz_id, f)  # вернёт вида /media/quizes/<quiz_id>/<uuid>.ext
+        image_urls.append(url)
+
+    # 3) поиндексно дописываем image_url в элементы
+    for i, item in enumerate(bulk_in.items):
+        if i < len(image_urls):
+            item.image_url = image_urls[i]
+
+    # 4) пишем в БД
+    svc = QuizService(session)
+    return await svc.bulk_add_questions_simple(quiz_id, bulk_in)

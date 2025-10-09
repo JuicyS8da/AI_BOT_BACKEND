@@ -276,3 +276,28 @@ class QuizService:
 
         return out
     
+    async def bulk_add_questions_simple(self, quiz_id: int, payload: schemas.QuizQuestionsBulkIn):
+        res = await self.session.execute(select(Quiz).where(Quiz.id == quiz_id))
+        quiz = res.scalar_one_or_none()
+        if not quiz:
+            raise HTTPException(status_code=404, detail="Quiz not found")
+
+        created_ids = []
+        async with self.session.begin():
+            for item in payload.items:
+                data = item.model_dump()
+                qtype = QuestionType(data["type"])
+                question = QuizQuestion(
+                    type=qtype,
+                    text_i18n=data["text_i18n"],
+                    options_i18n=data.get("options_i18n", {}),
+                    correct_answers_i18n=data.get("correct_answers_i18n", {}),
+                    duration_seconds=data.get("duration_seconds"),
+                    points=data.get("points", 1),
+                    quiz_id=quiz_id,
+                    image_url=data.get("image_url"),
+                )
+                self.session.add(question)
+                await self.session.flush()
+                created_ids.append(question.id)
+        return {"created": len(created_ids), "ids": created_ids}
