@@ -9,6 +9,7 @@ from app.common.common import init_admin
 
 # ваши API-роутеры
 from app.users.routers import router as user_router
+from app.users.routers import admin_router as admin_chat_router
 from app.events.routers import router as event_router
 from app.quizes.routers import router as quiz_router
 
@@ -20,6 +21,7 @@ app = FastAPI(title="Music Schedule Bot 6")
 
 # API
 app.include_router(user_router)
+app.include_router(admin_chat_router)
 app.include_router(event_router)
 app.include_router(quiz_router)
 

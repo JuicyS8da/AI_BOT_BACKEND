@@ -1,4 +1,4 @@
-from typing import Annotated, Optional
+from typing import Annotated, Optional, Sequence
 
 from fastapi import Depends, HTTPException
 from sqlalchemy import select, delete
@@ -156,8 +156,22 @@ class UserService:
 class AdminChatService:
     @staticmethod
     async def list_all(session: AsyncSession) -> list[AdminChat]:
-        res = await session.execute(select(AdminChat).order_by(AdminChat.created_at.desc()))
+        res = await session.execute(
+            select(AdminChat)
+        )
         return list(res.scalars().all())
+
+    @staticmethod
+    async def list_all_with_users(session: AsyncSession) -> list[tuple[AdminChat, User | None]]:
+        """
+        Вернёт пары (AdminChat, User|None), чтобы сразу видеть профиль юзера,
+        если он есть в таблице users.
+        """
+        res = await session.execute(
+            select(AdminChat, User)
+            .join(User, User.telegram_id == AdminChat.telegram_id, isouter=True)
+        )
+        return list(res.all())
 
     @staticmethod
     async def add_one(session: AsyncSession, *, telegram_id: int) -> None:
@@ -170,20 +184,33 @@ class AdminChatService:
         await session.commit()
 
     @staticmethod
-    async def add_many(session: AsyncSession, items: list[tuple[int]]) -> int:
+    async def add_many(session: AsyncSession, items: Sequence[int] | Sequence[tuple[int]]) -> int:
+        """
+        Принимает либо [int, int, ...], либо [(int,), (int,), ...]
+        Возвращает количество вставленных строк (без дублей — thanks to ON CONFLICT).
+        """
+        # нормализуем вход
         if not items:
             return 0
-        stmt = (
-            insert(AdminChat)
-            .values([{"telegram_id": tid} for tid in items])
-            .on_conflict_do_nothing(index_elements=[AdminChat.telegram_id])
+        if isinstance(items[0], tuple):
+            telegram_ids: list[int] = [int(t[0]) for t in items]  # [(123,), (456,)] -> [123, 456]
+        else:
+            telegram_ids = [int(t) for t in items]                # [123, 456] -> [123, 456]
+
+        payload = [{"telegram_id": tid} for tid in telegram_ids]
+        stmt = insert(AdminChat).values(payload).on_conflict_do_nothing(
+            index_elements=[AdminChat.telegram_id]
         )
         res = await session.execute(stmt)
         await session.commit()
+
+        # rowcount для ON CONFLICT DO NOTHING в PG обычно корректен
         return res.rowcount or 0
 
     @staticmethod
     async def remove(session: AsyncSession, telegram_id: int) -> bool:
-        res = await session.execute(delete(AdminChat).where(AdminChat.telegram_id == telegram_id))
+        res = await session.execute(
+            delete(AdminChat).where(AdminChat.telegram_id == telegram_id)
+        )
         await session.commit()
         return (res.rowcount or 0) > 0

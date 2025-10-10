@@ -41,14 +41,6 @@ async def list_quizes_by_event(event_id: int, session: AsyncSession = Depends(ge
     res = await session.execute(select(Quiz).where(Quiz.event_id == event_id).order_by(Quiz.id))
     return [schemas.QuizOut.model_validate(x) for x in res.scalars().all()]
 
-
-@router.post(
-    "/{quiz_id}/questions:add_json",
-    response_model=schemas.QuizQuestionOut,
-    status_code=status.HTTP_201_CREATED,
-    summary="Добавить вопрос (application/json)",
-)
-
 @router.get("/questions/list", response_model=list[schemas.QuizQuestionOut], summary="Question list by quiz_id")
 async def list_questions(session: AsyncSession = Depends(get_async_session), current_user: User = Depends(CurrentUser()), quiz_id: int = Query(..., description="ID квиза")):
     service = QuizService(session, current_user)
@@ -197,3 +189,14 @@ async def attach_images(
     return schemas.QuizQuestionOut.model_validate(q)
 
 
+@router.get(
+    "/leaderboard",
+    response_model=list[schemas.UserLeaderboardOut],
+    summary="Таблица лидеров по очкам"
+)
+async def get_leaderboard(
+    limit: int = Query(10, description="Сколько лучших пользователей вернуть"),
+    session: AsyncSession = Depends(get_async_session),
+):
+    svc = QuizService(session)
+    return await svc.get_leaderboard(limit)

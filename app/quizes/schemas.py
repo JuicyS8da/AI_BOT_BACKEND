@@ -124,3 +124,11 @@ class QuizQuestionLocalizedOut(BaseModel):
     duration_seconds: Optional[int] = None
     points: int
     images_urls: List[str] = []
+
+
+class UserLeaderboardOut(BaseModel):
+    telegram_id: int
+    nickname: Optional[str]
+    first_name: Optional[str]
+    last_name: Optional[str]
+    points: int

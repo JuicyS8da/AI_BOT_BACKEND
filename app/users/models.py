@@ -1,6 +1,6 @@
 import enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String, BigInteger
+from sqlalchemy import String, BigInteger, UniqueConstraint
 
 from app.common.db import Base
 from app.events.models import event_players
@@ -35,9 +35,13 @@ class User(Base):
     )
 
 class AdminChat(Base):
-    __tablename__ = "admin_chats"
+    __tablename__ = "admin_chat"
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    telegram_id: Mapped[int] = mapped_column(BigInteger, nullable=False, unique=True)
 
-    telegram_id: Mapped[int] = mapped_column(BigInteger, primary_key=True) 
+    __table_args__ = (
+        UniqueConstraint("telegram_id", name="uq_admin_chat_telegram_id"),
+    )
 
 class ModStatus(str, enum.Enum):
     pending = "pending"

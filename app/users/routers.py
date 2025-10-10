@@ -1,10 +1,14 @@
-from fastapi import APIRouter, Depends, HTTPException
+from typing import List
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from app.users import schemas
 from app.common.db import get_async_session
 from app.users.services import UserService
 from app.users.services import AdminChatService
+from app.common.common import CurrentUser
+from app.users.models import User
+
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -37,22 +41,53 @@ async def delete_user(
 ):
     return await service.delete_user_as_admin(target_telegram_id)
 
-@router.get("/", response_model=list[schemas.AdminChatOut])
-async def get_admin_chats(session: AsyncSession = Depends(get_async_session)):
-    return await AdminChatService.list_all(session)
+# ADMIN NOTIFICATIONS
 
-@router.post("/", status_code=status.HTTP_204_NO_CONTENT)
-async def add_admin_chat(payload: schemas.AdminChatIn, session: AsyncSession = Depends(get_async_session)):
-    await AdminChatService.add_one(session, telegram_id=payload.telegram_id, note=payload.note)
+admin_router = APIRouter(prefix="/admin-chat", tags=["admin-chat"])
 
-@router.post("/bulk", status_code=status.HTTP_200_OK)
-async def add_admin_chats_bulk(payload: schemas.AdminChatBulkIn, session: AsyncSession = Depends(get_async_session)):
-    inserted = await AdminChatService.add_many(session, [(tid) for tid in payload.items])
-    return {"inserted": inserted}
+@admin_router.get("/", summary="Список участников admin chat (сырой)")
+async def get_admin_chat_ids(
+    session: AsyncSession = Depends(get_async_session),
+    _: User = Depends(CurrentUser(require_admin=True)),
+):
+    rows = await AdminChatService.list_all(session)
+    return {"count": len(rows), "telegram_ids": [r.telegram_id for r in rows]}
 
+@admin_router.get("/users", response_model=list[schemas.UserOut], summary="Список участников admin chat c данными пользователя")
+async def get_admin_chat_users(
+    session: AsyncSession = Depends(get_async_session),
+    _: User = Depends(CurrentUser(require_admin=True)),
+):
+    pairs = await AdminChatService.list_all_with_users(session)
+    # берём только тех, у кого есть профиль
+    users = [p[1] for p in pairs if p[1] is not None]
+    return [schemas.UserOut.model_validate(u) for u in users]
 
-@router.delete("/{telegram_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_admin_chat(telegram_id: int, session: AsyncSession = Depends(get_async_session)):
+@admin_router.post("/add", summary="Добавить одного участника по telegram_id")
+async def add_admin_chat_member(
+    telegram_id: int,
+    session: AsyncSession = Depends(get_async_session),
+    _: User = Depends(CurrentUser(require_admin=True)),
+):
+    await AdminChatService.add_one(session, telegram_id=telegram_id)
+    return {"status": "ok", "telegram_id": telegram_id}
+
+@admin_router.post("/add-many", summary="Добавить несколько участников")
+async def add_admin_chat_many(
+    telegram_ids: List[int],
+    session: AsyncSession = Depends(get_async_session),
+    _: User = Depends(CurrentUser(require_admin=True)),
+):
+    inserted = await AdminChatService.add_many(session, telegram_ids)
+    return {"status": "ok", "inserted": inserted, "requested": len(telegram_ids)}
+
+@admin_router.delete("/remove", summary="Удалить участника по telegram_id")
+async def remove_admin_chat_member(
+    telegram_id: int = Query(...),
+    session: AsyncSession = Depends(get_async_session),
+    _: User = Depends(CurrentUser(require_admin=True)),
+):
     ok = await AdminChatService.remove(session, telegram_id)
     if not ok:
-        raise HTTPException(status_code=404, detail="not_found")
+        raise HTTPException(status_code=404, detail="Not found in admin chat")
+    return {"status": "ok", "removed": telegram_id}

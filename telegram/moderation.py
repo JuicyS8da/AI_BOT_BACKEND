@@ -6,7 +6,10 @@ from telegram.core import bot
 from app.common.db import get_async_session, AsyncSessionLocal
 from sqlalchemy import text, select
 from sqlalchemy.sql import text as sql_text
-from app.users.models import AdminNotification
+from app.users.models import AdminNotification, AdminChat
+from app.users.models import User
+from sqlalchemy.ext.asyncio import AsyncSession
+
 
 router = Router()
 
@@ -17,34 +20,34 @@ def moderation_kb(tid: int) -> InlineKeyboardMarkup:
     ])
 
 async def fetch_admin_ids() -> list[int]:
-    # Если у тебя есть модель AdminChat — используй select(AdminChat.telegram_id)
     async with AsyncSessionLocal() as session:
-        res = await session.execute(sql_text("SELECT telegram_id FROM admin_chats"))
-        # scalars() вернёт список telegram_id
-        return [int(x) for x in res.scalars().all()]
+        res = await session.execute(select(AdminChat.telegram_id))
+        return [int(tid) for (tid,) in res.all()]
 
 async def notify_admins_new_user(telegram_id: int, first_name: str, last_name: str, nickname: str):
-    admin_ids = await fetch_admin_ids()
+    async with AsyncSessionLocal() as session:
+        # берём только те чаты, которые вы добавили в admin chat
+        admin_ids = [row[0] for row in (await session.execute(select(AdminChat.telegram_id))).all()]
+
     if not admin_ids:
-        print("[WARN] No admin chats configured (use /admin-chats).")
+        print("[WARN] No admin chats configured (fill AdminChat table).")
         return
 
     text_msg = (
         "<b>Новая регистрация</b>\n"
         f"Telegram ID: <code>{telegram_id}</code>\n"
-        f"Имя: {first_name}\n"
-        f"Фамилия: {last_name}\n"
+        f"Имя: {first_name or '-'}\n"
+        f"Фамилия: {last_name or '-'}\n"
         f"Никнейм: {nickname}\n\n"
         "Одобрить пользователя?"
     )
     kb = moderation_kb(telegram_id)
 
-    # откроем сессию БД для записи уведомлений
+    # отправка и запись уведомлений
     async with AsyncSessionLocal() as session:
         for chat_id in admin_ids:
             try:
-                msg = await bot.send_message(chat_id, text_msg, reply_markup=kb)
-                # если используешь таблицу admin_notifications:
+                msg = await bot.send_message(chat_id, text_msg, reply_markup=kb, parse_mode="HTML")
                 session.add(AdminNotification(
                     user_tid=telegram_id,
                     admin_chat_id=chat_id,
@@ -52,15 +55,9 @@ async def notify_admins_new_user(telegram_id: int, first_name: str, last_name: s
                     status="pending",
                 ))
             except (TelegramBadRequest, TelegramForbiddenError) as e:
-                # чат не найден / бот заблокирован — просто лог и к следующему
                 print(f"[TG] skip {chat_id}: {e}")
                 continue
-
-        try:
-            await session.commit()
-        except Exception as e:
-            await session.rollback()
-            raise
+        await session.commit()
 
 @router.callback_query(F.data.startswith("approve_tg:"))
 async def on_approve(call: CallbackQuery):

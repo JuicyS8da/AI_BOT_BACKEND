@@ -5,7 +5,7 @@ import unicodedata, json
 
 from fastapi import Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, desc
 
 from app.common.db import get_async_session
 from app.common.common import CurrentUser
@@ -364,3 +364,24 @@ class QuizService:
             raise
 
         return {"created": len(created_ids), "ids": created_ids}
+    
+    async def get_leaderboard(self, limit: int = 10):
+        stmt = (
+            select(User)
+            .where(User.is_active == True)
+            .order_by(desc(User.points))
+            .limit(limit)   
+        )
+        res = await self.session.execute(stmt)
+        users = res.scalars().all()
+
+        return [
+            schemas.UserLeaderboardOut(
+                telegram_id=u.telegram_id,
+                nickname=u.nickname,
+                first_name=u.first_name,
+                last_name=u.last_name,
+                points=u.points or 0
+            )
+            for u in users
+        ]
