@@ -48,25 +48,6 @@ async def list_quizes_by_event(event_id: int, session: AsyncSession = Depends(ge
     status_code=status.HTTP_201_CREATED,
     summary="Добавить вопрос (application/json)",
 )
-async def add_quiz_question_json(
-    request: Request,
-    quiz_id: int,
-    session: AsyncSession = Depends(get_async_session),
-    body: schemas.QuizQuestionCreate = Body(
-        ...,
-        example={
-            "type": "single",
-            "text_i18n": {"ru": "Что изображено на картинке?"},
-            "options_i18n": {"ru": ["Кот", "Собака", "Лошадь"]},
-            "correct_answers_i18n": {"ru": ["Кот"]},
-            "duration_seconds": 30,
-            "points": 3
-        },
-    ),
-):
-    svc = QuizService(session)
-    body.quiz_id = quiz_id
-    return await svc.create_quiz_question(body)
 
 @router.get("/questions/list", response_model=list[schemas.QuizQuestionOut], summary="Question list by quiz_id")
 async def list_questions(session: AsyncSession = Depends(get_async_session), current_user: User = Depends(CurrentUser()), quiz_id: int = Query(..., description="ID квиза")):
@@ -216,31 +197,3 @@ async def attach_images(
     return schemas.QuizQuestionOut.model_validate(q)
 
 
-@router.post(
-    "/{quiz_id}/questions:bulk_import_with_images",
-    status_code=status.HTTP_201_CREATED,
-    summary="Bulk: JSON-манифест + файлы",
-)
-async def bulk_import_with_images(
-    quiz_id: int,
-    request: Request,
-    manifest: str = Form(..., description="JSON-манифест (см. пример)"),
-    files: List[UploadFile] = File(default=[]),
-    svc: QuizService = Depends(),
-):
-    """
-    Пример manifest:
-    {
-      "defaults": {"duration_seconds": 30, "points": 3},
-      "items": [
-        {
-          "type": "multiple",
-          "text_i18n": {"ru": "Оптика изучает что?"},
-          "options_i18n": {"ru": ["Звук","Тепло","Свет","Электричество"]},
-          "correct_answers_i18n": {"ru": ["Свет"]},
-          "images": ["optics1.jpg","optics2.png"]
-        }
-      ]
-    }
-    """
-    return await svc.bulk_add_questions_with_files(quiz_id, request, manifest, files)
