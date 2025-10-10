@@ -35,17 +35,18 @@ class QuizQuestion(Base):
     __tablename__ = "quiz_questions"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+
     text_i18n: Mapped[Dict[str, str]] = mapped_column(JSON, default=dict)
     type: Mapped[QuestionType] = mapped_column(Enum(QuestionType), nullable=False)
     options_i18n: Mapped[Dict[str, List[str]]] = mapped_column(JSON, default=dict)
     correct_answers_i18n: Mapped[Dict[str, List[str]]] = mapped_column(JSON, default=dict)
 
-    # 🔹 одно изображение (URL)
-    image_url: Mapped[Optional[str]] = mapped_column(String, nullable=True)
-
     duration_seconds: Mapped[Optional[int]] = mapped_column(Integer, default=60, nullable=True)
     points: Mapped[int] = mapped_column(Integer, default=1)
     quiz_id: Mapped[int] = mapped_column(ForeignKey("quizes.id", ondelete="CASCADE"), nullable=False)
+
+    # 🔽 Новое: список URL картинок (может быть пустым)
+    images_urls: Mapped[List[str]] = mapped_column(JSON, default=list)
 
 
 class QuizUserAnswer(Base):

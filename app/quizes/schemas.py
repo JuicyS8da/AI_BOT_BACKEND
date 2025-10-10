@@ -27,7 +27,7 @@ class QuizQuestionCreate(BaseModel):
     duration_seconds: Optional[int] = 60
     points: int = 1
     quiz_id: int
-    image_url: AnyUrl | None = Field(default=None, max_length=1024)
+    images_urls: Optional[List[AnyUrl]] = None
 
     class Config:
         json_schema_extra = {
@@ -68,7 +68,7 @@ class QuizQuestionOut(BaseModel):
     duration_seconds: Optional[int] = 60
     points: int = 1
 
-    image_url: AnyUrl | None = None
+    images_urls: List[str] = []
 
     model_config = {
         "from_attributes": True,     # можно пихать ORM объект
@@ -123,3 +123,4 @@ class QuizQuestionLocalizedOut(BaseModel):
     options: List[str] = []
     duration_seconds: Optional[int] = None
     points: int
+    images_urls: List[str] = []

@@ -3,7 +3,7 @@ import json
 from sqlalchemy import select
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Query, Form, Request, Body
-from typing import Annotated
+from typing import List, Optional
 from starlette import status
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.common.db import get_async_session
@@ -199,3 +199,48 @@ async def bulk_import_with_images_file(
     # 4) пишем в БД
     svc = QuizService(session)
     return await svc.bulk_add_questions_simple(quiz_id, bulk_in)
+
+@router.post(
+    "/questions/{question_id}/images:attach",
+    response_model=schemas.QuizQuestionOut,
+    summary="Прикрепить картинки к существующему вопросу",
+)
+async def attach_images(
+    request: Request,
+    question_id: int,
+    session: AsyncSession = Depends(get_async_session),
+    images: List[UploadFile] = File(..., description="Файлы изображений"),
+):
+    svc = QuizService(session)
+    q = await svc.attach_images_to_question(question_id=question_id, request=request, images=images)
+    return schemas.QuizQuestionOut.model_validate(q)
+
+
+@router.post(
+    "/{quiz_id}/questions:bulk_import_with_images",
+    status_code=status.HTTP_201_CREATED,
+    summary="Bulk: JSON-манифест + файлы",
+)
+async def bulk_import_with_images(
+    quiz_id: int,
+    request: Request,
+    manifest: str = Form(..., description="JSON-манифест (см. пример)"),
+    files: List[UploadFile] = File(default=[]),
+    svc: QuizService = Depends(),
+):
+    """
+    Пример manifest:
+    {
+      "defaults": {"duration_seconds": 30, "points": 3},
+      "items": [
+        {
+          "type": "multiple",
+          "text_i18n": {"ru": "Оптика изучает что?"},
+          "options_i18n": {"ru": ["Звук","Тепло","Свет","Электричество"]},
+          "correct_answers_i18n": {"ru": ["Свет"]},
+          "images": ["optics1.jpg","optics2.png"]
+        }
+      ]
+    }
+    """
+    return await svc.bulk_add_questions_with_files(quiz_id, request, manifest, files)

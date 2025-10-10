@@ -1,7 +1,7 @@
 from typing import List, Optional, Annotated
 from fastapi import UploadFile, Request
 
-import unicodedata
+import unicodedata, json
 
 from fastapi import Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -12,7 +12,9 @@ from app.common.common import CurrentUser
 from app.users.models import User
 from app.quizes import schemas
 from app.quizes.models import Quiz, QuizQuestion, QuizUserAnswer, QuestionType
-from app.quizes.media import _save_upload
+from app.common.files import _save_uploads, save_upload
+
+
 
 
 def _normalize(s: str) -> str:
@@ -128,24 +130,33 @@ class QuizService:
         }
 
 
-    async def create_quiz_question(self, data: schemas.QuizQuestionCreate, image_file: Optional[UploadFile] = None, request: Optional[Request] = None,) -> QuizQuestion:
-        """
-        Ожидаем, что QuizQuestionCreate содержит:
-        - type: Literal["single","multiple","open"]  # или QuestionType
-        - text_i18n: dict[str, str]
-        - options_i18n: dict[str, list[str]] = {}
-        - correct_answers_i18n: dict[str, list[str]] = {}
-        - duration_seconds: int | None
-        - points: int
-        - quiz_id: int
-        - image_url: AnyUrl | None = None  # если файл не загружен, но URL известен
-        """
-        if image_file is not None:
-            if request is None:
-                raise RuntimeError("Request is required when image_file is provided")
-            data.image_url = await _save_upload(request, image_file)
+    async def _get_question(self, question_id: int) -> QuizQuestion:
+        res = await self.session.execute(select(QuizQuestion).where(QuizQuestion.id == question_id))
+        q = res.scalar_one_or_none()
+        if not q:
+            raise HTTPException(status_code=404, detail="Question not found")
+        return q
 
-        question = QuizQuestion(
+    async def create_quiz_question(
+        self,
+        data: schemas.QuizQuestionCreate,
+        request: Optional[Request] = None,
+        images: Optional[List[UploadFile]] = None,
+    ) -> QuizQuestion:
+
+        images_urls: List[str] = []
+        # 1) если прислали готовые ссылки в JSON
+        if data.images_urls:
+            images_urls.extend([str(u) for u in data.images_urls])
+
+        # 2) если прислали файлы — сохраняем
+        if images:
+            if request is None:
+                raise HTTPException(500, detail="Request is required when uploading files")
+            saved = await _save_uploads(request, images, subdir="questions")
+            images_urls.extend(saved)
+
+        q = QuizQuestion(
             type=QuestionType(data.type) if isinstance(data.type, str) else data.type,
             text_i18n=data.text_i18n or {},
             options_i18n=data.options_i18n or {},
@@ -153,31 +164,12 @@ class QuizService:
             duration_seconds=data.duration_seconds,
             points=data.points,
             quiz_id=data.quiz_id,
-            image_url=str(data.image_url) if getattr(data, "image_url", None) else None,
+            images_urls=images_urls,
         )
-        self.session.add(question)
+        self.session.add(q)
         await self.session.commit()
-        await self.session.refresh(question)
-        return question
-
-    async def add_question(
-        self,
-        data: schemas.QuizQuestionCreate,
-        image_file: Optional[UploadFile] = None,
-        request: Optional[Request] = None,
-    ) -> dict:
-        q = await self.create_quiz_question(data, image_file=image_file, request=request)
-        return {
-            "id": q.id,
-            "type": q.type.value,
-            "text_i18n": q.text_i18n,
-            "options_i18n": q.options_i18n,
-            "correct_answers_i18n": q.correct_answers_i18n,
-            "points": q.points,
-            "quiz_id": q.quiz_id,
-            "duration_seconds": q.duration_seconds,
-            "image_url": q.image_url
-        }
+        await self.session.refresh(q)
+        return q
 
     async def get_quiz_questions_list(self, quiz_id: int, locale: str = "ru"):
         res = await self.session.execute(select(QuizQuestion).where(QuizQuestion.quiz_id == quiz_id))
@@ -194,6 +186,18 @@ class QuizService:
                 "points": q.points,
             })
         return out
+
+    async def list_questions_by_quiz(self, quiz_id: int) -> list[schemas.QuizQuestionOut]:
+        stmt = (
+            select(QuizQuestion)
+            .where(QuizQuestion.quiz_id == quiz_id)
+            .order_by(QuizQuestion.id)
+        )
+        res = await self.session.execute(stmt)
+        items = res.scalars().all()
+
+        # Pydantic v2: from_attributes=True, чтобы читать из ORM-объектов
+        return [schemas.QuizQuestionOut.model_validate(q, from_attributes=True) for q in items]
 
     async def toggle_quiz_active(self, quiz_id: int, is_active: bool):
         # фикс: в модели у Quiz поле id, а не quiz_id
@@ -265,6 +269,7 @@ class QuizService:
                 "options": options,
                 "duration_seconds": q.duration_seconds,
                 "points": q.points,
+                "images_urls": q.images_urls or [],
             }
 
             # если надо получить и правильные ответы (например, для админки):
@@ -276,28 +281,86 @@ class QuizService:
 
         return out
     
-    async def bulk_add_questions_simple(self, quiz_id: int, payload: schemas.QuizQuestionsBulkIn):
+    async def attach_images_to_question(
+        self,
+        question_id: int,
+        request: Request,
+        images: List[UploadFile],
+    ) -> QuizQuestion:
+        q = await self._get_question(question_id)
+        saved = await _save_uploads(request, images, subdir=f"questions/{question_id}")
+        q.images_urls = (q.images_urls or []) + saved
+        self.session.add(q)
+        await self.session.commit()
+        await self.session.refresh(q)
+        return q
+    
+    async def bulk_add_questions_with_files(self, quiz_id: int, request, manifest_str: str, files: List):
+        # 1) валидация квиза
         res = await self.session.execute(select(Quiz).where(Quiz.id == quiz_id))
         quiz = res.scalar_one_or_none()
         if not quiz:
-            raise HTTPException(status_code=404, detail="Quiz not found")
+            raise HTTPException(404, "Quiz not found")
+
+        # 2) парсим JSON
+        try:
+            manifest = json.loads(manifest_str)
+        except json.JSONDecodeError:
+            raise HTTPException(400, "Invalid manifest JSON")
+
+        defaults = manifest.get("defaults", {})
+        items = manifest.get("items", [])
+        if not isinstance(items, list) or not items:
+            raise HTTPException(400, "Empty items")
+
+        # 3) сопоставление имени файла -> UploadFile
+        file_map = {f.filename: f for f in (files or []) if f and f.filename}
 
         created_ids = []
-        async with self.session.begin():
-            for item in payload.items:
-                data = item.model_dump()
-                qtype = QuestionType(data["type"])
-                question = QuizQuestion(
-                    type=qtype,
+        try:
+            for item in items:
+                data = {
+                    "type": item["type"],
+                    "text_i18n": item.get("text_i18n", {}),
+                    "options_i18n": item.get("options_i18n", {}),
+                    "correct_answers_i18n": item.get("correct_answers_i18n", {}),
+                    "duration_seconds": item.get("duration_seconds", defaults.get("duration_seconds")),
+                    "points": item.get("points", defaults.get("points", 1)),
+                    "quiz_id": quiz_id,
+                }
+                q = QuizQuestion(
+                    type=QuestionType(data["type"]) if isinstance(data["type"], str) else data["type"],
                     text_i18n=data["text_i18n"],
-                    options_i18n=data.get("options_i18n", {}),
-                    correct_answers_i18n=data.get("correct_answers_i18n", {}),
-                    duration_seconds=data.get("duration_seconds"),
-                    points=data.get("points", 1),
-                    quiz_id=quiz_id,
-                    image_url=data.get("image_url"),
+                    options_i18n=data["options_i18n"],
+                    correct_answers_i18n=data["correct_answers_i18n"],
+                    duration_seconds=data["duration_seconds"],
+                    points=data["points"],
+                    quiz_id=data["quiz_id"],
                 )
-                self.session.add(question)
+                self.session.add(q)
+                await self.session.flush()   # получить q.id
+
+                # 4) сохраняем все прикреплённые картинки
+                image_names = item.get("images", []) or []
+                saved_urls = []
+                for name in image_names:
+                    uf = file_map.get(name)
+                    if not uf:
+                        continue  # можно ругаться, можно пропускать
+                    url = await save_upload(request, uf, subdir=f"questions/{q.id}")
+                    # если у тебя images хранятся JSON-списком URL — добавь поле images_json у модели
+                    saved_urls.append(url)
+
+                # если модель хранит одно поле image_url — сохрани первую
+                if saved_urls:
+                    q.image_url = saved_urls[0]
+
                 await self.session.flush()
-                created_ids.append(question.id)
+                created_ids.append(q.id)
+
+            await self.session.commit()
+        except Exception:
+            await self.session.rollback()
+            raise
+
         return {"created": len(created_ids), "ids": created_ids}
