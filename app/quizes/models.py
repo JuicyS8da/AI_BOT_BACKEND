@@ -1,7 +1,8 @@
 import enum
 from typing import Dict, List, Optional
+from datetime import datetime
 
-from sqlalchemy import String, Integer, ForeignKey, Enum, JSON
+from sqlalchemy import String, Integer, ForeignKey, Enum, JSON, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.common.db import Base
@@ -20,6 +21,7 @@ class Quiz(Base):
     name: Mapped[str] = mapped_column(nullable=False)
     description: Mapped[Optional[str]] = mapped_column(nullable=True)
     is_active: Mapped[bool] = mapped_column(default=False)
+    answer_limit: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
 
     # FK только здесь:
     event_id: Mapped[int] = mapped_column(ForeignKey("events.id", ondelete="CASCADE"), nullable=False)
@@ -57,6 +59,7 @@ class QuizUserAnswer(Base):
     question_id: Mapped[int] = mapped_column(ForeignKey("quiz_questions.id", ondelete="CASCADE"))
     # сохраняем то, что пришло (для single — список из одного, для open — список/одна строка)
     answers: Mapped[List[str]] = mapped_column(JSON, default=list)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     # ⬇️ фиксируем локаль, на которой отвечал пользователь
     locale: Mapped[str] = mapped_column(String(10), default="ru")

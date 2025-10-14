@@ -2,7 +2,9 @@ import json
 
 from sqlalchemy import select
 
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Query, Form, Request, Body
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Query, Request
+from io import BytesIO
+from fastapi.responses import StreamingResponse
 from typing import List, Optional
 from starlette import status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -12,8 +14,8 @@ from app.common.files import save_file_for_quiz
 from app.users.models import User
 from app.events.models import Event
 from app.quizes import schemas
-from app.quizes.models import Quiz, QuizQuestion
-from app.quizes.services import QuizService
+from app.quizes.models import Quiz
+from app.quizes.services import QuizService, QuizExportService
 
 
 
@@ -200,3 +202,87 @@ async def get_leaderboard(
 ):
     svc = QuizService(session)
     return await svc.get_leaderboard(limit)
+
+@router.get("/{quiz_id}/limits", summary="Получить лимит ответов по квизу")
+async def get_quiz_limits(
+    quiz_id: int,
+    session: AsyncSession = Depends(get_async_session),
+    current_user: User = Depends(CurrentUser()),
+):
+    svc = QuizService(session, current_user)
+    return await svc.get_quiz_limits_public(quiz_id, current_user.id)
+
+class QuizLimitUpdateIn(schemas.BaseModel):  # можно положить в schemas
+    answer_limit: int | None  # None = убрать кастомный лимит (равно total вопросов)
+
+@router.post("/{quiz_id}/limits", summary="Обновить лимит ответов (admin)")
+async def set_quiz_limit(
+    quiz_id: int,
+    body: QuizLimitUpdateIn,
+    session: AsyncSession = Depends(get_async_session),
+    current_user: User = Depends(CurrentUser(require_admin=True)),
+):
+    quiz = await session.get(Quiz, quiz_id)
+    if not quiz:
+        raise HTTPException(404, "Quiz not found")
+
+    # валидация на разумные пределы, если указано
+    if body.answer_limit is not None and body.answer_limit < 0:
+        raise HTTPException(422, "answer_limit must be >= 0 or null")
+
+    quiz.answer_limit = body.answer_limit
+    session.add(quiz)
+    await session.commit()
+    await session.refresh(quiz)
+
+    return {"quiz_id": quiz.id, "answer_limit": quiz.answer_limit}
+
+@router.get("/{quiz_id}/remaining", summary="Сколько вопросов осталось у текущего пользователя в этом квизе")
+async def get_remaining_for_current_user(
+    quiz_id: int,
+    session: AsyncSession = Depends(get_async_session),
+    current_user: User = Depends(CurrentUser()),
+) -> dict:
+    svc = QuizService(session, current_user)
+    limits = await svc.get_quiz_limits_public(quiz_id, current_user.id)
+    return {"remaining": limits["remaining_allowed"]}
+
+@router.get(
+    "/{quiz_id}/answers/export",
+    summary="Экспорт ответов в Excel (По тексту вопроаса или по ID вопроса)",
+    response_description="Excel-файл (.xlsx) с ответами",
+)
+async def export_answers_xlsx(
+    quiz_id: int,
+    session: AsyncSession = Depends(get_async_session),
+    current_user: User = Depends(CurrentUser(require_admin=True)),
+    question_id: int | None = Query(None, description="ID вопроса для фильтра"),
+    q_text: str | None = Query(None, description="Фильтр по названию вопроса (подстрока)"),
+    locale: str = Query("ru", description="Локаль для поиска по тексту вопроса (когда используется q_text)"),
+):
+    if question_id is None and (q_text is None or not q_text.strip()):
+        raise HTTPException(400, detail="Укажите question_id или q_text")
+
+    svc = QuizExportService(session)
+    file_bytes, filename = await svc.export_answers_xlsx(
+        quiz_id=quiz_id, question_id=question_id, q_text=q_text, locale=locale
+    )
+
+    return StreamingResponse(
+        BytesIO(file_bytes),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'}
+    )
+
+@router.delete(
+    "/questions/delete/{question_id}",
+    summary="Удалить вопрос (с файлами изображений)",
+)
+async def delete_question(
+    question_id: int,
+    remove_files: bool = True,
+    session: AsyncSession = Depends(get_async_session),
+    current_user: User = Depends(CurrentUser(require_admin=True)),
+):
+    svc = QuizService(session, current_user)
+    return await svc.delete_question(question_id, remove_files=remove_files)

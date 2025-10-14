@@ -1,3 +1,9 @@
+from string import ascii_uppercase
+import pandas as pd
+from io import BytesIO
+from pathlib import Path
+from urllib.parse import urlparse
+
 from typing import List, Optional, Annotated
 from fastapi import UploadFile, Request
 
@@ -5,14 +11,14 @@ import unicodedata, json
 
 from fastapi import Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, desc
+from sqlalchemy import select, desc, func
 
 from app.common.db import get_async_session
 from app.common.common import CurrentUser
 from app.users.models import User
 from app.quizes import schemas
 from app.quizes.models import Quiz, QuizQuestion, QuizUserAnswer, QuestionType
-from app.common.files import _save_uploads, save_upload
+from app.common.files import MEDIA_ROOT, MEDIA_URL, _async_write_bytes, _safe_ext, save_upload, _save_uploads
 
 
 
@@ -88,46 +94,56 @@ class QuizService:
         return 0  # на всякий случай
 
     async def submit_answer(self, data: schemas.UserAnswerCreate) -> dict:
-        """
-        Возвращает:
-        {
-            "answer_id": int,
-            "awarded_points": int,
-            "user_points_total": int
-        }
-        """
         question = await self._get_question(data.question_id)
 
-        # Сохраняем ответ пользователя
+        # 1) запрет повторного ответа на тот же вопрос
+        already = await self.session.scalar(
+            select(func.count()).select_from(QuizUserAnswer).where(
+                QuizUserAnswer.user_id == self.current_user.id,
+                QuizUserAnswer.question_id == question.id,
+            )
+        ) or 0
+        if already > 0:
+            raise HTTPException(409, "You already answered this question")
+
+        # 2) проверка глобального лимита ответов
+        limits = await self._get_quiz_limits(question.quiz_id, self.current_user.id)
+        if limits["remaining_allowed"] <= 0:
+            raise HTTPException(403, "Answer limit for this quiz has been reached")
+
+        # 3) сохранить ответ
         answers_list = data.answers if isinstance(data.answers, list) else [str(data.answers)]
-        user_answer = QuizUserAnswer(
+        ua = QuizUserAnswer(
             user_id=self.current_user.id,
             question_id=question.id,
             quiz_id=question.quiz_id,
             answers=answers_list,
             locale=getattr(data, "locale", "ru"),
         )
-        self.session.add(user_answer)
-        await self.session.flush()  # получим id без коммита
+        self.session.add(ua)
+        await self.session.flush()
 
-        # Считаем очки
-        locale = getattr(data, "locale", "ru")
-        points = await self.calculate_points(question, data.answers, locale)
-
-        # Обновляем пользователя
-        self.current_user.points = (self.current_user.points or 0) + points
+        # 4) начислить очки
+        pts = await self.calculate_points(question, data.answers, getattr(data, "locale", "ru"))
+        self.current_user.points = (self.current_user.points or 0) + pts
         self.session.add(self.current_user)
 
         await self.session.commit()
-        await self.session.refresh(user_answer)
+        await self.session.refresh(ua)
         await self.session.refresh(self.current_user)
 
-        # Возвращаем JSON с очками
+        # 5) вернуть обновлённый прогресс + очки за ответ
+        limits_after = await self._get_quiz_limits(question.quiz_id, self.current_user.id)
         return {
-            "answer_id": user_answer.id,
-            "awarded_points": points,
-            "user_points_total": self.current_user.points,
+            "answer_id": ua.id,
+            "awarded_points": pts,
+            "user_total_points": self.current_user.points,
+            "limits": limits_after,
         }
+
+    async def get_quiz_limits_public(self, quiz_id: int, user_id: int) -> dict:
+        """Отдать фронту текущие лимиты (сколько осталось)."""
+        return await self._get_quiz_limits(quiz_id, user_id)
 
 
     async def _get_question(self, question_id: int) -> QuizQuestion:
@@ -287,13 +303,39 @@ class QuizService:
         request: Request,
         images: List[UploadFile],
     ) -> QuizQuestion:
-        q = await self._get_question(question_id)
-        saved = await _save_uploads(request, images, subdir=f"questions/{question_id}")
-        q.images_urls = (q.images_urls or []) + saved
-        self.session.add(q)
+        res = await self.session.execute(
+            select(QuizQuestion).where(QuizQuestion.id == question_id)
+        )
+        question = res.scalar_one_or_none()
+        if not question:
+            raise HTTPException(404, "Question not found")
+
+        # папка для сохранения конкретного вопроса
+        subdir = f"questions/{question_id}"
+        folder = MEDIA_ROOT / subdir
+        folder.mkdir(parents=True, exist_ok=True)
+
+        new_urls = []
+        for i, f in enumerate(images):
+            # A, B, C... (если файлов > 26 — начнёт extra_27 и т.д.)
+            label = ascii_uppercase[i] if i < 26 else f"extra_{i}"
+            ext = _safe_ext(f.filename, f.content_type)
+            filename = f"{label}{ext}"
+            dest = folder / filename
+
+            content = await f.read()
+            await _async_write_bytes(dest, content)
+
+            new_urls.append(f"{MEDIA_URL}/{subdir}/{filename}")
+
+        # дописываем в images_urls
+        existing = question.images_urls or []
+        question.images_urls = existing + new_urls
+
+        self.session.add(question)
         await self.session.commit()
-        await self.session.refresh(q)
-        return q
+        await self.session.refresh(question)
+        return question
     
     async def bulk_add_questions_with_files(self, quiz_id: int, request, manifest_str: str, files: List):
         # 1) валидация квиза
@@ -385,3 +427,176 @@ class QuizService:
             )
             for u in users
         ]
+    
+    async def _get_quiz_limits(self, quiz_id: int, user_id: int) -> dict:
+        # всего вопросов в квизе
+        total: int = await self.session.scalar(
+            select(func.count()).select_from(QuizQuestion).where(QuizQuestion.quiz_id == quiz_id)
+        ) or 0
+
+        # уже отвечено этим пользователем
+        answered: int = await self.session.scalar(
+            select(func.count()).select_from(QuizUserAnswer).where(
+                QuizUserAnswer.quiz_id == quiz_id,
+                QuizUserAnswer.user_id == user_id,
+            )
+        ) or 0
+
+        # лимит из квиза
+        quiz: Quiz | None = await self.session.get(Quiz, quiz_id)
+        if not quiz:
+            raise HTTPException(404, "Quiz not found")
+
+        # эффективный лимит: если answer_limit задан — используем его,
+        # иначе равен общему числу вопросов в квизе
+        effective_limit = quiz.answer_limit if quiz.answer_limit is not None else total
+
+        remaining_allowed = max(effective_limit - answered, 0)
+
+        return {
+            "total_questions": total,
+            "answered": answered,
+            "effective_limit": effective_limit,
+            "remaining_allowed": remaining_allowed,
+        }
+
+class QuizExportService:
+    def __init__(self, session: AsyncSession):
+        self.session = session
+
+    async def export_answers_xlsx(
+        self,
+        *,
+        quiz_id: int,
+        question_id: Optional[int],
+        q_text: Optional[str],
+        locale: str = "ru",
+    ) -> tuple[bytes, str]:
+        """
+        Возвращает кортеж: (байты xlsx, имя_файла)
+        Колонки: submitted_at, quiz_id, question_id, question_text, user_tid, nickname, first_name, last_name, locale, answers
+        """
+        # базовый запрос
+        # answers — это список (ARRAY/JSON). Преобразуем в текст на уровне Python.
+        stmt = (
+            select(
+                QuizUserAnswer.created_at.label("submitted_at"),
+                QuizUserAnswer.quiz_id,
+                QuizUserAnswer.question_id,
+                # текст вопроса по локали: text_i18n[locale]->>text
+                QuizQuestion.text_i18n[locale].astext.label("question_text"),
+                User.telegram_id.label("user_tid"),
+                User.nickname,
+                User.first_name,
+                User.last_name,
+                QuizUserAnswer.locale,
+                QuizUserAnswer.answers,  # список
+            )
+            .join(QuizQuestion, QuizQuestion.id == QuizUserAnswer.question_id)
+            .join(User, User.id == QuizUserAnswer.user_id)
+            .where(QuizUserAnswer.quiz_id == quiz_id)
+            .order_by(QuizUserAnswer.created_at.asc(), QuizUserAnswer.id.asc())
+        )
+
+        if question_id is not None:
+            stmt = stmt.where(QuizUserAnswer.question_id == question_id)
+
+        if q_text and q_text.strip():
+            # фильтр по подстроке в текстe для выбранной локали
+            # lower(text_i18n[locale]::text) LIKE %lower(q_text)%
+            text_col = QuizQuestion.text_i18n[locale].astext
+            stmt = stmt.where(func.lower(text_col).like(f"%{q_text.lower()}%"))
+
+        res = await self.session.execute(stmt)
+        rows = res.all()
+
+        if not rows:
+            # пустой Excel тоже ок, но подсказка в имени файла
+            filename = f"answers_quiz_{quiz_id}_empty.xlsx"
+            buf = BytesIO()
+            with pd.ExcelWriter(buf, engine="openpyxl") as xw:
+                pd.DataFrame([], columns=[
+                    "submitted_at","quiz_id","question_id","question_text",
+                    "user_tid","nickname","first_name","last_name","locale","answers"
+                ]).to_excel(xw, index=False, sheet_name="Answers")
+            return buf.getvalue(), filename
+
+        # в pandas
+        def _answers_to_str(val):
+            if val is None:
+                return ""
+            if isinstance(val, (list, tuple)):
+                return ", ".join(map(str, val))
+            return str(val)
+
+        data = []
+        for r in rows:
+            data.append({
+                "submitted_at": r.submitted_at,
+                "quiz_id": r.quiz_id,
+                "question_id": r.question_id,
+                "question_text": r.question_text or "",
+                "user_tid": r.user_tid,
+                "nickname": r.nickname or "",
+                "first_name": r.first_name or "",
+                "last_name": r.last_name or "",
+                "locale": r.locale or "",
+                "answers": _answers_to_str(r.answers),
+            })
+
+        df = pd.DataFrame(data)
+
+        # сохранить в память
+        buf = BytesIO()
+        with pd.ExcelWriter(buf, engine="openpyxl") as xw:
+            df.to_excel(xw, index=False, sheet_name="Answers")
+
+        # имя файла
+        suffix = f"id_{question_id}" if question_id is not None else f"text_{locale}"
+        if q_text and q_text.strip():
+            suffix += f"_{q_text.strip().replace(' ', '_')[:40]}"
+        filename = f"answers_quiz_{quiz_id}_{suffix}.xlsx"
+
+        return buf.getvalue(), filename
+    
+    async def delete_question(self, question_id: int, remove_files: bool = True) -> dict:
+        res = await self.session.execute(
+            select(QuizQuestion).where(QuizQuestion.id == question_id)
+        )
+        q = res.scalar_one_or_none()
+        if not q:
+            raise HTTPException(404, "Question not found")
+
+        deleted_files = 0
+        if remove_files and q.images_urls:
+            for url in q.images_urls:
+                # ожидаем вида "/media/questions/<question_id>/A.jpg"
+                try:
+                    p = urlparse(url).path  # только путь
+                    if not p.startswith(MEDIA_URL + "/"):
+                        continue
+                    rel = p[len(MEDIA_URL) + 1 :]  # "questions/1/A.jpg"
+                    fs_path = MEDIA_ROOT / rel
+                    if fs_path.is_file():
+                        fs_path.unlink(missing_ok=True)
+                        deleted_files += 1
+                except Exception:
+                    # не падаем из-за файлов
+                    pass
+
+            # попытка удалить пустую папку вопроса
+            folder = MEDIA_ROOT / "questions" / str(question_id)
+            try:
+                if folder.exists():
+                    next(folder.iterdir(), None) is None and folder.rmdir()
+            except Exception:
+                pass
+
+        await self.session.delete(q)
+        await self.session.commit()
+
+        return {
+            "status": "success",
+            "deleted_id": question_id,
+            "deleted_files": deleted_files,
+        }

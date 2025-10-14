@@ -132,3 +132,9 @@ class UserLeaderboardOut(BaseModel):
     first_name: Optional[str]
     last_name: Optional[str]
     points: int
+
+class QuizProgressOut(BaseModel):
+    total: int
+    answered: int
+    remaining: int
+    unanswered_ids: List[int]
