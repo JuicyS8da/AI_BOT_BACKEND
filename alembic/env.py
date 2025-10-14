@@ -3,29 +3,24 @@ from logging.config import fileConfig
 
 from alembic import context
 from sqlalchemy import pool, create_engine
-from sqlalchemy.engine import Connection
-from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
-
-from app.common.db import Base  # Импортируем Base из вашего проекта
-
-
-# Подтягиваем .env
+from app.common.db import Base  # ваша metadata
 from dotenv import load_dotenv
-load_dotenv()  # читает .env из корня проекта
 
-# Собираем DATABASE_URL из переменных
-PG_USER = os.getenv("POSTGRES_USER", "postgres")
-PG_PASSWORD = os.getenv("POSTGRES_PASSWORD", "postgres")
-PG_DB = os.getenv("POSTGRES_DB", "postgres")
-PG_HOST = os.getenv("POSTGRES_HOST", "localhost")
-PG_PORT = os.getenv("POSTGRES_PORT", "5432")
+load_dotenv()  # .env из корня
 
-DATABASE_URL = f"postgresql+asyncpg://{PG_USER}:{PG_PASSWORD}@{PG_HOST}:{PG_PORT}/{PG_DB}"
-
-# Alembic config
 config = context.config
-# Прокидываем URL в alembic.ini -> env
-config.set_main_option("sqlalchemy.url", DATABASE_URL)
+
+# 1) Берём sync-URL, либо конвертируем из async
+url_sync = os.getenv("DATABASE_URL_SYNC")
+if not url_sync:
+    url_async = os.getenv("DATABASE_URL")
+    if not url_async:
+        raise RuntimeError("Neither DATABASE_URL_SYNC nor DATABASE_URL is set")
+    # простая конвертация драйвера
+    url_sync = url_async.replace("+asyncpg", "+psycopg2")
+
+# Прокидываем в alembic.ini (на случай если там пусто)
+config.set_main_option("sqlalchemy.url", url_sync)
 
 # Логи Alembic
 if config.config_file_name is not None:
@@ -33,19 +28,31 @@ if config.config_file_name is not None:
 
 target_metadata = Base.metadata
 
-def run_migrations_offline():
-    url = os.environ["DATABASE_URL"]
-    context.configure(url=url, target_metadata=target_metadata, literal_binds=True)
+
+def run_migrations_offline() -> None:
+    context.configure(
+        url=url_sync,
+        target_metadata=target_metadata,
+        literal_binds=True,
+        compare_type=True,
+        compare_server_default=True,
+    )
     with context.begin_transaction():
         context.run_migrations()
 
-def run_migrations_online():
-    url = os.environ["DATABASE_URL"]
-    connectable = create_engine(url, poolclass=pool.NullPool)
+
+def run_migrations_online() -> None:
+    connectable = create_engine(url_sync, poolclass=pool.NullPool, future=True)
     with connectable.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata)
+        context.configure(
+            connection=connection,
+            target_metadata=target_metadata,
+            compare_type=True,
+            compare_server_default=True,
+        )
         with context.begin_transaction():
             context.run_migrations()
+
 
 if context.is_offline_mode():
     run_migrations_offline()
