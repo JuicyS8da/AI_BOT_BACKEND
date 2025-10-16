@@ -2,6 +2,7 @@ from string import ascii_uppercase
 import pandas as pd
 from io import BytesIO
 from pathlib import Path
+from datetime import datetime, timezone
 from urllib.parse import urlparse
 
 from typing import List, Optional, Annotated
@@ -11,7 +12,7 @@ import unicodedata, json
 
 from fastapi import Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, desc, func
+from sqlalchemy import select, desc, func, literal
 
 from app.common.db import get_async_session
 from app.common.common import CurrentUser
@@ -476,21 +477,22 @@ class QuizExportService:
         Возвращает кортеж: (байты xlsx, имя_файла)
         Колонки: submitted_at, quiz_id, question_id, question_text, user_tid, nickname, first_name, last_name, locale, answers
         """
-        # базовый запрос
-        # answers — это список (ARRAY/JSON). Преобразуем в текст на уровне Python.
+
+        # ✅ безопасный доступ к JSONB
+        question_text_col = QuizQuestion.text_i18n.op("->>")(literal(locale)).label("question_text")
+
         stmt = (
             select(
                 QuizUserAnswer.created_at.label("submitted_at"),
                 QuizUserAnswer.quiz_id,
                 QuizUserAnswer.question_id,
-                # текст вопроса по локали: text_i18n[locale]->>text
-                QuizQuestion.text_i18n[locale].astext.label("question_text"),
+                question_text_col,
                 User.telegram_id.label("user_tid"),
                 User.nickname,
                 User.first_name,
                 User.last_name,
                 QuizUserAnswer.locale,
-                QuizUserAnswer.answers,  # список
+                QuizUserAnswer.answers,
             )
             .join(QuizQuestion, QuizQuestion.id == QuizUserAnswer.question_id)
             .join(User, User.id == QuizUserAnswer.user_id)
@@ -502,16 +504,12 @@ class QuizExportService:
             stmt = stmt.where(QuizUserAnswer.question_id == question_id)
 
         if q_text and q_text.strip():
-            # фильтр по подстроке в текстe для выбранной локали
-            # lower(text_i18n[locale]::text) LIKE %lower(q_text)%
-            text_col = QuizQuestion.text_i18n[locale].astext
-            stmt = stmt.where(func.lower(text_col).like(f"%{q_text.lower()}%"))
+            stmt = stmt.where(func.lower(question_text_col).like(f"%{q_text.lower()}%"))
 
         res = await self.session.execute(stmt)
         rows = res.all()
 
         if not rows:
-            # пустой Excel тоже ок, но подсказка в имени файла
             filename = f"answers_quiz_{quiz_id}_empty.xlsx"
             buf = BytesIO()
             with pd.ExcelWriter(buf, engine="openpyxl") as xw:
@@ -521,7 +519,6 @@ class QuizExportService:
                 ]).to_excel(xw, index=False, sheet_name="Answers")
             return buf.getvalue(), filename
 
-        # в pandas
         def _answers_to_str(val):
             if val is None:
                 return ""
@@ -531,8 +528,13 @@ class QuizExportService:
 
         data = []
         for r in rows:
+            ts = r.submitted_at
+            if isinstance(ts, datetime) and ts.tzinfo is not None:
+                # 🕒 убираем таймзону, Excel не поддерживает tz-aware даты
+                ts = ts.astimezone(timezone.utc).replace(tzinfo=None)
+
             data.append({
-                "submitted_at": r.submitted_at,
+                "submitted_at": ts,
                 "quiz_id": r.quiz_id,
                 "question_id": r.question_id,
                 "question_text": r.question_text or "",
@@ -546,12 +548,13 @@ class QuizExportService:
 
         df = pd.DataFrame(data)
 
-        # сохранить в память
+        # 🧹 гарантируем, что в DataFrame нет tz-aware дат
+        df["submitted_at"] = pd.to_datetime(df["submitted_at"], errors="coerce").dt.tz_localize(None)
+
         buf = BytesIO()
         with pd.ExcelWriter(buf, engine="openpyxl") as xw:
             df.to_excel(xw, index=False, sheet_name="Answers")
 
-        # имя файла
         suffix = f"id_{question_id}" if question_id is not None else f"text_{locale}"
         if q_text and q_text.strip():
             suffix += f"_{q_text.strip().replace(' ', '_')[:40]}"

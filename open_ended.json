@@ -1,0 +1,16 @@
+
+
+{
+  "items": [
+    {
+    "type": "open",
+    "text_i18n": {
+        "kk": "өз идеяңызды егжей-тегжейлі айтып беріңіз",
+        "ru": "Расскажи о своей идее подробно",
+        "en": "Tell us about your idea in detail"
+    },
+    "duration_seconds": 180,
+    "points": 0
+    }
+]
+}

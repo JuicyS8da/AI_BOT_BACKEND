@@ -1,6 +1,7 @@
 from typing import Dict, List, Union, Optional, Literal
-from pydantic import BaseModel, model_validator, Field, AnyUrl
+from pydantic import BaseModel, model_validator, Field, AnyUrl, ConfigDict
 from app.quizes.models import QuestionType
+
 
 class QuizCreate(BaseModel):
     name: str
@@ -84,14 +85,42 @@ class UserAnswerCreate(BaseModel):
     locale: str = "ru"
 
 class QuizQuestionUpsert(BaseModel):
-    """Элемент пачки: без quiz_id (его передаём в path)."""
     type: QuestionType | str
     text_i18n: Dict[str, str]
-    options_i18n: Dict[str, List[str]] = Field(default_factory=dict)
-    correct_answers_i18n: Dict[str, List[str]] = Field(default_factory=dict)
+    options_i18n: Dict[str, List[str]] = {}
+    correct_answers_i18n: Dict[str, List[str]] = {}
     duration_seconds: Optional[int] = 60
     points: int = 1
+    images_urls: Optional[List[AnyUrl]] = None
 
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "type": "single",
+                "text_i18n": {
+                    "ru": "Столица Казахстана?",
+                    "kk": "Қазақстан астанасы?",
+                    "en": "What is the capital of Kazakhstan?"
+                },
+                "options_i18n": {
+                    "ru": ["Астана", "Алматы", "Шымкент"],
+                    "kk": ["Астана", "Алматы", "Шымкент"],
+                    "en": ["Astana", "Almaty", "Shymkent"]
+                },
+                "correct_answers_i18n": {
+                    "ru": ["Астана"],
+                    "kk": ["Астана"],
+                    "en": ["Astana"]
+                },
+                "duration_seconds": 60,
+                "points": 1,
+                "images_urls": [
+                    "https://example.com/images/q1-A.jpg",
+                    "https://example.com/images/q1-B.jpg"
+                ]
+            }
+        }
+    )
     @model_validator(mode="after")
     def validate_choice_consistency(self):
         t = self.type.value if isinstance(self.type, QuestionType) else str(self.type)
@@ -109,8 +138,39 @@ class QuizQuestionUpsert(BaseModel):
                         raise ValueError(f"single requires exactly one correct answer for locale '{loc}'.")
         return self
 
+
 class QuizQuestionsBulkIn(BaseModel):
     items: List[QuizQuestionUpsert]
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "items": [
+                    {
+                        "type": "multiple",
+                        "text_i18n": {"ru": "Выберите гласные"},
+                        "options_i18n": {"ru": ["А", "Б", "Е", "Ж"]},
+                        "correct_answers_i18n": {"ru": ["А", "Е"]},
+                        "duration_seconds": 45,
+                        "points": 2,
+                        "images_urls": [
+                            "https://example.com/images/vowels-A.jpg",
+                            "https://example.com/images/vowels-B.jpg",
+                            "https://example.com/images/vowels-E.jpg",
+                            "https://example.com/images/vowels-Zh.jpg"
+                        ]
+                    },
+                    {
+                        "type": "open",
+                        "text_i18n": {"ru": "Столица Казахстана?"},
+                        "correct_answers_i18n": {"ru": ["Астана", "Нур-Султан"]},
+                        "duration_seconds": 60,
+                        "points": 1
+                    }
+                ]
+            }
+        }
+    )
 
 class QuizQuestionsBulkOut(BaseModel):
     created: int

@@ -1,0 +1,1224 @@
+{
+  "items": [
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Оптика нені зерттейді?",
+        "ru": "Оптика изучает что?",
+        "en": "Optics studies what?"
+      },
+      "options_i18n": {
+        "kk": ["Дыбыс", "Жылу", "Жарық", "Электр энергиясы"],
+        "ru": ["Звук", "Тепло", "Свет", "Электричество"],
+        "en": ["Sound", "Heat", "Light", "Electricity"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Жарық"],
+        "ru": ["Свет"],
+        "en": ["Light"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "ДНҚ дегеніміз не?",
+        "ru": "Что означает ДНК?",
+        "en": "What does DNA stand for?"
+      },
+      "options_i18n": {
+        "kk": ["Дезоксирибонуклеин қышқылы", "Динуклеотидті қышқылдық агрегат", "ДНҚ-нуклеин қышқылы", "Динамикалық нуклеин қышқылы"],
+        "ru": ["Дезоксирибонуклеиновая кислота", "Динуклеотидный кислотный агрегат", "ДНК-нуклеиновая кислота", "Динамическая нуклеиновая кислота"],
+        "en": ["Deoxyribonucleic acid", "Dinucleotide acid aggregate", "DNA nucleic acid", "Dynamic nucleic acid"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Дезоксирибонуклеин қышқылы"],
+        "ru": ["Дезоксирибонуклеиновая кислота"],
+        "en": ["Deoxyribonucleic acid"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Қай „Аполлон\" ай миссиясында алғаш рет айкөлік (луноход) пайдаланылды?",
+        "ru": "Какая лунная миссия «Аполлон» была первой, на которой появился луноход?",
+        "en": "Which Apollo mission was the first to use a lunar rover?"
+      },
+      "options_i18n": {
+        "kk": ["Аполлон-11", "Аполлон-13", "Аполлон-15", "Аполлон-17"],
+        "ru": ["Аполлон-11", "Аполлон-13", "Аполлон-15", "Аполлон-17"],
+        "en": ["Apollo 11", "Apollo 13", "Apollo 15", "Apollo 17"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Аполлон-15"],
+        "ru": ["Аполлон-15"],
+        "en": ["Apollo 15"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "1957 жылы Кеңес Одағы ұшырған алғашқы жасанды жер серігі қалай аталды?",
+        "ru": "Как назывался первый искусственный спутник, запущенный Советским Союзом в 1957 году?",
+        "en": "What was the first artificial satellite launched by the Soviet Union in 1957 called?"
+      },
+      "options_i18n": {
+        "kk": ["Восток-1", "Спутник-1", "Луна-1", "Союз-1"],
+        "ru": ["Восток-1", "Спутник-1", "Луна-1", "Союз-1"],
+        "en": ["Vostok 1", "Sputnik 1", "Luna 1", "Soyuz 1"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Спутник-1"],
+        "ru": ["Спутник-1"],
+        "en": ["Sputnik 1"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Ең сирек кездесетін қан тобы қандай?",
+        "ru": "Какая самая редкая группа крови?",
+        "en": "What is the rarest blood type?"
+      },
+      "options_i18n": {
+        "kk": ["0 (I) оң топ", "A (II) теріс топ", "B (III) оң топ", "AB теріс топ"],
+        "ru": ["0 (I) положительная", "A (II) отрицательная", "B (III) положительная", "AB отрицательная"],
+        "en": ["O positive", "A negative", "B positive", "AB negative"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["AB теріс топ"],
+        "ru": ["AB отрицательная"],
+        "en": ["AB negative"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Жердің негізгі үш қабаты қандай?",
+        "ru": "Каковы три основных слоя Земли?",
+        "en": "What are the three main layers of the Earth?"
+      },
+      "options_i18n": {
+        "kk": ["Қыртыс, мантия, ядро", "Литосфера, астеносфера, ядро", "Топырақ, пластмасса, ядро", "Қыртыс, магма, ядро"],
+        "ru": ["Кора, мантия, ядро", "Литосфера, астеносфера, ядро", "Почва, пластмасса, ядро", "Кора, магма, ядро"],
+        "en": ["Crust, mantle, core", "Lithosphere, asthenosphere, core", "Soil, plastic, core", "Crust, magma, core"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Қыртыс, мантия, ядро"],
+        "ru": ["Кора, мантия, ядро"],
+        "en": ["Crust, mantle, core"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Бақалар жануарлардың қай тобына жатады?",
+        "ru": "Лягушки относятся к какой группе животных?",
+        "en": "Frogs belong to which group of animals?"
+      },
+      "options_i18n": {
+        "kk": ["Жорғалаушылар", "Қосмекенділер", "Сүтқоректілер", "Балықтар"],
+        "ru": ["Рептилии", "Земноводные", "Млекопитающие", "Рыбы"],
+        "en": ["Reptiles", "Amphibians", "Mammals", "Fish"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Қосмекенділер"],
+        "ru": ["Земноводные"],
+        "en": ["Amphibians"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Акула денесінде қанша сүйек бар?",
+        "ru": "Сколько костей в теле акулы?",
+        "en": "How many bones are in a shark's body?"
+      },
+      "options_i18n": {
+        "kk": ["Нөл", "50-ге жуық", "100-ден астам", "200-ге жуық"],
+        "ru": ["Ноль", "Около 50", "Более 100", "Около 200"],
+        "en": ["Zero", "About 50", "More than 100", "About 200"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Нөл"],
+        "ru": ["Ноль"],
+        "en": ["Zero"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Адам денесіндегі ең кішкентай сүйек қайда орналасқан?",
+        "ru": "Где расположены самые маленькие кости в организме человека?",
+        "en": "Where are the smallest bones in the human body located?"
+      },
+      "options_i18n": {
+        "kk": ["Саусақтарда", "Мұрында", "Құлақта", "Омыртқада"],
+        "ru": ["В пальцах", "В носу", "В ухе", "В позвоночнике"],
+        "en": ["In the fingers", "In the nose", "In the ear", "In the spine"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Құлақта"],
+        "ru": ["В ухе"],
+        "en": ["In the ear"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Сегізаяқтың неше жүрегі бар?",
+        "ru": "Сколько сердец у осьминога?",
+        "en": "How many hearts does an octopus have?"
+      },
+      "options_i18n": {
+        "kk": ["Бір", "Екі", "Үш", "Төрт"],
+        "ru": ["Одно", "Два", "Три", "Четыре"],
+        "en": ["One", "Two", "Three", "Four"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Үш"],
+        "ru": ["Три"],
+        "en": ["Three"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Күн біздің Күн жүйесінің ортасында орналасқан деп кім болжаған?",
+        "ru": "Кто предположил, что Солнце находится в центре нашей Солнечной системы?",
+        "en": "Who proposed that the Sun is at the center of our Solar System?"
+      },
+      "options_i18n": {
+        "kk": ["Галилео Галилей", "Николай Коперник", "Исаак Ньютон", "Аристотель"],
+        "ru": ["Галилео Галилей", "Николай Коперник", "Исаак Ньютон", "Аристотель"],
+        "en": ["Galileo Galilei", "Nicolaus Copernicus", "Isaac Newton", "Aristotle"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Николай Коперник"],
+        "ru": ["Николай Коперник"],
+        "en": ["Nicolaus Copernicus"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Телефонды ойлап тапқан кім?",
+        "ru": "Кого считают изобретателем телефона?",
+        "en": "Who is credited with inventing the telephone?"
+      },
+      "options_i18n": {
+        "kk": ["Томас Эдисон", "Александр Грэхем Белл", "Никола Тесла", "Гульельмо Маркони"],
+        "ru": ["Томас Эдисон", "Александр Грэхем Белл", "Никола Тесла", "Гульельмо Маркони"],
+        "en": ["Thomas Edison", "Alexander Graham Bell", "Nikola Tesla", "Guglielmo Marconi"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Александр Грэхем Белл"],
+        "ru": ["Александр Грэхем Белл"],
+        "en": ["Alexander Graham Bell"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Қай ғаламшар ең жылдам айналым жасайды?",
+        "ru": "Какая планета вращается быстрее всех?",
+        "en": "Which planet rotates the fastest?"
+      },
+      "options_i18n": {
+        "kk": ["Меркурий", "Венера", "Земля", "Юпитер"],
+        "ru": ["Меркурий", "Венера", "Земля", "Юпитер"],
+        "en": ["Mercury", "Venus", "Earth", "Jupiter"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Юпитер"],
+        "ru": ["Юпитер"],
+        "en": ["Jupiter"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Дыбыс ауада судан жылдам тарайды. Шындық па, жалған ба?",
+        "ru": "В воздухе звук распространяется быстрее, чем в воде. Правда или ложь?",
+        "en": "Sound travels faster in air than in water. True or false?"
+      },
+      "options_i18n": {
+        "kk": ["Шындық", "Жалған"],
+        "ru": ["Правда", "Ложь"],
+        "en": ["True", "False"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Жалған"],
+        "ru": ["Ложь"],
+        "en": ["False"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Жерлегі ең қатты табиғи зат қандай?",
+        "ru": "Какое самое твердое природное вещество на Земле?",
+        "en": "What is the hardest natural substance on Earth?"
+      },
+      "options_i18n": {
+        "kk": ["Гауһар", "Болат", "Кварц", "Графит"],
+        "ru": ["Алмаз", "Сталь", "Кварц", "Графит"],
+        "en": ["Diamond", "Steel", "Quartz", "Graphite"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Гауһар"],
+        "ru": ["Алмаз"],
+        "en": ["Diamond"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Ересек адамда қанша тіс болады?",
+        "ru": "Сколько зубов у взрослого человека?",
+        "en": "How many teeth does an adult human have?"
+      },
+      "options_i18n": {
+        "kk": ["28", "30", "32", "36"],
+        "ru": ["28", "30", "32", "36"],
+        "en": ["28", "30", "32", "36"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["32"],
+        "ru": ["32"],
+        "en": ["32"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Ғарышқа ең алғаш ұшырылған иттің аты қандай?",
+        "ru": "Как звали первую собаку, запущенную в космос?",
+        "en": "What was the name of the first dog launched into space?"
+      },
+      "options_i18n": {
+        "kk": ["Белка", "Стрелка", "Лайка", "Звездочка"],
+        "ru": ["Белка", "Стрелка", "Лайка", "Звездочка"],
+        "en": ["Belka", "Strelka", "Laika", "Zvezdochka"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Лайка"],
+        "ru": ["Лайка"],
+        "en": ["Laika"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Шаш пен тырнақ бірдей материалдан жасалған. Шындық әлде жалған?",
+        "ru": "Волосы и ногти сделаны из одного и того же материала. Правда или ложь?",
+        "en": "Hair and nails are made of the same material. True or false?"
+      },
+      "options_i18n": {
+        "kk": ["Шындық", "Жалған"],
+        "ru": ["Правда", "Ложь"],
+        "en": ["True", "False"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Шындық"],
+        "ru": ["Правда"],
+        "en": ["True"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Ғарышта болған ең алғашқы әйел адам кім?",
+        "ru": "Кто была первой женщиной в космосе?",
+        "en": "Who was the first woman in space?"
+      },
+      "options_i18n": {
+        "kk": ["Салли Райд", "Валентина Терешкова", "Елена Кондакова", "Пегги Уитсон"],
+        "ru": ["Салли Райд", "Валентина Терешкова", "Елена Кондакова", "Пегги Уитсон"],
+        "en": ["Sally Ride", "Valentina Tereshkova", "Elena Kondakova", "Peggy Whitson"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Валентина Терешкова"],
+        "ru": ["Валентина Терешкова"],
+        "en": ["Valentina Tereshkova"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Итеру және тарту деген мағынаны білдіретін ғылыми атау қандай?",
+        "ru": "Какое научное слово означает толкать или тянуть?",
+        "en": "Which scientific word means to push or pull?"
+      },
+      "options_i18n": {
+        "kk": ["Энергия", "Күш", "Қуат", "Импульс"],
+        "ru": ["Энергия", "Сила", "Мощность", "Импульс"],
+        "en": ["Energy", "Force", "Power", "Momentum"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Күш"],
+        "ru": ["Сила"],
+        "en": ["Force"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Адам денесінің қай бөлігінде тер бездері ең көп орналасқан?",
+        "ru": "Где на теле человека больше всего потовых желез?",
+        "en": "Where on the human body are the most sweat glands located?"
+      },
+      "options_i18n": {
+        "kk": ["Қолтықта", "Алақандарда", "Бетте", "Табанның астында"],
+        "ru": ["На подмышках", "На ладонях", "На лице", "На подошвах стоп"],
+        "en": ["In the armpits", "On the palms", "On the face", "On the soles of the feet"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Табанның астында"],
+        "ru": ["На подошвах стоп"],
+        "en": ["On the soles of the feet"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Күн сәулесінің Жерге жетуіне шамамен қанша уақыт қажет?",
+        "ru": "Сколько примерно времени требуется солнечному свету, чтобы достичь Земли?",
+        "en": "Approximately how long does sunlight take to reach the Earth?"
+      },
+      "options_i18n": {
+        "kk": ["8 секунд", "8 минут", "8 сағат", "8 күн"],
+        "ru": ["8 секунд", "8 минут", "8 часов", "8 дней"],
+        "en": ["8 seconds", "8 minutes", "8 hours", "8 days"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["8 минут"],
+        "ru": ["8 минут"],
+        "en": ["8 minutes"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Ересек адамның денесінде қанша сүйек бар?",
+        "ru": "Сколько костей в теле взрослого человека?",
+        "en": "How many bones are in the adult human body?"
+      },
+      "options_i18n": {
+        "kk": ["200", "206", "212", "218"],
+        "ru": ["200", "206", "212", "218"],
+        "en": ["200", "206", "212", "218"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["206"],
+        "ru": ["206"],
+        "en": ["206"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Найзағай бір жерге екі рет соғуы мүмкін бе?",
+        "ru": "Может ли молния ударить по одному и тому же месту дважды?",
+        "en": "Can lightning strike the same place twice?"
+      },
+      "options_i18n": {
+        "kk": ["Иә", "Жоқ"],
+        "ru": ["Да", "Нет"],
+        "en": ["Yes", "No"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Иә"],
+        "ru": ["Да"],
+        "en": ["Yes"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Тамақты ыдырату үдерісі қалай аталады?",
+        "ru": "Как называется процесс расщепления пищи?",
+        "en": "What is the process of breaking down food called?"
+      },
+      "options_i18n": {
+        "kk": ["Метаболизм", "Ас қорыту", "Ассимиляция", "Ферментация"],
+        "ru": ["Метаболизм", "Пищеварение", "Ассимиляция", "Ферментация"],
+        "en": ["Metabolism", "Digestion", "Assimilation", "Fermentation"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Ас қорыту"],
+        "ru": ["Пищеварение"],
+        "en": ["Digestion"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Қай түс көзге бірінші түседі?",
+        "ru": "Какой цвет первым бросается в глаза?",
+        "en": "Which color catches the eye first?"
+      },
+      "options_i18n": {
+        "kk": ["Қызыл", "Жасыл", "Сары", "Көк"],
+        "ru": ["Красный", "Зеленый", "Желтый", "Синий"],
+        "en": ["Red", "Green", "Yellow", "Blue"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Сары"],
+        "ru": ["Желтый"],
+        "en": ["Yellow"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Адам ағзасындағы басқа сүйектерге қосылмаған жалғыз сүйек қалай аталады?",
+        "ru": "Какая единственная кость в организме человека не прикреплена к другой кости?",
+        "en": "What is the only bone in the human body not attached to another bone?"
+      },
+      "options_i18n": {
+        "kk": ["Тізе қақпағы", "Тіласты сүйегі", "Бұғана сүйек", "Жауырын сүйек"],
+        "ru": ["Коленная чашечка", "Подъязычная кость", "Ключица", "Лопатка"],
+        "en": ["Patella", "Hyoid bone", "Clavicle", "Scapula"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Тіласты сүйегі"],
+        "ru": ["Подъязычная кость"],
+        "en": ["Hyoid bone"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Таңғы және кешкі уақытта белсенді болатын жануарлар қалай аталады?",
+        "ru": "Как называются животные, активные на рассвете и в сумерках?",
+        "en": "What are animals active at dawn and dusk called?"
+      },
+      "options_i18n": {
+        "kk": ["Түнгі", "Күндізгі", "Ымырт кезде белсенді", "Түн ортасында белсенді"],
+        "ru": ["Ночные", "Дневные", "Сумеречные", "Полуночные"],
+        "en": ["Nocturnal", "Diurnal", "Crepuscular", "Midnight-active"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Ымырт кезде белсенді"],
+        "ru": ["Сумеречные"],
+        "en": ["Crepuscular"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Қай температурада Цельсий мен Фаренгейт шкалаларының мәні тең болады?",
+        "ru": "При какой температуре градусы Цельсия и Фаренгейта равны?",
+        "en": "At what temperature are Celsius and Fahrenheit equal?"
+      },
+      "options_i18n": {
+        "kk": ["0", "-40", "-100", "-273"],
+        "ru": ["0", "-40", "-100", "-273"],
+        "en": ["0", "-40", "-100", "-273"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["-40"],
+        "ru": ["-40"],
+        "en": ["-40"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+        "type": "single",
+        "text_i18n": {
+            "kk": "Төрт негізгі асыл металл қандай?",
+            "ru": "Какие четыре основных драгоценных металла?",
+            "en": "What are the four main precious metals?"
+        },
+        "options_i18n": {
+            "kk": ["Алтын, Күміс, Мыс, Мырыш", "Алтын, күміс, платина, палладий", "Алтын, темір, никель, қалайы", "Күміс, алюминий, титан, вольфрам"],
+            "ru": ["Золото, серебро, медь, цинк", "Золото, серебро, платина, палладий", "Золото, железо, никель, олово", "Серебро, алюминий, титан, вольфрам"],
+            "en": ["Gold, silver, copper, zinc", "Gold, silver, platinum, palladium", "Gold, iron, nickel, tin", "Silver, aluminum, titanium, tungsten"]
+        },
+        "correct_answers_i18n": {
+            "kk": ["Алтын, күміс, платина, палладий"],
+            "ru": ["Золото, серебро, платина, палладий"],
+            "en": ["Gold, silver, platinum, palladium"]
+        },
+        "duration_seconds": 25,
+        "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Қытайдың ғарышкерлерін қалай атайды?",
+        "ru": "Космических путешественников из Китая называют...",
+        "en": "Chinese space travelers are called..."
+      },
+      "options_i18n": {
+        "kk": ["Астронавттар", "Космонавттар", "Тайконавттар", "Спутринавттар"],
+        "ru": ["Астронавтами", "Космонавтами", "Тайконавтами", "Спутринавтами"],
+        "en": ["Astronauts", "Cosmonauts", "Taikonauts", "Sputronauts"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Тайконавттар"],
+        "ru": ["Тайконавтами"],
+        "en": ["Taikonauts"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Қолтық шұңқыры дененің қай бөлігіне жатады?",
+        "ru": "Подмышечная впадина - это какая часть тела?",
+        "en": "The axillary fossa is which part of the body?"
+      },
+      "options_i18n": {
+        "kk": ["Шап", "Мойын", "Қолтық", "Тізе бүгімі"],
+        "ru": ["Пах", "Шея", "Подмышка", "Коленный сгиб"],
+        "en": ["Groin", "Neck", "Armpit", "Knee pit"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Қолтық"],
+        "ru": ["Подмышка"],
+        "en": ["Armpit"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Қай су тезірек қатады: ыстық па, әлде салқын ба?",
+        "ru": "Что замерзает быстрее: горячая или холодная вода?",
+        "en": "What freezes faster: hot water or cold water?"
+      },
+      "options_i18n": {
+        "kk": ["Салқын су", "Ыстық су", "Бірдей қатады"],
+        "ru": ["Холодная вода", "Горячая вода", "Замерзают одинаково"],
+        "en": ["Cold water", "Hot water", "Freeze at the same rate"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Ыстық су"],
+        "ru": ["Горячая вода"],
+        "en": ["Hot water"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Адам арықтағанда май денеден қалай шығады?",
+        "ru": "Как жир покидает ваше тело, когда вы худеете?",
+        "en": "How does fat leave your body when you lose weight?"
+      },
+      "options_i18n": {
+        "kk": ["Тер арқылы", "Зәр арқылы", "Тер, зәр және тыныс арқылы", "Ас қорыту жүйесі арқылы"],
+        "ru": ["Через пот", "Через мочу", "Через пот, мочу и дыхание", "Через пищеварительную систему"],
+        "en": ["Through sweat", "Through urine", "Through sweat, urine, and breath", "Through the digestive system"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Тер, зәр және тыныс арқылы"],
+        "ru": ["Через пот, мочу и дыхание"],
+        "en": ["Through sweat, urine, and breath"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Мидың қай бөлігі есту мен сөйлеуге жауап береді?",
+        "ru": "Какая часть мозга отвечает за слух и речь?",
+        "en": "Which part of the brain is responsible for hearing and speech?"
+      },
+      "options_i18n": {
+        "kk": ["Маңдай бөлігі", "Төбе бөлігі", "Шүйде бөлігі", "Самай бөлігі"],
+        "ru": ["Лобная доля", "Теменная доля", "Затылочная доля", "Височная доля"],
+        "en": ["Frontal lobe", "Parietal lobe", "Occipital lobe", "Temporal lobe"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Самай бөлігі"],
+        "ru": ["Височная доля"],
+        "en": ["Temporal lobe"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Жолбарыстар тобы қалай аталады?",
+        "ru": "Группа тигров называется...",
+        "en": "A group of tigers is called..."
+      },
+      "options_i18n": {
+        "kk": ["Үйір", "Прайд", "Табын", "Тұтқиыл шабуыл"],
+        "ru": ["Стая", "Прайд", "Стадо", "Засада"],
+        "en": ["Pack", "Pride", "Herd", "Ambush"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Тұтқиыл шабуыл"],
+        "ru": ["Засада"],
+        "en": ["Ambush"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Газдың қай түрін біз көбірек жұтамыз?",
+        "ru": "Какой газ мы вдыхаем больше всего?",
+        "en": "Which gas do we inhale the most?"
+      },
+      "options_i18n": {
+        "kk": ["Оттек", "Азот", "Көмірқышқыл газы", "Сутек"],
+        "ru": ["Кислород", "Азот", "Углекислый газ", "Водород"],
+        "en": ["Oxygen", "Nitrogen", "Carbon dioxide", "Hydrogen"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Азот"],
+        "ru": ["Азот"],
+        "en": ["Nitrogen"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Күн жүйесінде неше планета бар?",
+        "ru": "Сколько планет в Солнечной системе?",
+        "en": "How many planets are in the Solar System?"
+      },
+      "options_i18n": {
+        "kk": ["7", "8", "9", "10"],
+        "ru": ["7", "8", "9", "10"],
+        "en": ["7", "8", "9", "10"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["8"],
+        "ru": ["8"],
+        "en": ["8"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Бөлме температурасында қай металл сұйық күйде кездеседі?",
+        "ru": "Какой металл жидкий при комнатной температуре?",
+        "en": "Which metal is liquid at room temperature?"
+      },
+      "options_i18n": {
+        "kk": ["Натрий", "Сынап", "Темір", "Алюминий"],
+        "ru": ["Натрий", "Ртуть", "Железо", "Алюминий"],
+        "en": ["Sodium", "Mercury", "Iron", "Aluminum"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Сынап"],
+        "ru": ["Ртуть"],
+        "en": ["Mercury"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Саңырауқұлақтарды зерттейтін ғылым қалай аталады?",
+        "ru": "Как называется наука о грибах?",
+        "en": "What is the science of fungi called?"
+      },
+      "options_i18n": {
+        "kk": ["Ботаника", "Микология", "Зоология", "Энтомология"],
+        "ru": ["Ботаника", "Микология", "Зоология", "Энтомология"],
+        "en": ["Botany", "Mycology", "Zoology", "Entomology"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Микология"],
+        "ru": ["Микология"],
+        "en": ["Mycology"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Сақиналарымен белгілі ғаламшар қалай аталады?",
+        "ru": "Какая планета известна своими кольцами?",
+        "en": "Which planet is known for its rings?"
+      },
+      "options_i18n": {
+        "kk": ["Марс", "Сатурн", "Нептун", "Жер"],
+        "ru": ["Марс", "Сатурн", "Нептун", "Земля"],
+        "en": ["Mars", "Saturn", "Neptune", "Earth"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Сатурн"],
+        "ru": ["Сатурн"],
+        "en": ["Saturn"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Қанды денеге айдайтын ағза қандай?",
+        "ru": "Какой орган перекачивает кровь по телу?",
+        "en": "Which organ pumps blood through the body?"
+      },
+      "options_i18n": {
+        "kk": ["Бауыр", "Өкпе", "Жүрек", "Бүйрек"],
+        "ru": ["Печень", "Легкие", "Сердце", "Почки"],
+        "en": ["Liver", "Lungs", "Heart", "Kidneys"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Жүрек"],
+        "ru": ["Сердце"],
+        "en": ["Heart"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Жарық жылдамдығы шамамен нешеге тең?",
+        "ru": "Скорость света приблизительно равна...",
+        "en": "The speed of light is approximately..."
+      },
+      "options_i18n": {
+        "kk": ["3 000 км/с", "30 000 км/с", "300 000 км/с", "3 000 000 км/с"],
+        "ru": ["3 000 км/с", "30 000 км/с", "300 000 км/с", "3 000 000 км/с"],
+        "en": ["3,000 km/s", "30,000 km/s", "300,000 km/s", "3,000,000 km/s"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["300 000 км/с"],
+        "ru": ["300 000 км/с"],
+        "en": ["300,000 km/s"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Инсулинді өндіретін ағза қандай?",
+        "ru": "Какой орган производит инсулин?",
+        "en": "Which organ produces insulin?"
+      },
+      "options_i18n": {
+        "kk": ["Асқазан", "Ұйқы безі", "Бауыр", "Өкпе безі"],
+        "ru": ["Желудок", "Поджелудочная железа", "Печень", "Селезенка"],
+        "en": ["Stomach", "Pancreas", "Liver", "Spleen"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Ұйқы безі"],
+        "ru": ["Поджелудочная железа"],
+        "en": ["Pancreas"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Біздің Жерде қалуымызға қандай күш әсер етеді?",
+        "ru": "Какая сила удерживает нас на Земле?",
+        "en": "Which force keeps us on the Earth?"
+      },
+      "options_i18n": {
+        "kk": ["Үйкеліс күші", "Гравитация", "Магнетизм", "Ядролық күш"],
+        "ru": ["Трение", "Гравитация", "Магнетизм", "Ядерная"],
+        "en": ["Friction", "Gravity", "Magnetism", "Nuclear"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Гравитация"],
+        "ru": ["Гравитация"],
+        "en": ["Gravity"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Электр тоғының өлшем бірлігі қандай?",
+        "ru": "Единица измерения электрического тока — это...",
+        "en": "The unit of electric current is..."
+      },
+      "options_i18n": {
+        "kk": ["Ватт", "Ампер", "Вольт", "Ом"],
+        "ru": ["Ватт", "Ампер", "Вольт", "Ом"],
+        "en": ["Watt", "Ampere", "Volt", "Ohm"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Ампер"],
+        "ru": ["Ампер"],
+        "en": ["Ampere"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Қатты күйден газ күйіне өту үдерісі қалай аталады?",
+        "ru": "Как называется изменение агрегатного состояния из твёрдого в газ?",
+        "en": "What is the change from solid to gas called?"
+      },
+      "options_i18n": {
+        "kk": ["Еру", "Булану", "Сублимация", "Конденсация"],
+        "ru": ["Плавление", "Испарение", "Сублимация", "Конденсация"],
+        "en": ["Melting", "Evaporation", "Sublimation", "Condensation"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Сублимация"],
+        "ru": ["Сублимация"],
+        "en": ["Sublimation"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Күн сәулесінің әсерінен теріде қандай дәрумен түзіледі?",
+        "ru": "Какой витамин вырабатывается в коже под действием солнца?",
+        "en": "Which vitamin is produced in skin by sunlight?"
+      },
+      "options_i18n": {
+        "kk": ["A витамині", "B12 витамині", "C витамині", "D витамині"],
+        "ru": ["Витамин A", "Витамин B12", "Витамин C", "Витамин D"],
+        "en": ["Vitamin A", "Vitamin B12", "Vitamin C", "Vitamin D"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["D витамині"],
+        "ru": ["Витамин D"],
+        "en": ["Vitamin D"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Адамның ең үлкен дене мүшесі қандай?",
+        "ru": "Какой самый крупный орган человека?",
+        "en": "What is the largest human organ?"
+      },
+      "options_i18n": {
+        "kk": ["Бауыр", "Тері", "Ми", "Өкпе"],
+        "ru": ["Печень", "Кожа", "Мозг", "Легкие"],
+        "en": ["Liver", "Skin", "Brain", "Lungs"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Тері"],
+        "ru": ["Кожа"],
+        "en": ["Skin"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Электр тогы өтетін жол қалай аталады?",
+        "ru": "Как называется путь, по которому течёт электрический ток?",
+        "en": "What is the path of electric current called?"
+      },
+      "options_i18n": {
+        "kk": ["Контур", "Арна", "Тізбек", "Сызық"],
+        "ru": ["Контур", "Канал", "Цепь", "Линия"],
+        "en": ["Contour", "Channel", "Circuit", "Line"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Тізбек"],
+        "ru": ["Цепь"],
+        "en": ["Circuit"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Үш қозғалыс заңын кім тұжырымдаған?",
+        "ru": "Кто сформулировал три закона движения?",
+        "en": "Who formulated the three laws of motion?"
+      },
+      "options_i18n": {
+        "kk": ["Эйнштейн", "Ньютон", "Фарадей", "Максвелл"],
+        "ru": ["Эйнштейн", "Ньютон", "Фарадей", "Максвелл"],
+        "en": ["Einstein", "Newton", "Faraday", "Maxwell"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Ньютон"],
+        "ru": ["Ньютон"],
+        "en": ["Newton"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Химиялық таңбасы O болатын элемент қалай аталады?",
+        "ru": "Какой элемент имеет химический символ O?",
+        "en": "Which element has the chemical symbol O?"
+      },
+      "options_i18n": {
+        "kk": ["Оттек", "Алтын", "Қалайы", "Осмий"],
+        "ru": ["Кислород", "Золото", "Олово", "Осмий"],
+        "en": ["Oxygen", "Gold", "Tin", "Osmium"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Оттек"],
+        "ru": ["Кислород"],
+        "en": ["Oxygen"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Берілгендердің ішіндегі қай теңіз ең тұзды болып саналады?",
+        "ru": "Какое море самое солёное из перечисленных?",
+        "en": "Which of these seas is the saltiest?"
+      },
+      "options_i18n": {
+        "kk": ["Қара", "Өлі", "Балтық", "Жапон"],
+        "ru": ["Чёрное", "Мёртвое", "Балтийское", "Японское"],
+        "en": ["Black", "Dead", "Baltic", "Japan"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Өлі"],
+        "ru": ["Мёртвое"],
+        "en": ["Dead"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Судың буға айналу процессі қалай аталады?",
+        "ru": "Как называется процесс превращения воды в пар?",
+        "en": "What is the process of water turning into vapor?"
+      },
+      "options_i18n": {
+        "kk": ["Конденсация", "Булану", "Қату", "Дистилляция"],
+        "ru": ["Конденсация", "Испарение", "Замерзание", "Дистилляция"],
+        "en": ["Condensation", "Evaporation", "Freezing", "Distillation"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Булану"],
+        "ru": ["Испарение"],
+        "en": ["Evaporation"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Жүрекке қанды қайта жеткізетін қан тамыры қалай аталады?",
+        "ru": "Какой кровеносный сосуд возвращает кровь к сердцу?",
+        "en": "Which blood vessel returns blood to the heart?"
+      },
+      "options_i18n": {
+        "kk": ["Артерия", "Капилляр", "Тамыр", "Аорта"],
+        "ru": ["Артерия", "Капилляр", "Вена", "Аорта"],
+        "en": ["Artery", "Capillary", "Vein", "Aorta"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Тамыр"],
+        "ru": ["Вена"],
+        "en": ["Vein"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Периодтық кестені ойлап тапқан ғалым кім?",
+        "ru": "Какой учёный разработал периодическую таблицу?",
+        "en": "Which scientist developed the periodic table?"
+      },
+      "options_i18n": {
+        "kk": ["Менделеев", "Бойль", "Резерфорд", "Лавуазье"],
+        "ru": ["Менделеев", "Бойль", "Резерфорд", "Лавуазье"],
+        "en": ["Mendeleev", "Boyle", "Rutherford", "Lavoisier"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Менделеев"],
+        "ru": ["Менделеев"],
+        "en": ["Mendeleev"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Жасушаның қай бөлігі ДНҚ-ны қамтиды?",
+        "ru": "Какая часть клетки содержит ДНК?",
+        "en": "Which part of the cell contains DNA?"
+      },
+      "options_i18n": {
+        "kk": ["Цитоплазма", "Митохондрия", "Ядро", "Рибосома"],
+        "ru": ["Цитоплазма", "Митохондрия", "Ядро", "Рибосома"],
+        "en": ["Cytoplasm", "Mitochondrion", "Nucleus", "Ribosome"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Ядро"],
+        "ru": ["Ядро"],
+        "en": ["Nucleus"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Температураны өлшейтін құрал қалай аталады?",
+        "ru": "Как называется прибор для измерения температуры?",
+        "en": "What instrument measures temperature?"
+      },
+      "options_i18n": {
+        "kk": ["Барометр", "Термометр", "Спидометр", "Анемометр"],
+        "ru": ["Барометр", "Термометр", "Спидометр", "Анемометр"],
+        "en": ["Barometer", "Thermometer", "Speedometer", "Anemometer"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Термометр"],
+        "ru": ["Термометр"],
+        "en": ["Thermometer"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Ең үлкен мұхит қалай аталады?",
+        "ru": "Какой океан самый большой?",
+        "en": "Which ocean is the largest?"
+      },
+      "options_i18n": {
+        "kk": ["Үнді мұхиты", "Атлант мұхиты", "Солтүстік Мұзды мұхит", "Тынық мұхит"],
+        "ru": ["Индийский", "Атлантический", "Северный Ледовитый", "Тихий"],
+        "en": ["Indian", "Atlantic", "Arctic", "Pacific"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Тынық мұхит"],
+        "ru": ["Тихий"],
+        "en": ["Pacific"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Өсімдіктерге қорек өндіретін үдеріс қалай аталады?",
+        "ru": "Какой процесс производит растениям пищу?",
+        "en": "Which process produces food for plants?"
+      },
+      "options_i18n": {
+        "kk": ["Тыныс алу", "Фотосинтез", "Ашу үдерісі", "Шіру үдерісі"],
+        "ru": ["Дыхание", "Фотосинтез", "Брожение", "Гниение"],
+        "en": ["Respiration", "Photosynthesis", "Fermentation", "Decay"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Фотосинтез"],
+        "ru": ["Фотосинтез"],
+        "en": ["Photosynthesis"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Орта температура бойынша ең ыстық планета қандай?",
+        "ru": "Какая планета самая горячая по средней температуре?",
+        "en": "Which planet is hottest on average?"
+      },
+      "options_i18n": {
+        "kk": ["Меркурий", "Шолпан", "Марс", "Юпитер"],
+        "ru": ["Меркурий", "Венера", "Марс", "Юпитер"],
+        "en": ["Mercury", "Venus", "Mars", "Jupiter"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Шолпан"],
+        "ru": ["Венера"],
+        "en": ["Venus"]
+      },
+      "duration_seconds": 25,
+      "points": 3
+    }
+  ]
+}
