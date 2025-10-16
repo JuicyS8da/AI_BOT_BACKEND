@@ -603,3 +603,57 @@ class QuizExportService:
             "deleted_id": question_id,
             "deleted_files": deleted_files,
         }
+    
+    async def export_leaderboard_xlsx(
+        self,
+        *,
+        limit: int = 100,
+        active_only: bool = False,
+    ) -> tuple[bytes, str]:
+        """
+        Возвращает (xlsx_bytes, filename).
+        Лидборд по суммарным points пользователей.
+        """
+        points_col = func.coalesce(User.points, 0).label("points")
+
+        stmt = (
+            select(
+                User.telegram_id,
+                User.nickname,
+                User.first_name,
+                User.last_name,
+                points_col,
+            )
+            .order_by(points_col.desc(), User.id.asc())
+            .limit(limit)
+        )
+        if active_only:
+            stmt = stmt.where(User.is_active.is_(True))
+
+        res = await self.session.execute(stmt)
+        rows = res.all()
+
+        # соберём данные и присвоим rank
+        data = []
+        for i, r in enumerate(rows, start=1):
+            data.append(
+                {
+                    "rank": i,
+                    "telegram_id": r.telegram_id,
+                    "nickname": r.nickname or "",
+                    "first_name": r.first_name or "",
+                    "last_name": r.last_name or "",
+                    "points": int(r.points or 0),
+                }
+            )
+
+        df = pd.DataFrame(data, columns=["rank", "telegram_id", "nickname", "first_name", "last_name", "points"])
+
+        buf = BytesIO()
+        with pd.ExcelWriter(buf, engine="openpyxl") as xw:
+            df.to_excel(xw, index=False, sheet_name="Leaderboard")
+
+        filename = f"leaderboard_top_{limit}.xlsx"
+        if active_only:
+            filename = f"leaderboard_top_{limit}_active.xlsx"
+        return buf.getvalue(), filename

@@ -286,3 +286,21 @@ async def delete_question(
 ):
     svc = QuizService(session, current_user)
     return await svc.delete_question(question_id, remove_files=remove_files)
+
+@router.get(
+    "/leaderboard/export",
+    summary="Выгрузка лидборда в Excel",
+)
+async def export_leaderboard_xlsx(
+    limit: int = Query(100, ge=1, le=1000, description="Сколько верхних строк выгрузить"),
+    active_only: bool = Query(False, description="Только активные пользователи"),
+    session: AsyncSession = Depends(get_async_session),
+):
+    svc = QuizExportService(session)
+    file_bytes, filename = await svc.export_leaderboard_xlsx(limit=limit, active_only=active_only)
+
+    return StreamingResponse(
+        BytesIO(file_bytes),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
