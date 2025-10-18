@@ -104,13 +104,14 @@ class QuizService:
                 QuizUserAnswer.question_id == question.id,
             )
         ) or 0
-        if already > 0:
-            raise HTTPException(409, "You already answered this question")
+        # if already > 0:
+        #     raise HTTPException(409, "You already answered this question")
 
         # 2) проверка глобального лимита ответов
         limits = await self._get_quiz_limits(question.quiz_id, self.current_user.id)
-        if limits["remaining_allowed"] <= 0:
-            raise HTTPException(403, "Answer limit for this quiz has been reached")
+        remaining_before = int(limits.get("remaining_allowed", 0))
+        # if remaining_before <= 0:
+        #     raise HTTPException(403, "Answer limit for this quiz has been reached")
 
         # 3) сохранить ответ
         answers_list = data.answers if isinstance(data.answers, list) else [str(data.answers)]
@@ -124,21 +125,27 @@ class QuizService:
         self.session.add(ua)
         await self.session.flush()
 
-        # 4) начислить очки
-        pts = await self.calculate_points(question, data.answers, getattr(data, "locale", "ru"))
-        self.current_user.points = (self.current_user.points or 0) + pts
-        self.session.add(self.current_user)
+        # 4) начислить очки только если лимит > 0
+        pts = 0
+        if remaining_before > 0:
+            pts = await self.calculate_points(question, data.answers, getattr(data, "locale", "ru"))
+            self.current_user.points = (self.current_user.points or 0) + pts
+            self.session.add(self.current_user)
 
         await self.session.commit()
         await self.session.refresh(ua)
         await self.session.refresh(self.current_user)
 
-        # 5) вернуть обновлённый прогресс + очки за ответ
+        # 5) получить новый лимит
         limits_after = await self._get_quiz_limits(question.quiz_id, self.current_user.id)
+        remaining = int(limits_after.get("remaining_allowed", 0))
+
         return {
             "answer_id": ua.id,
             "awarded_points": pts,
             "user_total_points": self.current_user.points,
+            "remaining_questions": remaining,
+            "isCompleted": remaining <= 0,
             "limits": limits_after,
         }
 
