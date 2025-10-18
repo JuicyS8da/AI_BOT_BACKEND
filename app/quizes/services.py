@@ -5,6 +5,8 @@ from pathlib import Path
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 
+
+
 from typing import List, Optional, Annotated
 from fastapi import UploadFile, Request
 
@@ -12,7 +14,8 @@ import unicodedata, json
 
 from fastapi import Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, desc, func, literal
+from sqlalchemy import select, desc, func, literal, update
+from sqlalchemy.exc import IntegrityError
 
 from app.common.db import get_async_session
 from app.common.common import CurrentUser
@@ -20,6 +23,8 @@ from app.users.models import User
 from app.quizes import schemas
 from app.quizes.models import Quiz, QuizQuestion, QuizUserAnswer, QuestionType
 from app.common.files import MEDIA_ROOT, MEDIA_URL, _async_write_bytes, _safe_ext, save_upload, _save_uploads
+
+
 
 
 
@@ -223,17 +228,37 @@ class QuizService:
         # Pydantic v2: from_attributes=True, чтобы читать из ORM-объектов
         return [schemas.QuizQuestionOut.model_validate(q, from_attributes=True) for q in items]
 
-    async def toggle_quiz_active(self, quiz_id: int, is_active: bool):
-        # фикс: в модели у Quiz поле id, а не quiz_id
-        res = await self.session.execute(select(Quiz).where(Quiz.id == quiz_id))
-        quiz = res.scalar_one_or_none()
+    async def toggle_quiz_active(self, *, quiz_id: int, is_active: bool) -> dict:
+        # находим целевой квиз
+        quiz = await self.session.scalar(select(Quiz).where(Quiz.id == quiz_id))
         if not quiz:
             raise HTTPException(status_code=404, detail="Quiz not found")
-        quiz.is_active = is_active
+
+        if is_active:
+            # проверяем, что нет другого активного квиза в этом же event
+            others_active = await self.session.scalar(
+                select(func.count())
+                .select_from(Quiz)
+                .where(
+                    Quiz.event_id == quiz.event_id,
+                    Quiz.id != quiz.id,
+                    Quiz.is_active.is_(True),
+                )
+            )
+            if (others_active or 0) > 0:
+                raise HTTPException(
+                    status_code=409,
+                    detail="Another quiz is already active for this event",
+                )
+
+            quiz.is_active = True
+        else:
+            quiz.is_active = False
+
         self.session.add(quiz)
         await self.session.commit()
         await self.session.refresh(quiz)
-        return {"id": quiz.id, "is_active": quiz.is_active}
+        return {"id": quiz.id, "event_id": quiz.event_id, "is_active": quiz.is_active}
     
     async def bulk_add_questions(self, quiz_id: int, payload: schemas.QuizQuestionsBulkIn) -> dict:
         # 1) проверим, что квиз существует
