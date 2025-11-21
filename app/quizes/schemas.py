@@ -198,3 +198,14 @@ class QuizProgressOut(BaseModel):
     answered: int
     remaining: int
     unanswered_ids: List[int]
+
+class AttachUrlsIn(BaseModel):
+    """Модель для прикрепления внешних URL изображений к вопросу."""
+    urls: List[AnyUrl] = Field(
+        ...,
+        example=[
+            "https://example.com/images/question1.png",
+            "https://cdn.site.com/pictures/diagram.jpg"
+        ],
+        description="Список абсолютных URL изображений, которые нужно прикрепить к вопросу."
+    )

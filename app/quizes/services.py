@@ -27,7 +27,12 @@ from app.common.files import MEDIA_ROOT, MEDIA_URL, _async_write_bytes, _safe_ex
 
 
 
-
+def _is_http_url(s: str) -> bool:
+    try:
+        p = urlparse(s)
+        return p.scheme in ("http", "https") and bool(p.netloc)
+    except Exception:
+        return False
 
 def _normalize(s: str) -> str:
     # мягкая нормализация для open-ended
@@ -333,8 +338,9 @@ class QuizService:
     async def attach_images_to_question(
         self,
         question_id: int,
-        request: Request,
-        images: List[UploadFile],
+        request: Optional[Request] = None,
+        images: Optional[List[UploadFile]] = None,
+        urls: Optional[List[str]] = None,
     ) -> QuizQuestion:
         res = await self.session.execute(
             select(QuizQuestion).where(QuizQuestion.id == question_id)
@@ -343,27 +349,43 @@ class QuizService:
         if not question:
             raise HTTPException(404, "Question not found")
 
-        # папка для сохранения конкретного вопроса
-        subdir = f"questions/{question_id}"
-        folder = MEDIA_ROOT / subdir
-        folder.mkdir(parents=True, exist_ok=True)
+        new_urls: List[str] = []
 
-        new_urls = []
-        for i, f in enumerate(images):
-            # A, B, C... (если файлов > 26 — начнёт extra_27 и т.д.)
-            label = ascii_uppercase[i] if i < 26 else f"extra_{i}"
-            ext = _safe_ext(f.filename, f.content_type)
-            filename = f"{label}{ext}"
-            dest = folder / filename
+        # 1) файлы → сохраняем как A.jpg, B.png...
+        if images:
+            if request is None:
+                # request нужен только для файлов (для URL не обязателен)
+                raise HTTPException(500, detail="Request is required when uploading files")
 
-            content = await f.read()
-            await _async_write_bytes(dest, content)
+            subdir = f"questions/{question_id}"
+            folder = MEDIA_ROOT / subdir
+            folder.mkdir(parents=True, exist_ok=True)
 
-            new_urls.append(f"{MEDIA_URL}/{subdir}/{filename}")
+            for i, f in enumerate(images):
+                label = ascii_uppercase[i] if i < 26 else f"extra_{i}"
+                ext = _safe_ext(f.filename, f.content_type)
+                filename = f"{label}{ext}"
+                dest = folder / filename
 
-        # дописываем в images_urls
+                content = await f.read()
+                await _async_write_bytes(dest, content)
+
+                new_urls.append(f"{MEDIA_URL}/{subdir}/{filename}")
+
+        # 2) URL из интернета → просто приклеиваем как есть (валидируем схему)
+        if urls:
+            for u in urls:
+                u = (u or "").strip()
+                if u and _is_http_url(u):
+                    new_urls.append(u)
+
+        # 3) объединяем с уже существующими и удаляем дубликаты, сохраняя порядок
         existing = question.images_urls or []
-        question.images_urls = existing + new_urls
+        merged = []
+        for u in [*existing, *new_urls]:
+            if u not in merged:
+                merged.append(u)
+        question.images_urls = merged
 
         self.session.add(question)
         await self.session.commit()

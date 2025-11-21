@@ -1,0 +1,414 @@
+{
+  "items": [
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Жасанды интеллектті «ақылды» ететін не?",
+        "ru": "Что делает искусственный интеллект «умным»?",
+        "en": "What makes artificial intelligence 'intelligent'?"
+      },
+      "options_i18n": {
+        "kk": ["Ол адамнан жылдамырақ жұмыс істейді", "Ол бір уақытта көптеген тапсырмаларды орындай алады", "Ол тәжірибеден үйренуге және қорытынды жасауға қабілетті", "Ол әрдайым интернетке қосулы болады"],
+        "ru": ["Он работает быстрее человека", "Он может выполнять множество задач одновременно", "Он способен учиться на опыте и делать выводы", "Он всегда подключён к интернету"],
+        "en": ["It works faster than humans", "It can perform many tasks at once", "It can learn from experience and draw conclusions", "It is always connected to the Internet"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Ол тәжірибеден үйренуге және қорытынды жасауға қабілетті"],
+        "ru": ["Он способен учиться на опыте и делать выводы"],
+        "en": ["It can learn from experience and draw conclusions"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Келесі мәлімдемелердің қайсысы дұрыс?",
+        "ru": "Какое из следующих утверждений верное?",
+        "en": "Which of the following statements is true?"
+      },
+      "options_i18n": {
+        "kk": ["Жасанды интеллект роботпен бірдей нәрсе", "Робот жасанды интеллектті пайдалана алады, бірақ әрдайым емес", "Кез келген компьютер — жасанды интеллект", "Жасанды интеллект тек суперкомпьютерлерде жұмыс істейді"],
+        "ru": ["ИИ — то же, что и робот", "Робот может использовать ИИ, но не всегда", "Любой компьютер — это ИИ", "ИИ работает только на суперкомпьютерах"],
+        "en": ["AI is the same as a robot", "A robot can use AI, but not always", "Any computer is AI", "AI only runs on supercomputers"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Робот жасанды интеллектті пайдалана алады, бірақ әрдайым емес"],
+        "ru": ["Робот может использовать ИИ, но не всегда"],
+        "en": ["A robot can use AI, but not always"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Жасанды интеллект жүйелеріне үйрену үшін ең жиі не қажет?",
+        "ru": "Что чаще всего нужно системам ИИ для обучения?",
+        "en": "What do AI systems most often need to learn?"
+      },
+      "options_i18n": {
+        "kk": ["Көптеген батырмалар", "Үлкен көлемдегі деректер", "Адамның тұрақты қадағалауы", "Жылдам интернет"],
+        "ru": ["Много кнопок", "Большие объёмы данных", "Постоянный контроль человека", "Быстрый интернет"],
+        "en": ["Many buttons", "Large amounts of data", "Constant human supervision", "Fast internet"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Үлкен көлемдегі деректер"],
+        "ru": ["Большие объёмы данных"],
+        "en": ["Large amounts of data"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Қазіргі таңда жасанды интеллект қайда қолданылады?",
+        "ru": "Где используется искусственный интеллект сегодня?",
+        "en": "Where is AI used today?"
+      },
+      "options_i18n": {
+        "kk": ["Тек зертханаларда", "Тек кино мен ойындарда", "Медицинада, банктерде, навигацияда", "Тек әскери салада"],
+        "ru": ["Только в лабораториях", "Только в кино и играх", "В медицине, банках, навигации", "Только в военной сфере"],
+        "en": ["Only in laboratories", "Only in movies and games", "In medicine, banking, and navigation", "Only in the military field"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Медицинада, банктерде, навигацияда"],
+        "ru": ["В медицине, банках, навигации"],
+        "en": ["In medicine, banking, and navigation"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Бет-әлпетті тану жүйесі не істейді?",
+        "ru": "Что делает система распознавания лиц?",
+        "en": "What does a facial recognition system do?"
+      },
+      "options_i18n": {
+        "kk": ["Адамның көңіл-күйін өлшейді", "Сурет немесе видео бойынша тұлғаны анықтайды", "Жасын болжайды", "Бүкіл адамдарды есте сақтайды"],
+        "ru": ["Измеряет настроение человека", "Определяет личность по фото или видео", "Угадывает возраст", "Запоминает всех людей"],
+        "en": ["Measures a person's mood", "Identifies a person by photo or video", "Guesses age", "Remembers everyone"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Сурет немесе видео бойынша тұлғаны анықтайды"],
+        "ru": ["Определяет личность по фото или видео"],
+        "en": ["Identifies a person by photo or video"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Телефон мәтінді аяқтауды ұсынғанда, бұл ненің мысалы?",
+        "ru": "Когда телефон подсказывает окончание фразы — это пример чего?",
+        "en": "When your phone suggests sentence completions, this is an example of what?"
+      },
+      "options_i18n": {
+        "kk": ["Жарнамалық технология", "ЖИ (табиғи тілдерді өңдеу)", "Компьютер вирусы", "Дауыс көмекшісі"],
+        "ru": ["Рекламная технология", "ИИ (обработка естественного языка)", "Компьютерный вирус", "Голосовой ассистент"],
+        "en": ["Advertising technology", "AI (natural language processing)", "Computer virus", "Voice assistant"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["ЖИ (табиғи тілдерді өңдеу)"],
+        "ru": ["ИИ (обработка естественного языка)"],
+        "en": ["AI (natural language processing)"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Жасанды интеллекттегі «нейрондық желі» деген не?",
+        "ru": "Что такое «нейронная сеть» в ИИ?",
+        "en": "What is a 'neural network' in AI?"
+      },
+      "options_i18n": {
+        "kk": ["Wi-Fi бар компьютерлік желі", "Адам миынан шабыт алған жүйе", "Роботтарға арналған әлеуметтік желі", "Процессордағы арнайы чип"],
+        "ru": ["Компьютерная сеть с Wi-Fi", "Система, вдохновлённая работой человеческого мозга", "Соцсеть для роботов", "Специальный чип в процессоре"],
+        "en": ["A Wi-Fi computer network", "A system inspired by the human brain", "A social network for robots", "A special chip in a CPU"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Адам миынан шабыт алған жүйе"],
+        "ru": ["Система, вдохновлённая работой человеческого мозга"],
+        "en": ["A system inspired by the human brain"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Неге ЖИ қате жіберуі мүмкін деп есептеледі?",
+        "ru": "Почему считается, что ИИ может ошибаться?",
+        "en": "Why is it considered that AI can make mistakes?"
+      },
+      "options_i18n": {
+        "kk": ["Өйткені ол шаршайды", "Өйткені оған вирус кіріктірілген", "Өйткені ол адам деректерінен үйренеді", "Өйткені оның жады жоқ"],
+        "ru": ["Потому что он устаёт", "Потому что в него встроен вирус", "Потому что он учится на человеческих данных", "Потому что у него нет памяти"],
+        "en": ["Because it gets tired", "Because it has a built-in virus", "Because it learns from human data", "Because it has no memory"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Өйткені ол адам деректерінен үйренеді"],
+        "ru": ["Потому что он учится на человеческих данных"],
+        "en": ["Because it learns from human data"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "ЖИ туралы айтқанда адамдардың ең жиі алаңдаушылығы қандай?",
+        "ru": "Какая тревога чаще всего возникает у людей, когда говорят про ИИ?",
+        "en": "What do people most often worry about when discussing AI?"
+      },
+      "options_i18n": {
+        "kk": ["Компьютерлер қызықсыз болады", "Ол мүлде жұмыс істемей қалады", "ЖИ адам еңбегін алмастырады", "Оны өшіру мүмкін болмайды"],
+        "ru": ["Компьютеры станут скучными", "ИИ перестанет работать", "ИИ заменит человеческий труд", "Его невозможно будет выключить"],
+        "en": ["Computers will become boring", "It will stop working", "AI will replace human labor", "It will be impossible to turn it off"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["ЖИ адам еңбегін алмастырады"],
+        "ru": ["ИИ заменит человеческий труд"],
+        "en": ["AI will replace human labor"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Мамандардың пікірінше, ЖИ-ді қауіпсіз әрі пайдалы етуге не көмектеседі?",
+        "ru": "Что, по мнению специалистов, помогает сделать ИИ безопасным и полезным?",
+        "en": "According to experts, what helps make AI safe and beneficial?"
+      },
+      "options_i18n": {
+        "kk": ["ЖИ-ге толық тыйым салу", "Дамуды елемеу", "Этикалық ережелер мен адамның бақылауы", "Бақылаусыз толық автоматтандыру"],
+        "ru": ["Полный запрет ИИ", "Игнорирование его развития", "Этические нормы и человеческий контроль", "Максимальная автоматизация без контроля"],
+        "en": ["A total ban on AI", "Ignoring its development", "Ethical rules and human oversight", "Uncontrolled maximal automation"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Этикалық ережелер мен адамның бақылауы"],
+        "ru": ["Этические нормы и человеческий контроль"],
+        "en": ["Ethical rules and human oversight"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "«Жасанды интеллекттің әкесі» деп кімді атайды?",
+        "ru": "Кого называют «отцом искусственного интеллекта»?",
+        "en": "Who is called the 'father of artificial intelligence'?"
+      },
+      "options_i18n": {
+        "kk": ["Илон Маск", "Джон Маккарти", "Алан Тьюринг", "Джеффри Хинтон"],
+        "ru": ["Илон Маск", "Джон Маккарти", "Алан Тьюринг", "Джеффри Хинтон"],
+        "en": ["Elon Musk", "John McCarthy", "Alan Turing", "Geoffrey Hinton"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Джон Маккарти"],
+        "ru": ["Джон Маккарти"],
+        "en": ["John McCarthy"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "«Ойлай алатын машина» идеясын алғаш кім ұсынды?",
+        "ru": "Кто первым предложил идею «мыслящей машины»?",
+        "en": "Who first proposed the idea of a 'thinking machine'?"
+      },
+      "options_i18n": {
+        "kk": ["Алан Тьюринг", "Норберт Винер", "Герберт Саймон", "Джеффри Хинтон"],
+        "ru": ["Алан Тьюринг", "Норберт Винер", "Герберт Саймон", "Джеффри Хинтон"],
+        "en": ["Alan Turing", "Norbert Wiener", "Herbert Simon", "Geoffrey Hinton"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Алан Тьюринг"],
+        "ru": ["Алан Тьюринг"],
+        "en": ["Alan Turing"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "ChatGPT жасаған компания қалай аталады?",
+        "ru": "Как называется компания, создавшая ChatGPT?",
+        "en": "What is the name of the company that created ChatGPT?"
+      },
+      "options_i18n": {
+        "kk": ["Google", "OpenAI", "Microsoft", "Meta"],
+        "ru": ["Google", "OpenAI", "Microsoft", "Meta"],
+        "en": ["Google", "OpenAI", "Microsoft", "Meta"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["OpenAI"],
+        "ru": ["OpenAI"],
+        "en": ["OpenAI"]
+      },
+      "duration_seconds": 20,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Алғашқы ЖИ зертханаларының бірі ретінде қай зертхана танылған?",
+        "ru": "Какая лаборатория признана одной из первых лабораторий ИИ?",
+        "en": "Which lab is recognized as one of the first AI labs?"
+      },
+      "options_i18n": {
+        "kk": ["DeepMind", "MIT Artificial Intelligence Laboratory", "IBM Research Lab", "Bell Labs"],
+        "ru": ["DeepMind", "MIT Artificial Intelligence Laboratory", "IBM Research Lab", "Bell Labs"],
+        "en": ["DeepMind", "MIT Artificial Intelligence Laboratory", "IBM Research Lab", "Bell Labs"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["MIT Artificial Intelligence Laboratory"],
+        "ru": ["MIT Artificial Intelligence Laboratory"],
+        "en": ["MIT Artificial Intelligence Laboratory"]
+      },
+      "duration_seconds": 20,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "ChatGPT көпшілікке қашан қолжетімді болды?",
+        "ru": "Когда ChatGPT стал доступен широкой публике?",
+        "en": "When did ChatGPT become publicly available?"
+      },
+      "options_i18n": {
+        "kk": ["2019", "2022 жылдың қарашасы", "2021", "2023"],
+        "ru": ["2019", "Ноябрь 2022", "2021", "2023"],
+        "en": ["2019", "November 2022", "2021", "2023"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["2022 жылдың қарашасы"],
+        "ru": ["Ноябрь 2022"],
+        "en": ["November 2022"]
+      },
+      "duration_seconds": 20,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Мәтіннен сурет жасайтын танымал алғашқы генератор қайсы?",
+        "ru": "Какой генератор изображений по тексту стал первым широко известным?",
+        "en": "Which text-to-image generator became the first widely known?"
+      },
+      "options_i18n": {
+        "kk": ["DALL·E", "AlphaGo", "Stable Diffusion", "Midjourney"],
+        "ru": ["DALL·E", "AlphaGo", "Stable Diffusion", "Midjourney"],
+        "en": ["DALL·E", "AlphaGo", "Stable Diffusion", "Midjourney"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["DALL·E"],
+        "ru": ["DALL·E"],
+        "en": ["DALL·E"]
+      },
+      "duration_seconds": 20,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Алғашқы кең тараған коммерциялық дауыс көмекшісін кім жасады?",
+        "ru": "Какая компания создала первый массовый коммерческий голосовой помощник?",
+        "en": "Which company created the first widely adopted commercial voice assistant?"
+      },
+      "options_i18n": {
+        "kk": ["Microsoft", "Apple (Siri)", "Google", "IBM"],
+        "ru": ["Microsoft", "Apple (Siri)", "Google", "IBM"],
+        "en": ["Microsoft", "Apple (Siri)", "Google", "IBM"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Apple (Siri)"],
+        "ru": ["Apple (Siri)"],
+        "en": ["Apple (Siri)"]
+      },
+      "duration_seconds": 20,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "OpenAI бас директоры кім?",
+        "ru": "Кто является генеральным директором OpenAI?",
+        "en": "Who is the CEO of OpenAI?"
+      },
+      "options_i18n": {
+        "kk": ["Ларри Пейдж", "Сэм Альтман", "Илон Маск", "Билл Гейтс"],
+        "ru": ["Ларри Пейдж", "Сэм Альтман", "Илон Маск", "Билл Гейтс"],
+        "en": ["Larry Page", "Sam Altman", "Elon Musk", "Bill Gates"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Сэм Альтман"],
+        "ru": ["Сэм Альтман"],
+        "en": ["Sam Altman"]
+      },
+      "duration_seconds": 20,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Мәтіндік сипаттама бойынша видео жасаған алғашқы жүйе қайсы?",
+        "ru": "Какая система первой стала генерировать видео по текстовому описанию?",
+        "en": "Which system first generated videos from text descriptions?"
+      },
+      "options_i18n": {
+        "kk": ["Sora (OpenAI, 2024)", "DALL·E", "Midjourney", "AlphaVision"],
+        "ru": ["Sora (OpenAI, 2024)", "DALL·E", "Midjourney", "AlphaVision"],
+        "en": ["Sora (OpenAI, 2024)", "DALL·E", "Midjourney", "AlphaVision"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Sora (OpenAI, 2024)"],
+        "ru": ["Sora (OpenAI, 2024)"],
+        "en": ["Sora (OpenAI, 2024)"]
+      },
+      "duration_seconds": 20,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "ЮНЕСКО 2021 жылы ЖИ саласында қандай құжат қабылдады?",
+        "ru": "Какой документ приняла ЮНЕСКО в 2021 году в сфере ИИ?",
+        "en": "What document did UNESCO adopt in 2021 regarding AI?"
+      },
+      "options_i18n": {
+        "kk": ["Цифрлық құқық хартиясы", "ЖИ-дің этикалық қырлары жөніндегі ұсыныс", "Париж декларациясы робототехника туралы", "Машиналық оқыту туралы конвенция"],
+        "ru": ["Хартия цифровых прав", "Рекомендации по этическим аспектам ИИ", "Парижская декларация по робототехнике", "Конвенция о машинном обучении"],
+        "en": ["Digital Rights Charter", "Recommendation on the Ethics of AI", "Paris Declaration on Robotics", "Convention on Machine Learning"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["ЖИ-дің этикалық қырлары жөніндегі ұсыныс"],
+        "ru": ["Рекомендации по этическим аспектам ИИ"],
+        "en": ["Recommendation on the Ethics of AI"]
+      },
+      "duration_seconds": 20,
+      "points": 1
+    }
+  ]
+}

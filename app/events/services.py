@@ -62,6 +62,13 @@ class EventService:
         await self.session.commit()
         await self.session.refresh(event)
         return event
+    
+    # async def trigger_event(self, event_id: int, status = "STARTED"):
+    #     if not self.current_user.is_admin:
+    #         raise HTTPException(status_code=403, detail="Admin rights required")
+    #     result = await self.session.execute(select(Event).where(Event.id == event_id))
+        
+        
 
     async def get_event_status(self, event_id: int) -> Event:
         result = await self.session.execute(select(Event).where(Event.id == event_id))

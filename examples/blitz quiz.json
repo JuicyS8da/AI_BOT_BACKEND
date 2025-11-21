@@ -18,7 +18,8 @@
         "en": ["Light"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1,
+      "images_urls": ["https://drive.google.com/thumbnail?id=1JQ4oLQl2QeM5c8384v8b3JebOBOUdnrW&sz=w1600"]
     },
     {
       "type": "single",
@@ -38,7 +39,7 @@
         "en": ["Deoxyribonucleic acid"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -58,7 +59,7 @@
         "en": ["Apollo 15"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -78,7 +79,7 @@
         "en": ["Sputnik 1"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -98,7 +99,7 @@
         "en": ["AB negative"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -118,7 +119,7 @@
         "en": ["Crust, mantle, core"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -138,7 +139,7 @@
         "en": ["Amphibians"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -158,7 +159,7 @@
         "en": ["Zero"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -178,7 +179,7 @@
         "en": ["In the ear"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -198,7 +199,7 @@
         "en": ["Three"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -218,7 +219,7 @@
         "en": ["Nicolaus Copernicus"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -238,7 +239,7 @@
         "en": ["Alexander Graham Bell"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -258,7 +259,7 @@
         "en": ["Jupiter"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -278,7 +279,7 @@
         "en": ["False"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -298,7 +299,7 @@
         "en": ["Diamond"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -318,7 +319,7 @@
         "en": ["32"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -338,7 +339,7 @@
         "en": ["Laika"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -358,7 +359,7 @@
         "en": ["True"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -378,7 +379,7 @@
         "en": ["Valentina Tereshkova"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -398,7 +399,7 @@
         "en": ["Force"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -418,7 +419,7 @@
         "en": ["On the soles of the feet"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -438,7 +439,7 @@
         "en": ["8 minutes"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -458,7 +459,7 @@
         "en": ["206"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -478,7 +479,7 @@
         "en": ["Yes"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -498,7 +499,7 @@
         "en": ["Digestion"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -518,7 +519,7 @@
         "en": ["Yellow"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -538,7 +539,7 @@
         "en": ["Hyoid bone"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -558,7 +559,7 @@
         "en": ["Crepuscular"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -578,7 +579,7 @@
         "en": ["-40"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
         "type": "single",
@@ -598,7 +599,7 @@
             "en": ["Gold, silver, platinum, palladium"]
         },
         "duration_seconds": 25,
-        "points": 3
+        "points": 1
     },
     {
       "type": "single",
@@ -618,7 +619,7 @@
         "en": ["Taikonauts"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -638,7 +639,7 @@
         "en": ["Armpit"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -658,7 +659,7 @@
         "en": ["Hot water"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -678,7 +679,7 @@
         "en": ["Through sweat, urine, and breath"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -698,7 +699,7 @@
         "en": ["Temporal lobe"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -718,7 +719,7 @@
         "en": ["Ambush"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -738,7 +739,7 @@
         "en": ["Nitrogen"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -758,7 +759,7 @@
         "en": ["8"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -778,7 +779,7 @@
         "en": ["Mercury"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -798,7 +799,7 @@
         "en": ["Mycology"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -818,7 +819,7 @@
         "en": ["Saturn"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -838,7 +839,7 @@
         "en": ["Heart"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -858,7 +859,7 @@
         "en": ["300,000 km/s"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -878,7 +879,7 @@
         "en": ["Pancreas"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -898,7 +899,7 @@
         "en": ["Gravity"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -918,7 +919,7 @@
         "en": ["Ampere"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -938,7 +939,7 @@
         "en": ["Sublimation"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -958,7 +959,7 @@
         "en": ["Vitamin D"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -978,7 +979,7 @@
         "en": ["Skin"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -998,7 +999,7 @@
         "en": ["Circuit"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -1018,7 +1019,7 @@
         "en": ["Newton"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -1038,7 +1039,7 @@
         "en": ["Oxygen"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -1058,7 +1059,7 @@
         "en": ["Dead"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -1078,7 +1079,7 @@
         "en": ["Evaporation"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -1098,7 +1099,7 @@
         "en": ["Vein"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -1118,7 +1119,7 @@
         "en": ["Mendeleev"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -1138,7 +1139,7 @@
         "en": ["Nucleus"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -1158,7 +1159,7 @@
         "en": ["Thermometer"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -1178,7 +1179,7 @@
         "en": ["Pacific"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -1198,7 +1199,7 @@
         "en": ["Photosynthesis"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     },
     {
       "type": "single",
@@ -1218,7 +1219,7 @@
         "en": ["Venus"]
       },
       "duration_seconds": 25,
-      "points": 3
+      "points": 1
     }
   ]
 }

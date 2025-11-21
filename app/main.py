@@ -5,9 +5,11 @@ import os
 import re
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.common.db import init_models, AsyncSessionLocal
 from app.common.common import init_admin
+from app.common.files import MEDIA_ROOT
 
 # ваши API-роутеры
 from app.users.routers import router as user_router
@@ -20,6 +22,8 @@ from telegram.core import bot, dp
 from telegram import moderation  # + если есть другие: auth, debug и т.п.
 
 app = FastAPI(title="Music Schedule Bot 6")
+
+app.mount("/media", StaticFiles(directory=str(MEDIA_ROOT)), name="media")
 
 # API
 app.include_router(user_router)

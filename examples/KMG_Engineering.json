@@ -1,0 +1,600 @@
+{
+  "items": [
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "«ҚМГ Инжиниринг» ЖШС қызметінің негізгі бағыты қандай?",
+        "ru": "Каково основное направление деятельности ТОО «КМГ Инжиниринг»?",
+        "en": "What is the main focus of KMG Engineering LLP?"
+      },
+      "options_i18n": {
+        "kk": [
+          "Пайданы кез келген жолмен барынша арттыру",
+          "ҚМГ ЕТҰ жер қойнауын пайдаланушыларға заманауи ғылыми-техникалық инжинирингтік шешімдер ұсыну",
+          "Жабдықтарды бөлшек саудада сату",
+          "Энергетикалық желілерді басқару"
+        ],
+        "ru": [
+          "Максимизация прибыли любой ценой",
+          "Предоставление современный научно-технических инженерных решений дочерним и зависимым компаниям КМГ-недропользователям",
+          "Розничная продажа оборудования",
+          "Управление энергосетями"
+        ],
+        "en": [
+          "Maximize profit at any cost",
+          "Providing modern science-based engineering solutions to KMG subsidiaries and affiliates (subsoil users)",
+          "Retail equipment sales",
+          "Managing power grids"
+        ]
+      },
+      "correct_answers_i18n": {
+        "kk": ["ҚМГ ЕТҰ жер қойнауын пайдаланушыларға заманауи ғылыми-техникалық инжинирингтік шешімдер ұсыну"],
+        "ru": ["Предоставление современный научно-технических инженерных решений дочерним и зависимым компаниям КМГ-недропользователям"],
+        "en": ["Providing modern science-based engineering solutions to KMG subsidiaries and affiliates (subsoil users)"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "«ҚМГ Инжиниринг» ЖШС бас кеңсесі қай қалада орналасқан?",
+        "ru": "В каком городе находится головной офис ТОО «КМГ Инжиниринг»?",
+        "en": "In which city is KMG Engineering LLP headquarters located?"
+      },
+      "options_i18n": {
+        "kk": ["Алматы", "Ақтөбе", "Астана", "Атырау"],
+        "ru": ["Алматы", "Актобе", "Астана", "Атырау"],
+        "en": ["Almaty", "Aktobe", "Astana", "Atyrau"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Астана"],
+        "ru": ["Астана"],
+        "en": ["Astana"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "«ҚМГ Инжиниринг» ғылыми-зерттеу институты қай жылы қайта тіркелді?",
+        "ru": "В каком году был перерегистрирован научно-исследовательский институт «КМГ Инжиниринг»?",
+        "en": "In which year was the KMG Engineering research institute re-registered?"
+      },
+      "options_i18n": {
+        "kk": ["2018", "2019", "2007", "2002"],
+        "ru": ["2018", "2019", "2007", "2002"],
+        "en": ["2018", "2019", "2007", "2002"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["2019"],
+        "ru": ["2019"],
+        "en": ["2019"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "«Жасыл» энергетиканы дамыту үшін қандай жаңа орталық іске қосылды?",
+        "ru": "Какой новый центр запущен для развития «зелёной» энергетики?",
+        "en": "Which new center was launched to advance green energy?"
+      },
+      "options_i18n": {
+        "kk": [
+          "Күн энергетикасы орталығы",
+          "Жел энергетикасы орталығы",
+          "Сутегі энергетикасы жөніндегі құзыреттілік орталығы",
+          "Биомасса орталығы"
+        ],
+        "ru": [
+          "Центр солнечной энергетики",
+          "Центр ветроэнергетики",
+          "Центр компетенций по водородной энергетике",
+          "Центр по биомассе"
+        ],
+        "en": [
+          "Solar Energy Center",
+          "Wind Energy Center",
+          "Hydrogen Energy Competence Center",
+          "Biomass Center"
+        ]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Сутегі энергетикасы жөніндегі құзыреттілік орталығы"],
+        "ru": ["Центр компетенций по водородной энергетике"],
+        "en": ["Hydrogen Energy Competence Center"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "2023 жылы БИОК және ҚМК шеңберінде қанша жұмыс аяқталды?",
+        "ru": "Сколько работ завершено в 2023 году в рамках БИОК и ГКЗ?",
+        "en": "How many works were completed in 2023 within BIOK and GKZ?"
+      },
+      "options_i18n": {
+        "kk": [
+          "10 БИОК және 29 ҚМК",
+          "25 БИОК және 15 ҚМК",
+          "38 БИОК және 16 ҚМК",
+          "50 БИОК және 14 ҚМК"
+        ],
+        "ru": [
+          "10 по БИОК и 29 по ГКЗ",
+          "25 по БИОК и 15 по ГКЗ",
+          "38 по БИОК и 16 по ГКЗ",
+          "50 по БИОК и 14 по ГКЗ"
+        ],
+        "en": [
+          "10 BIOK and 29 GKZ",
+          "25 BIOK and 15 GKZ",
+          "38 BIOK and 16 GKZ",
+          "50 BIOK and 14 GKZ"
+        ]
+      },
+      "correct_answers_i18n": {
+        "kk": ["38 БИОК және 16 ҚМК"],
+        "ru": ["38 по БИОК и 16 по ГКЗ"],
+        "en": ["38 BIOK and 16 GKZ"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Бұрғылауды цифрландыру мақсатында қандай жоба енгізілуде?",
+        "ru": "Какой проект внедряется для цифровизации бурения?",
+        "en": "Which project is being implemented to digitize drilling?"
+      },
+      "options_i18n": {
+        "kk": ["ABAI ақпараттық жүйесі", "Электрондық сауда алаңы", "Логистика жүйесі", "Қызметкерлерді басқару жүйесі"],
+        "ru": ["Информационная система ABAI", "Электронная торговая площадка", "Логистическая система", "HR-система"],
+        "en": ["ABAI information system", "E-procurement platform", "Logistics system", "HR management system"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["ABAI ақпараттық жүйесі"],
+        "ru": ["Информационная система ABAI"],
+        "en": ["ABAI information system"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Компанияның даму көрінісінің негізгі бағыты қандай?",
+        "ru": "Каков основной вектор видения развития компании?",
+        "en": "What is the company's core development vision?"
+      },
+      "options_i18n": {
+        "kk": [
+          "Жабдықтардың ең ірі бөлшек сатушысы болу",
+          "Мұнай-газда әлемдік стандарттарға сай, заманауи әрі тиімді «ҚазМұнайГаз» орталығына айналу",
+          "Банк саласына көшу",
+          "Электроника өндіру"
+        ],
+        "ru": [
+          "Стать крупнейшим розничным продавцом оборудования",
+          "Стать современным и коммерчески эффективным центром KMG мирового уровня в нефтегазе",
+          "Уйти в банковский сектор",
+          "Производить электронику"
+        ],
+        "en": [
+          "Become the largest retail equipment seller",
+          "Become a modern and commercially efficient KMG center meeting global O&G standards",
+          "Shift to banking",
+          "Produce electronics"
+        ]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Мұнай-газда әлемдік стандарттарға сай, заманауи әрі тиімді «ҚазМұнайГаз» орталығына айналу"],
+        "ru": ["Стать современным и коммерчески эффективным центром KMG мирового уровня в нефтегазе"],
+        "en": ["Become a modern and commercially efficient KMG center meeting global O&G standards"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Заңбұзушылықтар туралы хабарлау үшін қандай байланыс желісі бар?",
+        "ru": "Какая линия предусмотрена для сообщений о нарушениях (коррупция и др.)?",
+        "en": "Which line is provided to report violations (e.g., corruption)?"
+      },
+      "options_i18n": {
+        "kk": ["Кеңсенің жалпы нөмірі", "Тәуелсіз оператордың сенім телефоны", "Тек электрондық пошта", "Бас кеңсенің мекенжайы"],
+        "ru": ["Общий номер офиса", "Горячая линия независимого оператора (Trust line)", "Только e-mail", "Адрес головного офиса"],
+        "en": ["Main office number", "Independent operator’s trust hotline", "Email only", "Head office address"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Тәуелсіз оператордың сенім телефоны"],
+        "ru": ["Горячая линия независимого оператора (Trust line)"],
+        "en": ["Independent operator’s trust hotline"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "«ҚМГ Инжиниринг» филиалдары қай қалаларда орналасқан?",
+        "ru": "В каких городах расположены филиалы «КМГ Инжиниринг»?",
+        "en": "In which cities are KMG Engineering branches located?"
+      },
+      "options_i18n": {
+        "kk": ["Тек бас кеңсе", "Атырау және Ақтау", "Алматы, Шымкент", "Өскемен және Қостанай"],
+        "ru": ["Только головной офис", "Атырау и Актау", "Алматы, Шымкент", "Усть-Каменогорск и Костанай"],
+        "en": ["Head office only", "Atyrau and Aktau", "Almaty, Shymkent", "Ust-Kamenogorsk and Kostanay"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Атырау және Ақтау"],
+        "ru": ["Атырау и Актау"],
+        "en": ["Atyrau and Aktau"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Филиалдардың атауы қалай?",
+        "ru": "Как называются филиалы?",
+        "en": "What are the branch names?"
+      },
+      "options_i18n": {
+        "kk": [
+          "Алматы және Шымкент филиалдары",
+          "Атырау филиалы және «ҚазҒЗЖИмұнайгаз» (Ақтау)",
+          "Қарағанды және Павлодар филиалдары",
+          "Өскемен және Қостанай филиалдары"
+        ],
+        "ru": [
+          "Филиалы в Алматы и Шымкенте",
+          "Атырауский филиал и «КазНИПИнефтегаз» (Актау)",
+          "Филиалы в Караганде и Павлодаре",
+          "Филиалы в Усть-Каменогорске и Костанае"
+        ],
+        "en": [
+          "Almaty and Shymkent branches",
+          "Atyrau branch and KazNIPIneftegaz (Aktau)",
+          "Karaganda and Pavlodar branches",
+          "Ust-Kamenogorsk and Kostanay branches"
+        ]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Атырау филиалы және «ҚазҒЗЖИмұнайгаз» (Ақтау)"],
+        "ru": ["Атырауский филиал и «КазНИПИнефтегаз» (Актау)"],
+        "en": ["Atyrau branch and KazNIPIneftegaz (Aktau)"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "ABAI аясында қандай цифрлық модуль енгізілуде?",
+        "ru": "Какой цифровой модуль внедряется в рамках ABAI?",
+        "en": "Which digital module is being implemented within ABAI?"
+      },
+      "options_i18n": {
+        "kk": ["Ұңғымаларды мониторингтеу", "Цифрлық бұрғылау", "Қызметкерлерді басқару", "Жабдық логистикасы"],
+        "ru": ["Мониторинг скважин", "Цифровое бурение", "Управление персоналом", "Логистика оборудования"],
+        "en": ["Well monitoring", "Digital drilling", "HR management", "Equipment logistics"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Цифрлық бұрғылау"],
+        "ru": ["Цифровое бурение"],
+        "en": ["Digital drilling"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "2024 жылдың ақпанында басқарма құрамына кім сайланды?",
+        "ru": "Кто был избран в состав правления в феврале 2024 года?",
+        "en": "Who was elected to the Management Board in February 2024?"
+      },
+      "options_i18n": {
+        "kk": ["Қуаныш Құдайбергенов", "Алтынбек Марданов", "Малик Салимгереев", "Рахим Утеев"],
+        "ru": ["Куаныш Кудайбергенов", "Алтынбек Марданов", "Малик Салимгереев", "Рахим Утеев"],
+        "en": ["Kuanysh Kudaibergenov", "Altynbek Mardanov", "Malik Salimgereev", "Rakhim Uteev"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Алтынбек Марданов"],
+        "ru": ["Алтынбек Марданов"],
+        "en": ["Altynbek Mardanov"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "2023 жылы «Атлас» цифрлық диагностикасы қандай мақсатта басталды?",
+        "ru": "С какой целью в 2023 году начата разработка цифровой диагностики «Атлас»?",
+        "en": "For what purpose was the digital diagnostic tool “Atlas” started in 2023?"
+      },
+      "options_i18n": {
+        "kk": ["Жабдықты есепке алу", "Сутегі өндірісінің әлеуетін бағалау", "Логистиканы бақылау", "Қаржылық аудит"],
+        "ru": ["Учёт оборудования", "Оценка потенциала производства «зеленого» водорода", "Контроль логистики", "Финансовый аудит"],
+        "en": ["Equipment accounting", "Assess the potential of hydrogen production", "Track logistics", "Financial audit"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Сутегі өндірісінің әлеуетін бағалау"],
+        "ru": ["Оценка потенциала производства «зеленого» водорода"],
+        "en": ["Assess the potential of hydrogen production"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "2023 жылы қандай халықаралық серіктеспен Меморандумға қол қойылды?",
+        "ru": "С каким международным партнёром в 2023 году подписан Меморандум?",
+        "en": "With which international partner was an MoU signed in 2023?"
+      },
+      "options_i18n": {
+        "kk": ["Siemens", "Mitsubishi Heavy Industries", "Shell", "TotalEnergies"],
+        "ru": ["Siemens", "Mitsubishi Heavy Industries", "Shell", "TotalEnergies"],
+        "en": ["Siemens", "Mitsubishi Heavy Industries", "Shell", "TotalEnergies"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Mitsubishi Heavy Industries"],
+        "ru": ["Mitsubishi Heavy Industries"],
+        "en": ["Mitsubishi Heavy Industries"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "2023 жылы қызметкерлер қай бағытта мақала жариялады?",
+        "ru": "В каком научном направлении сотрудники опубликовали статью в 2023 году?",
+        "en": "In which field did staff publish an article in 2023?"
+      },
+      "options_i18n": {
+        "kk": [
+          "Геология және барлау",
+          "Қазақстандағы «жасыл сутегі» өндірісінің даму мүмкіндіктері",
+          "Бұрғылау теориясы",
+          "Электротехника"
+        ],
+        "ru": [
+          "Геология и разведка",
+          "Перспективы развития «зеленого водорода» в Казахстане",
+          "Теория бурения",
+          "Электротехника"
+        ],
+        "en": [
+          "Geology and exploration",
+          "Prospects for green hydrogen production in Kazakhstan",
+          "Drilling theory",
+          "Electrical engineering"
+        ]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Қазақстандағы «жасыл сутегі» өндірісінің даму мүмкіндіктері"],
+        "ru": ["Перспективы развития «зеленого водорода» в Казахстане"],
+        "en": ["Prospects for green hydrogen production in Kazakhstan"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Бірегей геохимиялық зертхана қай жылдан бері жұмыс істейді?",
+        "ru": "С какого года работает уникальная геохимическая лаборатория?",
+        "en": "Since what year has the unique geochemical laboratory been operating?"
+      },
+      "options_i18n": {
+        "kk": ["2010", "2015", "2020", "2018"],
+        "ru": ["2010", "2015", "2020", "2018"],
+        "en": ["2010", "2015", "2020", "2018"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["2015"],
+        "ru": ["2015"],
+        "en": ["2015"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Сұранысқа ие тар мамандықтарға кадрлар даярлау бағдарламасы қалай аталады?",
+        "ru": "Как называется программа подготовки кадров по узким, востребованным специальностям?",
+        "en": "What is the program for training personnel in niche high-demand specialties called?"
+      },
+      "options_i18n": {
+        "kk": ["KMGE University", "KMGE School", "KMGE Academy", "KMGE Training Center"],
+        "ru": ["KMGE University", "KMGE School", "KMGE Academy", "KMGE Training Center"],
+        "en": ["KMGE University", "KMGE School", "KMGE Academy", "KMGE Training Center"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["KMGE School"],
+        "ru": ["KMGE School"],
+        "en": ["KMGE School"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Компанияда қанша құзыреттілік орталығы жұмыс істейді?",
+        "ru": "Сколько центров компетенций работает в компании?",
+        "en": "How many competence centers operate in the company?"
+      },
+      "options_i18n": {
+        "kk": [
+          "5 — Мұнай операцияларын онлайн қолдау, Қабатты гидроқару, Сутегі энергетикасы, PVT, Онлайн бұрғылау",
+          "3 — Онлайн қолдау, Қабатты гидроқару, Сутегі энергетикасы",
+          "2 — Қабатты гидроқару, Сутегі энергетикасы",
+          "1 — Сутегі энергетикасы"
+        ],
+        "ru": [
+          "5 — Онлайн-поддержка нефтяных операций, ГРП, Водородная энергетика, PVT, Онлайн-бурение",
+          "3 — Онлайн-поддержка, ГРП, Водородная энергетика",
+          "2 — ГРП, Водородная энергетика",
+          "1 — Водородная энергетика"
+        ],
+        "en": [
+          "5 — Online support for oil operations, Hydraulic fracturing, Hydrogen energy, PVT, Online drilling",
+          "3 — Online support, Hydraulic fracturing, Hydrogen energy",
+          "2 — Hydraulic fracturing, Hydrogen energy",
+          "1 — Hydrogen energy"
+        ]
+      },
+      "correct_answers_i18n": {
+        "kk": ["5 — Мұнай операцияларын онлайн қолдау, Қабатты гидроқару, Сутегі энергетикасы, PVT, Онлайн бұрғылау"],
+        "ru": ["5 — Онлайн-поддержка нефтяных операций, ГРП, Водородная энергетика, PVT, Онлайн-бурение"],
+        "en": ["5 — Online support for oil operations, Hydraulic fracturing, Hydrogen energy, PVT, Online drilling"]
+      },
+      "duration_seconds": 35,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Ғылыми және кәсіби тәжірибе алмасу үшін қандай басылым шығарылады?",
+        "ru": "Какое издание выпускается для научного и профессионального обмена опытом в нефтегазе Казахстана?",
+        "en": "Which publication is issued for scientific and professional knowledge sharing in Kazakhstan’s O&G sector?"
+      },
+      "options_i18n": {
+        "kk": [
+          "Energy Weekly Kazakhstan",
+          "Қазақстан мұнай-газ саласының хабаршысы",
+          "KMGE Oil & Gas Times",
+          "Engineering Digest"
+        ],
+        "ru": [
+          "Energy Weekly Kazakhstan",
+          "Вестник нефтегазовой отрасли Казахстана",
+          "KMGE Oil & Gas Times",
+          "Engineering Digest"
+        ],
+        "en": [
+          "Energy Weekly Kazakhstan",
+          "Bulletin of Kazakhstan Oil & Gas Industry",
+          "KMGE Oil & Gas Times",
+          "Engineering Digest"
+        ]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Қазақстан мұнай-газ саласының хабаршысы"],
+        "ru": ["Вестник нефтегазовой отрасли Казахстана"],
+        "en": ["Bulletin of Kazakhstan Oil & Gas Industry"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Аталған «Вестник» ҚР БҒМ ұсынған тізімге кіреді ме?",
+        "ru": "Входит ли это издание в перечень Комитета по обеспечению качества в сфере науки МОН РК?",
+        "en": "Is this journal included in the list recommended by Kazakhstan’s Committee for Quality Assurance in Science (MoES)?"
+      },
+      "options_i18n": {
+        "kk": ["Иә", "Жоқ", "Тек онлайн нұсқасы", "Аймақтық деңгейде ғана"],
+        "ru": ["Да", "Нет", "Только онлайн-версия", "Только региональный уровень"],
+        "en": ["Yes", "No", "Online version only", "Regional level only"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Иә"],
+        "ru": ["Да"],
+        "en": ["Yes"]
+      },
+      "duration_seconds": 20,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "Инновациялық өнімді енгізуді қадағалау үшін қандай жүйе жұмыс істейді?",
+        "ru": "Какая система действует для контроля внедрения инновационной продукции на добывающих активах КМГ?",
+        "en": "Which system operates to oversee the implementation of innovative products at KMG production assets?"
+      },
+      "options_i18n": {
+        "kk": [
+          "Материалдық активтерді пайдалануға беру орталығы",
+          "HSE Learning",
+          "Лабзертханалық зерттеулер орталығы",
+          "Тәжірибелік-өнеркәсіптік сынақтар орталығы"
+        ],
+        "ru": [
+          "Центр ввода в эксплуатацию материальных активов",
+          "HSE Learning",
+          "Центр лабораторных исследований",
+          "Центр опытно-промышленных испытаний"
+        ],
+        "en": [
+          "Commissioning Center for Tangible/Intangible Assets",
+          "HSE Learning",
+          "Laboratory Research Center",
+          "Pilot-industrial Testing Center"
+        ]
+      },
+      "correct_answers_i18n": {
+        "kk": ["Тәжірибелік-өнеркәсіптік сынақтар орталығы"],
+        "ru": ["Центр опытно-промышленных испытаний"],
+        "en": ["Pilot-industrial Testing Center"]
+      },
+      "duration_seconds": 30,
+      "points": 1
+    },
+
+    {
+      "type": "single",
+      "text_i18n": {
+        "kk": "ҚМГ ЕТҰ қызметкерлері міндетті оқу курстарынан қай жүйеде өтеді?",
+        "ru": "В какой системе сотрудники дочерних и зависимых организаций КМГ проходят обязательные курсы по безопасности и ОТ?",
+        "en": "In which system do KMG subsidiaries’ employees take mandatory HSE/safety courses?"
+      },
+      "options_i18n": {
+        "kk": ["KMGE Academy", "HSE Learning", "ABAI", "Smart Training"],
+        "ru": ["KMGE Academy", "HSE Learning", "ABAI", "Smart Training"],
+        "en": ["KMGE Academy", "HSE Learning", "ABAI", "Smart Training"]
+      },
+      "correct_answers_i18n": {
+        "kk": ["HSE Learning"],
+        "ru": ["HSE Learning"],
+        "en": ["HSE Learning"]
+      },
+      "duration_seconds": 25,
+      "points": 1
+    }
+  ]
+}

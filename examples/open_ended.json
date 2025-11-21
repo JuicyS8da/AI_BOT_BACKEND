@@ -1,0 +1,16 @@
+
+
+{
+  "items": [
+    {
+    "type": "open",
+    "text_i18n": {
+        "kk": "ЖИ көмегімен компанияңыздағы қандай міндеттерді автоматтандырғыңыз келеді?",
+        "ru": "Какую задачу в вашей компании вы бы хотели автоматизировать с помощью ИИ?",
+        "en": "“What task in your company would you like to automate using AI?”"
+    },
+    "duration_seconds": 180,
+    "points": 0
+    }
+]
+}

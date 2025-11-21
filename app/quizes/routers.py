@@ -176,18 +176,43 @@ async def bulk_import_with_images_file(
     return await svc.bulk_add_questions_simple(quiz_id, bulk_in)
 
 @router.post(
-    "/questions/{question_id}/images:attach",
+    "/questions/{question_id}/images:attach_files",
     response_model=schemas.QuizQuestionOut,
-    summary="Прикрепить картинки к существующему вопросу",
+    summary="Прикрепить изображения ФАЙЛАМИ к вопросу (multipart/form-data)",
 )
-async def attach_images(
+async def attach_images_files(
     request: Request,
     question_id: int,
+    images: list[UploadFile] = File(..., description="Файлы изображений (несколько полей images)"),
     session: AsyncSession = Depends(get_async_session),
-    images: List[UploadFile] = File(..., description="Файлы изображений"),
 ):
     svc = QuizService(session)
-    q = await svc.attach_images_to_question(question_id=question_id, request=request, images=images)
+    q = await svc.attach_images_to_question(
+        question_id=question_id,
+        request=request,          # нужен для записи файлов
+        images=images,
+        urls=None,
+    )
+    return schemas.QuizQuestionOut.model_validate(q)
+
+
+@router.post(
+    "/questions/{question_id}/images:attach_urls",
+    response_model=schemas.QuizQuestionOut,
+    summary="Прикрепить изображения по URL к вопросу (application/json)",
+)
+async def attach_images_urls(
+    question_id: int,
+    body: schemas.AttachUrlsIn,
+    session: AsyncSession = Depends(get_async_session),
+):
+    svc = QuizService(session)
+    q = await svc.attach_images_to_question(
+        question_id=question_id,
+        request=None,             # не нужен для URL
+        images=None,
+        urls=[str(u) for u in body.urls],
+    )
     return schemas.QuizQuestionOut.model_validate(q)
 
 
