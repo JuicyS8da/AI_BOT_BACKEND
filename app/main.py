@@ -23,7 +23,13 @@ from telegram import moderation  # + если есть другие: auth, debug
 
 app = FastAPI(title="Music Schedule Bot 6")
 
-app.mount("/media", StaticFiles(directory=str(MEDIA_ROOT)), name="media")
+MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
+
+app.mount(
+    "/media",
+    StaticFiles(directory=str(MEDIA_ROOT)),
+    name="media",
+)
 
 # API
 app.include_router(user_router)
