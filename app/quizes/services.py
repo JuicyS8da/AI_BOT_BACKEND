@@ -275,10 +275,13 @@ class QuizService:
         created_ids: list[int] = []
         try:
             for item in payload.items:
-                data = item.model_dump()
+                # mode="json" → AnyUrl и прочее превращаются в обычные str / dict / list
+                data = item.model_dump(mode="json")
+
                 qtype = data["type"]
                 if isinstance(qtype, str):
                     qtype = QuestionType(qtype)
+
                 question = QuizQuestion(
                     type=qtype,
                     text_i18n=data["text_i18n"],
@@ -286,7 +289,7 @@ class QuizService:
                     correct_answers_i18n=data.get("correct_answers_i18n", {}),
                     duration_seconds=data.get("duration_seconds"),
                     points=data.get("points", 1),
-                    images_urls=data.get("images_urls", []),
+                    images_urls=data.get("images_urls", []) or [],
                     quiz_id=quiz_id,
                 )
                 self.session.add(question)
@@ -299,7 +302,7 @@ class QuizService:
             raise
 
         return {"created": len(created_ids), "ids": created_ids}
-    
+        
     async def list_questions_by_quiz_locale(self, quiz_id: int, locale: str = "ru", include_correct: bool = False) -> list[schemas.QuizQuestionLocalizedOut]:
         stmt = (
             select(QuizQuestion)
