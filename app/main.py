@@ -1,4 +1,3 @@
-# app/main.py
 import asyncio
 import logging
 import os
@@ -116,12 +115,21 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     global bot_task
+
+    # закрываем polling
     if bot_task:
         bot_task.cancel()
         try:
             await bot_task
         except asyncio.CancelledError:
             pass
+
+    # закрываем сессию aiogram
+    try:
+        await bot.session.close()
+    except Exception:
+        pass
+
 
 
 async def seed_admins():

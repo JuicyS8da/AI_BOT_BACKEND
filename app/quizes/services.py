@@ -286,6 +286,7 @@ class QuizService:
                     correct_answers_i18n=data.get("correct_answers_i18n", {}),
                     duration_seconds=data.get("duration_seconds"),
                     points=data.get("points", 1),
+                    images_urls=data.get("images_urls", []),
                     quiz_id=quiz_id,
                 )
                 self.session.add(question)
