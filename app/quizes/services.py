@@ -275,23 +275,36 @@ class QuizService:
         created_ids: list[int] = []
         try:
             for item in payload.items:
-                # mode="json" → AnyUrl и прочее превращаются в обычные str / dict / list
-                data = item.model_dump(mode="json")
+                # item — это Pydantic-модель (QuizQuestionUpsert / QuizQuestionCreate и т.п.)
 
-                qtype = data["type"]
+                # тип вопроса
+                qtype = item.type
                 if isinstance(qtype, str):
                     qtype = QuestionType(qtype)
 
+                # text/options/correct берем напрямую из модели
+                text_i18n = item.text_i18n
+                options_i18n = item.options_i18n or {}
+                correct_answers_i18n = item.correct_answers_i18n or {}
+
+                # ВАЖНО: images_urls руками приводим к строкам
+                raw_urls = getattr(item, "images_urls", None)
+                if raw_urls:
+                    images_urls = [str(u) for u in raw_urls]
+                else:
+                    images_urls = []
+
                 question = QuizQuestion(
                     type=qtype,
-                    text_i18n=data["text_i18n"],
-                    options_i18n=data.get("options_i18n", {}),
-                    correct_answers_i18n=data.get("correct_answers_i18n", {}),
-                    duration_seconds=data.get("duration_seconds"),
-                    points=data.get("points", 1),
-                    images_urls=data.get("images_urls", []) or [],
+                    text_i18n=text_i18n,
+                    options_i18n=options_i18n,
+                    correct_answers_i18n=correct_answers_i18n,
+                    duration_seconds=item.duration_seconds,
+                    points=item.points or 1,
                     quiz_id=quiz_id,
+                    images_urls=images_urls,
                 )
+
                 self.session.add(question)
                 await self.session.flush()  # получить id без коммита
                 created_ids.append(question.id)
@@ -302,6 +315,7 @@ class QuizService:
             raise
 
         return {"created": len(created_ids), "ids": created_ids}
+
         
     async def list_questions_by_quiz_locale(self, quiz_id: int, locale: str = "ru", include_correct: bool = False) -> list[schemas.QuizQuestionLocalizedOut]:
         stmt = (
